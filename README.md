@@ -4,7 +4,7 @@
 VATek devotes to design and manufacture the best-of-breed chips that aim at DTV modulation and multimedia encode & streaming technology. 
 
 VAT SDK is the software to control the chip made by VATek.
-- VATek provide the sample code of SDK to support user understand the SDK source code, SDK source code develop depend on OS, and it can develop on Windows 10(x64) and LINUX OS.
+- VATek provides the sample code of SDK to support users understand the SDK source code. SDK development depends on OS, and it can be developed on Windows 10(x64) and LINUX OS.
 
 ### Modulator Series
 Multi-format DTV modulator chip which is simple and cost efficient than other solutions. An advanced engine to simplify complexity of TV headend and customized TV distribution system.
