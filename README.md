@@ -4,7 +4,7 @@
 VATek devotes to design and manufacture the best-of-breed chips that aim at DTV modulation and multimedia encode & streaming technology. 
 
 VAT SDK is the software to control the chip made by VATek.
-- VATek provide the sample code of SDK to support user understand the SDK source code, SDK source code develop depend on OS, and it can develop on Windows 10(x64) and LINUX OS.
+- VATek provides the sample code of SDK to support users understand the SDK source code. SDK development depends on OS, and it can be developed on Windows 10(x64) and LINUX OS.
 
 ### Modulator Series
 Multi-format DTV modulator chip which is simple and cost efficient than other solutions. An advanced engine to simplify complexity of TV headend and customized TV distribution system.
@@ -37,16 +37,15 @@ As the Encmoder with both HDMI and USB 2.0 inputs, it provides outstanding solut
 
 	#### Windows
 
-	- Download vatek_sdk_2. You can choose to add a new folder under vatek_sdk_2 to save CMake building files (take “bin” folder as example).
-	- Use CMake application select vatek_sdk_2 folder in the “source code” section, select bin folder under vatek_sdk_2 folder in the “build the binaries” section.
-		（You can choose whether to use QT interface. If not, please use sdk2_ EN_ QT uncheck.）
+	- Download vatek_sdk_2. You can choose to add a new folder under vatek_sdk_2 to save CMake building files (take bin folder as example).
+	- Use CMake application, select vatek_sdk_2 folder in the “source code” section, select bin folder under vatek_sdk_2 folder in the “build the binaries” section.（You can choose to use QT interface or not. If not, please uncheck sdk2_ EN_ QT.）
 	- In the bin folder, there are VS project file (vatek_sdk_2.sln), execute and compile.
 	- The executables and binaries (.dll) are built in directories bin\Release or bin\Debug.
 
 	#### Linux 
 
-	- Currently testing based on Ubuntu.
-	- Execute the shell-script build/Linux_build_installer.sh It downloads and installs the Libusb and Cmake which are necessary to build VATek SDK.
+	- Being tested based on Ubuntu.
+	- Execute the shell-script build/Linux_build_installer.sh It downloads and installs Libusb and Cmake which are necessary to build VATek SDK.
 	- The sample executables are built in directories bin/bin.
 	- The shared objects (libvatek.so) are built in directories bin/lib.
 
