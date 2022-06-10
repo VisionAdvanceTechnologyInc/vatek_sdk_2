@@ -1,0 +1,8 @@
+D:/vatek/master/vatek_sdk_2/api/core/src/core/tool_helpful_circlebuf.c:4:15:th_circlebuf_create	32	static
+D:/vatek/master/vatek_sdk_2/api/core/src/core/tool_helpful_circlebuf.c:21:15:th_circlebuf_create_pool	40	static
+D:/vatek/master/vatek_sdk_2/api/core/src/core/tool_helpful_circlebuf.c:38:6:th_circlebuf_free	16	static
+D:/vatek/master/vatek_sdk_2/api/core/src/core/tool_helpful_circlebuf.c:44:6:th_circlebuf_reset	16	static
+D:/vatek/master/vatek_sdk_2/api/core/src/core/tool_helpful_circlebuf.c:51:10:th_circlebuf_get_wptr	16	static
+D:/vatek/master/vatek_sdk_2/api/core/src/core/tool_helpful_circlebuf.c:58:6:th_circlebuf_commit	24	static
+D:/vatek/master/vatek_sdk_2/api/core/src/core/tool_helpful_circlebuf.c:66:10:th_circlebuf_get_rptr	24	static
+D:/vatek/master/vatek_sdk_2/api/core/src/core/tool_helpful_circlebuf.c:74:6:th_circlebuf_finish	24	static

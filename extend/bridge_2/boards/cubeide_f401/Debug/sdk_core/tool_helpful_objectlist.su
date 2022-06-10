@@ -1,0 +1,5 @@
+D:/vatek/master/vatek_sdk_2/api/core/src/core/tool_helpful_objectlist.c:3:6:th_object_list_reset	16	static
+D:/vatek/master/vatek_sdk_2/api/core/src/core/tool_helpful_objectlist.c:8:9:th_object_list_exists	24	static
+D:/vatek/master/vatek_sdk_2/api/core/src/core/tool_helpful_objectlist.c:20:6:th_object_list_push	32	static
+D:/vatek/master/vatek_sdk_2/api/core/src/core/tool_helpful_objectlist.c:42:16:th_object_list_get_first	16	static
+D:/vatek/master/vatek_sdk_2/api/core/src/core/tool_helpful_objectlist.c:49:7:th_object_list_get_next	24	static

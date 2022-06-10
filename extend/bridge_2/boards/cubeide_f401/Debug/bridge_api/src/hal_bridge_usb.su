@@ -1,0 +1,6 @@
+D:/vatek/master/vatek_bridge_2/api/src/hal_bridge_usb.c:3:1:hal_bridge_usb_open	16	static
+D:/vatek/master/vatek_bridge_2/api/src/hal_bridge_usb.c:8:1:hal_bridge_usb_get_status	16	static
+D:/vatek/master/vatek_bridge_2/api/src/hal_bridge_usb.c:13:1:hal_bridge_usb_get_command	16	static
+D:/vatek/master/vatek_bridge_2/api/src/hal_bridge_usb.c:18:1:hal_bridge_usb_get_result	16	static
+D:/vatek/master/vatek_bridge_2/api/src/hal_bridge_usb.c:23:1:hal_bridge_usb_commit	16	static
+D:/vatek/master/vatek_bridge_2/api/src/hal_bridge_usb.c:28:1:hal_bridge_usb_close	16	static

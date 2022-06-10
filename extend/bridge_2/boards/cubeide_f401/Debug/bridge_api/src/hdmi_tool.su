@@ -1,0 +1,5 @@
+D:/vatek/master/vatek_bridge_2/api/src/hdmi_tool.c:3:16:hdmi_tool_get_video_id	24	static
+D:/vatek/master/vatek_bridge_2/api/src/hdmi_tool.c:14:16:hdmi_tool_get_video_id_by_info	24	static
+D:/vatek/master/vatek_bridge_2/api/src/hdmi_tool.c:27:6:hdmi_tool_change_base_clock	16	static
+D:/vatek/master/vatek_bridge_2/api/src/hdmi_tool.c:62:6:hdmi_tool_get_timing	16	static
+D:/vatek/master/vatek_bridge_2/api/src/hdmi_tool.c:97:6:hdmi_tool_timing_printf	16	static

@@ -1,0 +1,4 @@
+D:/vatek/master/vatek_sdk_2/api/core/src/core/tool_j83abc.c:10:14:tool_j83_j83frame_reset	32	static
+D:/vatek/master/vatek_sdk_2/api/core/src/core/tool_j83abc.c:23:10:tool_j83_get_bitrate	32	static
+D:/vatek/master/vatek_sdk_2/api/core/src/core/tool_j83abc.c:49:14:tool_j83_check_param	24	static
+D:/vatek/master/vatek_sdk_2/api/core/src/core/tool_j83abc.c:56:10:j83ac_get_bitrate	64	static

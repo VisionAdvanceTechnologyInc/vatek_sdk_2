@@ -1,0 +1,24 @@
+<RCC>
+    <qresource prefix="/qtv">
+        <file alias="chip_a1">chip_a1.png</file>
+        <file alias="chip_a3">chip_a3.png</file>
+        <file alias="chip_b1">chip_b1.png</file>
+        <file alias="chip_b2">chip_b2.png</file>
+        <file alias="chip_b2_plus">chip_b2_plus.png</file>
+        <file alias="chip_b3">chip_b3.png</file>
+        <file alias="chip_b3_plus">chip_b3_plus.png</file>
+        <file alias="chip_unknown">chip_unknown.png</file>
+        <file alias="logo_big">logo_full.png</file>
+        <file alias="logo_small">logo_small.png</file>
+        <file alias="no_device">no_device.png</file>
+        <file alias="broadcast">broadcast.png</file>
+        <file alias="transform">transform.png</file>
+        <file alias="error">error.png</file>
+        <file alias="icon_audio">icon_audio.png</file>
+        <file alias="icon_channel">icon_channel.png</file>
+        <file alias="icon_output">icon_output.png</file>
+        <file alias="icon_video">icon_video.png</file>
+        <file alias="icon_information">icon_information.png</file>
+        <file alias="icon_properties">icon_properties.png</file>
+    </qresource>
+</RCC>

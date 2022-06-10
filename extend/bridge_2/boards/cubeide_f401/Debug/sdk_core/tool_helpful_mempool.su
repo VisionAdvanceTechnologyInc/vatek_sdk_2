@@ -1,0 +1,6 @@
+D:/vatek/master/vatek_sdk_2/api/core/src/core/tool_helpful_mempool.c:3:13:th_mempool_create	32	static
+D:/vatek/master/vatek_sdk_2/api/core/src/core/tool_helpful_mempool.c:22:6:th_mempool_config_raw	24	static
+D:/vatek/master/vatek_sdk_2/api/core/src/core/tool_helpful_mempool.c:30:6:th_mempool_free	16	static
+D:/vatek/master/vatek_sdk_2/api/core/src/core/tool_helpful_mempool.c:36:6:th_mempool_reset	16	static
+D:/vatek/master/vatek_sdk_2/api/core/src/core/tool_helpful_mempool.c:41:10:th_mempool_malloc	32	static
+D:/vatek/master/vatek_sdk_2/api/core/src/core/tool_helpful_mempool.c:57:9:th_mempool_get_pointer	24	static

@@ -1,0 +1,11 @@
+D:/vatek/master/vatek_bridge_2/boards/stm32/core/src/stm32_usb_bridge.c:50:14:stm32_hal_bridge_start	16	static
+D:/vatek/master/vatek_bridge_2/boards/stm32/core/src/stm32_usb_bridge.c:68:19:stm32_usb_bridge_get	16	static
+D:/vatek/master/vatek_bridge_2/boards/stm32/core/src/stm32_usb_bridge.c:106:14:hooked_stm32_custom_hid_class	16	static
+D:/vatek/master/vatek_bridge_2/boards/stm32/core/src/stm32_usb_bridge.c:130:14:usb_hid_modify_cfg_desc	24	static
+D:/vatek/master/vatek_bridge_2/boards/stm32/core/src/stm32_usb_bridge.c:143:14:hid_cfg_desc_modified	32	static
+D:/vatek/master/vatek_bridge_2/boards/stm32/core/src/stm32_usb_bridge.c:172:9:hooked_custom_hid_init	24	static
+D:/vatek/master/vatek_bridge_2/boards/stm32/core/src/stm32_usb_bridge.c:262:9:hooked_hid_dataout	16	static
+D:/vatek/master/vatek_bridge_2/boards/stm32/core/src/stm32_usb_bridge.c:272:14:stm32_usb_set_recv	24	static
+D:/vatek/master/vatek_bridge_2/boards/stm32/core/src/stm32_usb_bridge.c:284:14:stm32_usb_out_ready	24	static
+D:/vatek/master/vatek_bridge_2/boards/stm32/core/src/stm32_usb_bridge.c:302:14:stm32_usb_send	32	static
+D:/vatek/master/vatek_bridge_2/boards/stm32/core/src/stm32_usb_bridge.c:320:6:stm32_usb_disable_pin	40	static

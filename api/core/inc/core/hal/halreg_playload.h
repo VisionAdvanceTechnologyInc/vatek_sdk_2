@@ -1,0 +1,193 @@
+//----------------------------------------------------------------------------
+//
+// Vision Advance Technology - Software Development Kit
+// Copyright (c) 2014-2022, Vision Advance Technology Inc.
+// All rights reserved.
+//
+// Redistribution and use in source and binary forms, with or without
+// modification, are permitted provided that the following conditions are met:
+//
+// 1. Redistributions of source code must retain the above copyright notice,
+//    this list of conditions and the following disclaimer.
+// 2. Redistributions in binary form must reproduce the above copyright
+//    notice, this list of conditions and the following disclaimer in the
+//    documentation and/or other materials provided with the distribution.
+//
+// THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+// AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+// IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+// ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
+// LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+// CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+// SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+// INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+// CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+// ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF
+// THE POSSIBILITY OF SUCH DAMAGE.
+//
+
+#ifndef _HALREG_PLAYLOAD_
+#define _HALREG_PLAYLOAD_
+
+/* payed with HALRANGE_PLAYLOAD_START to added raw_psi_table */
+#define HALOF_RAWPSI_TAG					0x00
+#define RAWPSI_EN_TAG						0xFF070600
+#define RAWPSI_EN_ENDTAG					0xFF0706FF
+
+#define HALOF_RAWPSI_INTERVAL				0x01
+#define HALOF_RAWPSI_PACKETS				0x02
+
+/* used with HALRANGE_PLAYLOAD_START	*/	
+
+#define HALOF_RULE_V1_TAG					0x00
+	#define RULE_V1_EN_START				0xFF800000
+	#define RULE_V1_EN_END					0xFF8000FF
+
+#define HALOF_DEFSPEC_V1_TAG				0x00
+	#define DEFSPEC_V1_EN_START				0xFF820000
+	#define DEFSPEC_V1_EN_END				0xFF8200FF
+
+#define HALOF_DEFSPEC_SPEC					0x01
+#define HALOF_DEFSPEC_COUNTRY
+
+/* PLAYLOAD DEFSPEC_V2 AND DEFRULE_V2 DEFINE*/
+
+#define HALOF_RULE_V2_TAG					0x00
+	#define RULE_V2_EN_START				0xFF810000
+	#define RULE_V2_EN_END					0xFF8100FF
+
+#define HALOF_DEFSPEC_V2_TAG				0x00
+	#define DEFSPEC_V2_EN_START				0xFF821000
+	#define DEFSPEC_V2_EN_END				0xFF8200FF
+
+#define HALOF_DEFCH_TAG						0x00
+	#define DEFCH_EN_START					0xFF820000
+	#define DEFCH_EN_END					0xFF8200FF
+
+#define HALOF_DEFCH_SPEC					0x01
+#define HALOF_DEFCH_COUNTRY					0x02
+
+#define HALOF_DEFPROG_TAG					0x00
+	#define DEFPROG_EN_START				0xFF890000
+	#define DEFPROG_EN_END					0xFF8900FF
+
+
+#define HALOF_DEFPROG_PCR_PID				0x01
+#define HALOF_DEFPROG_PMT_PID				0x02
+
+#define HALOF_DEFSTREAM_TAG					0x00
+	#define DEFSTREAM_EN_START				0xFF8A0000
+	#define DEFSTREAM_EN_END				0xFF8A00FF
+
+
+#define HALOF_DEFSTREAM_TYPE				0x01
+#define HALOF_DEFSTREAM_PID					0x02
+#define HALOF_DEFSTREAM_ESTYPE				0x03
+#define HALOF_DEFSTREAM_ESLEN				0x04
+
+#define HALOF_DEFSTREAM_AUDIO_CODEC			0x05
+#define HALOF_DEFSTREAM_SAMPLERATE			0x06
+#define HALOF_DEFSTREAM_CHANNEL				0x07
+
+#define HALOF_DEFSTREAM_VIDEO_CODEC			0x05
+#define HALOF_DEFSTREAM_RESOLUTION			0x06
+#define HALOF_DEFSTREAM_FRAMERATE			0x07
+#define HALOF_DEFSTREAM_ASPECTRATE			0x08
+
+#define HALOF_DEFSTREAM_ES					0x11
+
+#define HALOF_LICENSED_TAG					0x00
+	#define LICENSED_EN_START				0xFF800000
+	#define LICENSED_EN_END					0xFF8000FF
+	#define LICENSED_V2_EN_START			0xFF810000
+	#define LICENSED_V2_EN_END				0xFF8100FF
+	#define LICENSED_DEFSPEC_V1_EN_START	0xFF820000
+	#define LICENSED_DEFSPEC_V2_EN_START	0xFF821000
+	#define LICENSED_DEFSPEC_EN_END			0xFF8200FF
+
+/* licensed rule section */
+#define HALOF_LIC_RULE_TAG					0x00
+	#define RULE_EN_START					0xFF820000
+	#define RULE_EN_END						0xFF8200FF
+
+#define HALOF_LIC_RULE_LEN					0x01
+
+#if 0
+	#define HALOF_LIC_CHANNEL_TAG				0x00
+		#define CHANNEL_EN_START				0xFF880000
+		#define CHANNEL_EN_END					0xFF8800FF
+	#define HALOF_LIC_CHANNEL_SPEC				0x01
+	#define HALOF_LIC_CHANNEL_COUNTRY			0x02
+	#define HALOF_LIC_CHANNEL_LEN				0x03
+#endif
+
+
+#define HALOF_LIC_PROGRAM_TAG				0x00
+	#define PROGRAM_EN_START				0xFF890000
+	#define PROGRAM_EN_END					0xFF8900FF
+
+#define HALOF_LIC_PROGRAM_PCR_PID			0x01
+#define HALOF_LIC_PROGRAM_PMT_PID			0x02
+#define HALOF_LIC_PROGRAM_LEN				0x03
+
+#define HALOF_LIC_STREAM_TAG				0x00
+	#define STREAM_EN_START					0xFF8A0000
+	#define STREAM_EN_END					0xFF8A00FF
+
+#define HALOF_LIC_STREAM_TYPE				0x01
+#define HALOF_LIC_STREAM_PID				0x02
+#define HALOF_LIC_STREAM_ESTYPE				0x03
+#define HALOF_LIC_STREAM_ESLEN				0x04
+
+#define HALOF_LIC_SAUDIO_CODEC				0x05
+#define HALOF_LIC_SAUDIO_SAMPLERATE			0x06
+#define HALOF_LIC_SAUDIO_CHANNEL			0x07
+
+#define HALOF_LIC_SVIDEO_CODEC				0x05
+#define HALOF_LIC_SVIDEO_RESOLUTION			0x06
+#define HALOF_LIC_SVIDEO_FRAMERATE			0x07
+#define HALOF_LIC_SVIDEO_ASPECTRATE			0x08
+
+#define HALOF_LIC_STREAM_ES					0x11
+
+/* licensed pes_stream section */
+#define HALOF_LIC_PES_TAG				0x00
+	#define LIC_PES_EN_START			0xFF900000
+	#define LIC_PES_EN_END				0xFF9000FF
+
+#define HALOF_LIC_PES_PID				0x01
+#define HALOF_LIC_PES_TYPE				0x02
+#define HALOF_LIC_PES_ESLEN				0x03
+
+/* licensed _epg section */
+
+#define HALOF_LIC_EPG_TAG				0x00
+	#define LIC_EPG_EN_START			0xFFA00000
+	#define LIC_EPG_EN_END				0xFFA00000
+
+#define HALOF_LIC_EPG_MODE				0x01
+#define HALOF_LIC_EPG_FLAG				0x02
+#define HALOF_LIC_EPG_TIMEDATA			0x03
+#define HALOF_LIC_EPG_TIMETICK			0x04
+#define HALOF_LIC_EPG_EVENT_ID			0x05
+#define HALOF_LIC_EPG_DAYS				0x06
+#define HALOF_LIC_EPG_LOOPMS			0x07
+#define HALOF_LIC_EPG_SECTIONS			0x0A
+#define HALOF_LIC_EPG_EXTENDDESCS		0x0B
+
+
+#define HALOF_LIC_EPG_1_DURATION		0x00
+#define HALOF_LIC_EPG_1_TYPE			0x01
+#define HALOF_LIC_EPG_1_PRATING			0x02
+#define HALOF_LIC_EPG_1_TITALMAX		0x03
+#define HALOF_LIC_EPG_1_TITALLEN		0x04
+#define HALOF_LIC_EPG_1_CONTENTMAX		0x05
+#define HALOF_LIC_EPG_1_CONTENTLEN		0x06
+
+#define HALOF_LIC_EPG_2_DESCTAG			0x00
+	#define EPG_DESCTAG_TAG				0xAF000000
+	#define EPG_DESCTAG_ARIB_DATADESC	0xAF000001
+
+#define HALOF_LIC_EPG_2_DESC_LEN		0x01
+
+#endif

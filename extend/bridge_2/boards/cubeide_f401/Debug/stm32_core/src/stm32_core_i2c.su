@@ -1,0 +1,13 @@
+D:/vatek/master/vatek_bridge_2/boards/stm32/core/src/stm32_core_i2c.c:18:14:stm32_core_create_i2c	24	static
+D:/vatek/master/vatek_bridge_2/boards/stm32/core/src/stm32_core_i2c.c:37:14:stm32_core_free_i2c	16	static
+D:/vatek/master/vatek_bridge_2/boards/stm32/core/src/stm32_core_i2c.c:53:14:stmi2c_start	40	static
+D:/vatek/master/vatek_bridge_2/boards/stm32/core/src/stm32_core_i2c.c:80:14:stmi2c_set_speed	16	static
+D:/vatek/master/vatek_bridge_2/boards/stm32/core/src/stm32_core_i2c.c:85:14:ll_i2c_set_device_address	40	static
+D:/vatek/master/vatek_bridge_2/boards/stm32/core/src/stm32_core_i2c.c:109:14:stmi2c_write	32	static
+D:/vatek/master/vatek_bridge_2/boards/stm32/core/src/stm32_core_i2c.c:132:14:stmi2c_read	40	static
+D:/vatek/master/vatek_bridge_2/boards/stm32/core/src/stm32_core_i2c.c:207:15:stmi2c_stop	24	static
+D:/vatek/master/vatek_bridge_2/boards/stm32/core/src/stm32_core_i2c.c:216:14:ll_i2c_wait_flag	32	static
+D:/vatek/master/vatek_bridge_2/boards/stm32/core/src/stm32_core_i2c.c:228:14:ll_i2c_wait_flag_clr	16	static
+D:/vatek/master/vatek_bridge_2/boards/stm32/core/src/stm32_core_i2c.c:233:14:ll_i2c_wait_flag_set	16	static
+D:/vatek/master/vatek_bridge_2/boards/stm32/core/src/stm32_core_i2c.c:238:14:ll_i2c_send_start	16	static
+D:/vatek/master/vatek_bridge_2/boards/stm32/core/src/stm32_core_i2c.c:244:14:ll_i2c_check_busy	24	static

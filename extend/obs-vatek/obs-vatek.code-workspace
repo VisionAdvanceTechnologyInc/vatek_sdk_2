@@ -1,0 +1,31 @@
+{
+	"folders": [
+		{
+			"path": "."
+		}
+	],
+	"settings": {
+		"files.exclude": {
+			"**/.git": true,
+			"**/.svn": true,
+			"**/.hg": true,
+			"**/CVS": true,
+			"**/.DS_Store": true,
+			"**/.vs": true,
+			"**/.vscode" : true,
+			"**/*.code-workspace" : true,
+			"**/os/linux/**" : true,
+			"**/os/android/**" : true,
+			"bridge/**" : true,
+			"output/**" : true
+		},
+		"files.associations": {
+		},
+		"C_Cpp.default.browse.databaseFilename": "${workspaceFolder}/.vscode/browse.win.vc.db",
+		"C_Cpp.default.includePath": 
+		[
+			"${workspaceFolder}/source/inc"
+		],
+		"C_Cpp.default.intelliSenseMode": "msvc-x64",
+	}
+}

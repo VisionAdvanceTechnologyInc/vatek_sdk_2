@@ -1,0 +1,8 @@
+D:/vatek/master/vatek_bridge_2/api/src/cmd_mod.c:15:14:cmd_mod	56	static
+D:/vatek/master/vatek_bridge_2/api/src/cmd_mod.c:51:14:bridge_i2c_read	32	static
+D:/vatek/master/vatek_bridge_2/api/src/cmd_mod.c:64:14:bridge_i2c_write	32	static
+D:/vatek/master/vatek_bridge_2/api/src/cmd_mod.c:93:14:bridge_bulk_cmd	48	static
+D:/vatek/master/vatek_bridge_2/api/src/cmd_mod.c:128:14:internal_i2c_read	40	static
+D:/vatek/master/vatek_bridge_2/api/src/cmd_mod.c:149:14:internal_i2c_write	40	static
+D:/vatek/master/vatek_bridge_2/api/src/cmd_mod.c:170:14:internal_i2c_code_read	48	static
+D:/vatek/master/vatek_bridge_2/api/src/cmd_mod.c:204:14:internal_i2c_code_write	40	static

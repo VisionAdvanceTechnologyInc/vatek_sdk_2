@@ -1,0 +1,6 @@
+D:/vatek/master/vatek_bridge_2/api/src/avl68xx_dvbtx.c:173:14:avl_dvbtx_initial	32	static
+D:/vatek/master/vatek_bridge_2/api/src/avl68xx_dvbtx.c:214:14:avl_dvbtx_config	24	static
+D:/vatek/master/vatek_bridge_2/api/src/avl68xx_dvbtx.c:249:14:avl_dvbtx_check_lock	24	static
+D:/vatek/master/vatek_bridge_2/api/src/avl68xx_dvbtx.c:277:14:mod_to_avl_dvbtbw	24	static
+D:/vatek/master/vatek_bridge_2/api/src/avl68xx_dvbtx.c:293:14:avl_dvbtx_get_t_info	24	static
+D:/vatek/master/vatek_bridge_2/api/src/avl68xx_dvbtx.c:327:14:avl_dvbtx_get_t2_info	24	static

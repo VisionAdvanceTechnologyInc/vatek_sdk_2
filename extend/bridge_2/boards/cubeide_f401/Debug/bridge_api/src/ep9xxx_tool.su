@@ -1,0 +1,3 @@
+D:/vatek/master/vatek_bridge_2/api/src/ep9xxx_tool.c:3:6:ep9xxx_get_video_timing	16	static
+D:/vatek/master/vatek_bridge_2/api/src/ep9xxx_tool.c:33:14:ep9xxx_get_video_from_timing	56	static
+D:/vatek/master/vatek_bridge_2/api/src/ep9xxx_tool.c:134:18:ep9xxx_get_audio_samplerate	24	static

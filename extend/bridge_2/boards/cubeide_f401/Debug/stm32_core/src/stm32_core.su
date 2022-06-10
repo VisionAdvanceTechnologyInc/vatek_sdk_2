@@ -1,0 +1,14 @@
+D:/vatek/master/vatek_bridge_2/boards/stm32/core/src/stm32_core.c:22:14:stm32_core_init	32	static
+D:/vatek/master/vatek_bridge_2/boards/stm32/core/src/stm32_core.c:52:10:stm32_core_extram_malloc	24	static
+D:/vatek/master/vatek_bridge_2/boards/stm32/core/src/stm32_core.c:83:14:stm32_core_main_i2c_check_device	24	static
+D:/vatek/master/vatek_bridge_2/boards/stm32/core/src/stm32_core.c:95:12:stm32_core_get_main_i2c	16	static
+D:/vatek/master/vatek_bridge_2/boards/stm32/core/src/stm32_core.c:106:12:stm32_core_get_main_spi	16	static
+D:/vatek/master/vatek_bridge_2/boards/stm32/core/src/stm32_core.c:117:13:stm32_core_get_main_uart	16	static
+D:/vatek/master/vatek_bridge_2/boards/stm32/core/src/stm32_core.c:128:14:stm32_internal_get_main_gpio_ip	4	static
+D:/vatek/master/vatek_bridge_2/boards/stm32/core/src/stm32_core.c:133:14:stm32_core_get_hwip	24	static
+D:/vatek/master/vatek_bridge_2/boards/stm32/core/src/stm32_core.c:147:10:hal_lite_get_tick	8	static
+D:/vatek/master/vatek_bridge_2/boards/stm32/core/src/stm32_core.c:152:6:hal_lite_sleep_ms	16	static
+D:/vatek/master/vatek_bridge_2/boards/stm32/core/src/stm32_core.c:157:6:hal_lite_sleep_us	16	static
+D:/vatek/master/vatek_bridge_2/boards/stm32/core/src/stm32_core.c:167:9:stm32_core_get_char_no_wait	8	static
+D:/vatek/master/vatek_bridge_2/boards/stm32/core/src/stm32_core.c:179:5:__io_putchar	24	static
+D:/vatek/master/vatek_bridge_2/boards/stm32/core/src/stm32_core.c:187:5:__io_getchar	16	static

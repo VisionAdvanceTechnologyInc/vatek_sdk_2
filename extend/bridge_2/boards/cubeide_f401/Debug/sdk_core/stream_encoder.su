@@ -1,0 +1,3 @@
+D:/vatek/master/vatek_sdk_2/api/core/src/core/stream_encoder.c:5:14:encoder_param_set	24	static
+D:/vatek/master/vatek_sdk_2/api/core/src/core/stream_encoder.c:23:14:encoder_param_get	24	static
+D:/vatek/master/vatek_sdk_2/api/core/src/core/stream_encoder.c:42:14:encoder_param_reset	16	static

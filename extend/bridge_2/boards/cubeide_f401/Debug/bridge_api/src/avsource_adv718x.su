@@ -1,0 +1,16 @@
+D:/vatek/master/vatek_bridge_2/api/src/internal/adv718x_internal.h:119:22:is_adv718x_id_valid	16	static
+D:/vatek/master/vatek_bridge_2/api/src/avsource_adv718x.c:35:14:adv718x_check_support	8	static
+D:/vatek/master/vatek_bridge_2/api/src/avsource_adv718x.c:40:14:adv718x_open	24	static
+D:/vatek/master/vatek_bridge_2/api/src/avsource_adv718x.c:55:14:adv718x_config	16	static
+D:/vatek/master/vatek_bridge_2/api/src/avsource_adv718x.c:60:14:adv718x_get_status	32	static
+D:/vatek/master/vatek_bridge_2/api/src/avsource_adv718x.c:88:14:adv718x_set_output	32	static
+D:/vatek/master/vatek_bridge_2/api/src/avsource_adv718x.c:128:6:adv718x_close	24	static
+D:/vatek/master/vatek_bridge_2/api/src/avsource_adv718x.c:139:14:adv718x_get_check_status	40	static
+D:/vatek/master/vatek_bridge_2/api/src/avsource_adv718x.c:170:14:adv718x_write_reg	24	static
+D:/vatek/master/vatek_bridge_2/api/src/avsource_adv718x.c:187:14:adv718x_read_req	24	static
+D:/vatek/master/vatek_bridge_2/api/src/avsource_adv718x.c:200:14:adv718x_chip_reset	24	static
+D:/vatek/master/vatek_bridge_2/api/src/avsource_adv718x.c:223:14:adv718x_chip_open	24	static
+D:/vatek/master/vatek_bridge_2/api/src/avsource_adv718x.c:256:9:adv718x_chip_get_input_type	24	static
+D:/vatek/master/vatek_bridge_2/api/src/avsource_adv718x.c:268:14:adv7182_select_input	32	static
+D:/vatek/master/vatek_bridge_2/api/src/avsource_adv718x.c:317:14:adv7182_reset_clamp	16	static
+D:/vatek/master/vatek_bridge_2/api/src/avsource_adv718x.c:343:14:adv7182_adj_clamp	24	static

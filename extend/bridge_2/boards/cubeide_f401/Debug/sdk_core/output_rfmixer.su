@@ -1,0 +1,15 @@
+D:/vatek/master/vatek_sdk_2/api/core/src/core/output_rfmixer.c:5:14:rfmixer_check_support	16	static
+D:/vatek/master/vatek_sdk_2/api/core/src/core/output_rfmixer.c:10:14:rfmixer_start	32	static
+D:/vatek/master/vatek_sdk_2/api/core/src/core/output_rfmixer.c:20:14:rfmixer_stop	16	static
+D:/vatek/master/vatek_sdk_2/api/core/src/core/output_rfmixer.c:25:16:rfmixer_get_status	32	static
+D:/vatek/master/vatek_sdk_2/api/core/src/core/output_rfmixer.c:38:14:rfmixer_set_status	24	static
+D:/vatek/master/vatek_sdk_2/api/core/src/core/output_rfmixer.c:47:14:rfmixer_r2_check_support	24	static
+D:/vatek/master/vatek_sdk_2/api/core/src/core/output_rfmixer.c:84:14:rfmixer_r2_get_param	24	static
+D:/vatek/master/vatek_sdk_2/api/core/src/core/output_rfmixer.c:117:14:rfmixer_r2_set_param	24	static
+D:/vatek/master/vatek_sdk_2/api/core/src/core/output_rfmixer.c:141:14:rfmixer_r2_start	32	static
+D:/vatek/master/vatek_sdk_2/api/core/src/core/output_rfmixer.c:149:14:rfmixer_r2_stop	16	static
+D:/vatek/master/vatek_sdk_2/api/core/src/core/output_rfmixer.c:154:6:rfmixer_r2_reset_tune_table	24	static
+D:/vatek/master/vatek_sdk_2/api/core/src/core/output_rfmixer.c:202:14:rfmixer_r2_add_tune_table	56	static
+D:/vatek/master/vatek_sdk_2/api/core/src/core/output_rfmixer.c:253:14:rfmixer_r2_del_tune_table	32	static
+D:/vatek/master/vatek_sdk_2/api/core/src/core/output_rfmixer.c:283:10:rfmixer_r2_int2tune	24	static
+D:/vatek/master/vatek_sdk_2/api/core/src/core/output_rfmixer.c:292:9:rfmixer_r2_tune2int	24	static

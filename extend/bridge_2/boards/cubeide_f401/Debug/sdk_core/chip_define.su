@@ -1,0 +1,10 @@
+D:/vatek/master/vatek_sdk_2/api/core/src/core/chip_define.c:4:13:chip_status_get	32	static
+D:/vatek/master/vatek_sdk_2/api/core/src/core/chip_define.c:37:14:chip_status_set	32	static
+D:/vatek/master/vatek_sdk_2/api/core/src/core/chip_define.c:65:14:chip_status_check	24	static
+D:/vatek/master/vatek_sdk_2/api/core/src/core/chip_define.c:74:14:chip_info_reset	128	static
+D:/vatek/master/vatek_sdk_2/api/core/src/core/chip_define.c:125:14:chip_info_get	32	static
+D:/vatek/master/vatek_sdk_2/api/core/src/core/chip_define.c:180:14:chip_info_set	24	static
+D:/vatek/master/vatek_sdk_2/api/core/src/core/chip_define.c:221:14:chip_raise_command	40	static
+D:/vatek/master/vatek_sdk_2/api/core/src/core/chip_define.c:252:14:chip_check_command	24	static
+D:/vatek/master/vatek_sdk_2/api/core/src/core/chip_define.c:263:14:chip_result_command	24	static
+D:/vatek/master/vatek_sdk_2/api/core/src/core/chip_define.c:268:14:chip_send_command	32	static

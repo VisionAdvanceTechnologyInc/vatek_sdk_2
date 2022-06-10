@@ -1,0 +1,6 @@
+D:/vatek/master/vatek_bridge_2/boards/stm32/core/src/stm32_core_spi.c:14:14:stm32_core_create_spi	40	static
+D:/vatek/master/vatek_bridge_2/boards/stm32/core/src/stm32_core_spi.c:47:14:stm32_core_free_spi	16	static
+D:/vatek/master/vatek_bridge_2/boards/stm32/core/src/stm32_core_spi.c:53:14:stm32_spi_config	32	static
+D:/vatek/master/vatek_bridge_2/boards/stm32/core/src/stm32_core_spi.c:88:14:stm32_spi_set_cs	24	static
+D:/vatek/master/vatek_bridge_2/boards/stm32/core/src/stm32_core_spi.c:95:14:stm32_spi_write	40	static
+D:/vatek/master/vatek_bridge_2/boards/stm32/core/src/stm32_core_spi.c:107:14:stm32_spi_read	40	static

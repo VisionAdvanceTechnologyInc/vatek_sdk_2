@@ -1,0 +1,4 @@
+D:/vatek/master/vatek_bridge_2/boards/stm32/core/src/stm32_core_gpio.c:4:12:stm32_core_get_pin	24	static
+D:/vatek/master/vatek_bridge_2/boards/stm32/core/src/stm32_core_gpio.c:20:14:stm32_core_pin_config	48	static
+D:/vatek/master/vatek_bridge_2/boards/stm32/core/src/stm32_core_gpio.c:37:14:stm32_core_pin_set_status	16	static
+D:/vatek/master/vatek_bridge_2/boards/stm32/core/src/stm32_core_gpio.c:44:14:stm32_core_pin_get_status	24	static

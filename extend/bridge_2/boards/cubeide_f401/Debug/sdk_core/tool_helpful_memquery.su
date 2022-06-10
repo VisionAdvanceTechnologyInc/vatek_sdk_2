@@ -1,0 +1,7 @@
+D:/vatek/master/vatek_sdk_2/api/core/src/core/tool_helpful_memquery.c:5:14:th_memquery_create_pool	32	static
+D:/vatek/master/vatek_sdk_2/api/core/src/core/tool_helpful_memquery.c:26:14:th_memquery_create	32	static
+D:/vatek/master/vatek_sdk_2/api/core/src/core/tool_helpful_memquery.c:48:6:th_memquery_destory	16	static
+D:/vatek/master/vatek_sdk_2/api/core/src/core/tool_helpful_memquery.c:53:10:th_memquery_get_raw_buffer	16	static
+D:/vatek/master/vatek_sdk_2/api/core/src/core/tool_helpful_memquery.c:58:10:th_memquery_malloc	40	static
+D:/vatek/master/vatek_sdk_2/api/core/src/core/tool_helpful_memquery.c:103:6:th_memquery_push	24	static
+D:/vatek/master/vatek_sdk_2/api/core/src/core/tool_helpful_memquery.c:115:14:th_memquery_free	40	static

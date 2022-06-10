@@ -1,0 +1,4 @@
+D:/vatek/master/vatek_bridge_2/api/src/avl68xx_isdbt.c:103:14:avl_isdb_t_initial	32	static
+D:/vatek/master/vatek_bridge_2/api/src/avl68xx_isdbt.c:148:14:avl_isdb_t_config	24	static
+D:/vatek/master/vatek_bridge_2/api/src/avl68xx_isdbt.c:163:14:avl_isdb_t_check_lock	32	static
+D:/vatek/master/vatek_bridge_2/api/src/avl68xx_isdbt.c:192:14:mod_to_isdbt_bw	24	static

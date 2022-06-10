@@ -1,0 +1,30 @@
+IDI_ICON1 ICON DISCARDABLE "${CMAKE_CURRENT_SOURCE_DIR}/cmake/vatek_factory.ico"
+
+1 VERSIONINFO
+ FILEVERSION 20.22.05.26
+ PRODUCTVERSION 20.22.05.26
+ FILEFLAGSMASK 0x3fL
+ FILEFLAGS 0x0L
+ FILEOS 0x40004L
+ FILETYPE 0x1L
+ FILESUBTYPE 0x0L
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "040404b0"
+        BEGIN
+            VALUE "CompanyName", "vatek technology inc."
+            VALUE "FileDescription", "vatek sdk 2 factory"
+            VALUE "FileVersion", "20.22.05.26"
+            VALUE "InternalName", "vatek_factory.exe"
+            VALUE "LegalCopyright", "Copyright (C) 2021"
+            VALUE "OriginalFilename", "vatek_factory.exe"
+            VALUE "ProductName", "vatek sdk 2 factory image package tool"
+            VALUE "ProductVersion", "20.22.05.26"
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x404, 1200
+    END
+END
