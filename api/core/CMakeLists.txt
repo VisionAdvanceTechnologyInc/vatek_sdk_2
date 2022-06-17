@@ -303,12 +303,12 @@ if(MSVC)
                           RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin")
     
 elseif(UNIX AND NOT APPLE)
-    add_library(libvatek_core SHARED ${sdk2_SOURCES} ${sdk2_HEADERS})
-    target_compile_definitions(libvatek_core PRIVATE -D_VA2_DLL_)
-    target_link_libraries(libvatek_core PRIVATE usb-1.0)
-    target_link_libraries(libvatek_core PRIVATE ${CMAKE_DL_LIBS})
+    add_library(vatek_core SHARED ${sdk2_SOURCES} ${sdk2_HEADERS})
+    target_compile_definitions(vatek_core PRIVATE -D_VA2_DLL_)
+    target_link_libraries(vatek_core PRIVATE usb-1.0)
+    target_link_libraries(vatek_core PRIVATE ${CMAKE_DL_LIBS})
 
-    set_target_properties(libvatek_core PROPERTIES
+    set_target_properties(vatek_core PROPERTIES
                           ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/lib"
                           LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/lib"
                           RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin")

@@ -39,12 +39,13 @@
 #include "../common/inc/tool_tspacket.h"
 #include "../common/inc/tool_stream.h"
 
-static usbstream_param usbcmd = 
+static usbstream_param usbcmd =
 {
 	.mode = ustream_mode_sync,
 	.remux = ustream_remux_passthrough,
 	.pcradjust = pcr_disable,
-	.freq_khz = 473000,							/* output _rf frequency */
+	.r2param.freqkhz = 473000,							/* output _rf frequency */
+	.r2param.mode = r2_cntl_path_0,
 	.modulator =
 	{
 		6,
@@ -128,18 +129,6 @@ int main(int argc, char *argv[])
 			usbcmd.mode = ustream_mode_sync;
 			usbcmd.sync.param = &streamsource;
 			usbcmd.sync.getbuffer = source_sync_get_buffer;
-
-#if 0
-			r2_param r2param;
-			nres = rfmixer_r2_get_param(hchip, &r2param);
-			if (is_vatek_success(nres)) {
-				r2param.mode = r2_cntl_path_0;          // switch j83b qam inversion used r2_cntl_path_1
-				r2param.freqkhz = 471000;
-				nres = rfmixer_r2_set_param(hchip, &r2param);
-			}
-
-			nres = rfmixer_r2_start(hchip, HALREG_TRANSFORM_CNTL, &r2param);
-#endif
 
 			nres = vatek_usbstream_start(hustream, &usbcmd);
 
