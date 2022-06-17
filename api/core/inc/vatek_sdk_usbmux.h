@@ -94,7 +94,7 @@ typedef struct _usbmux_param{
 	uint16_t interval_ms;
 	uint16_t latency_ms;
 	uint16_t recv;
-	uint32_t freq_khz;
+	r2_param r2param;
 	uint32_t bitrate;
 	modulator_param modulator;
 }usbmux_param;

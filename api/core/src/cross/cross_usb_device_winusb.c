@@ -37,8 +37,7 @@
 #define VATEK_USB_DEVICE_TAG        "vatek-usb"
 #define VATEK_USB_RESCUE_TAG        "vatek-rescue"
 
-DEFINE_GUID(GUID_DEVINTERFACE_USBApplication1,
-	0xDEE824EF, 0x729B, 0x4A0E, 0x9C, 0x14, 0xB7, 0x11, 0x7D, 0x33, 0xA8, 0x17);
+const GUID GUID_DEVINTERFACE_USBApplication1 = { 0xDEE824EF, 0x729B, 0x4A0E, {0x9C, 0x14, 0xB7, 0x11, 0x7D, 0x33, 0xA8, 0x17, } };
 
 typedef struct _usb_handle
 {
@@ -495,7 +494,7 @@ vatek_result usb_api_ll_enum_common(fpenum_check fpcheck, husb_device_list* hlis
 	int32_t enumnums = 0;
 
 	deviceData.HandlesOpen = FALSE;
-	deviceInfo = SetupDiGetClassDevs(&GUID_DEVINTERFACE_USBApplication1, NULL, NULL, DIGCF_PRESENT | DIGCF_DEVICEINTERFACE);
+	deviceInfo = SetupDiGetClassDevsA(&GUID_DEVINTERFACE_USBApplication1, NULL, NULL, DIGCF_PRESENT | DIGCF_DEVICEINTERFACE);
 	interfaceData.cbSize = sizeof(SP_DEVICE_INTERFACE_DATA);
 
 	while (SetupDiEnumDeviceInterfaces(deviceInfo,NULL,&GUID_DEVINTERFACE_USBApplication1,index,&interfaceData)) {

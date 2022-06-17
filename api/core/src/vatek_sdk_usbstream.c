@@ -134,8 +134,8 @@ vatek_result vatek_usbstream_start(hvatek_usbstream husstream, Pusbstream_param 
 		pustream->mode = puparam->mode;
 		if(pustream->is_support_r2)
 		{
-			uint32_t khz = puparam->freq_khz % 1000;
-			freqmhz = (puparam->freq_khz / 1000) * 1000;
+			uint32_t khz = puparam->r2param.freqkhz % 1000;
+			freqmhz = (puparam->r2param.freqkhz / 1000) * 1000;
 			if(khz != 0 && pmod->ifmode == ifmode_disable)
 			{
 				pmod->ifmode = ifmode_iqoffset;
@@ -172,10 +172,11 @@ vatek_result vatek_usbstream_start(hvatek_usbstream husstream, Pusbstream_param 
 
 			if (is_vatek_success(nres))
 			{
-				nres = vatek_transform_start_broadcast(pustream->htransform,&pustream->broadcast,freqmhz);
+				pustream->broadcast.stream.tsin.streammode = stream_remux;
+				nres = vatek_transform_start_broadcast(pustream->htransform,&pustream->broadcast, puparam->r2param);
 				if (is_vatek_success(nres))
 				{
-					nres = vatek_device_stream_start(pustream->hchip,pmod);
+					nres = vatek_device_stream_start(pustream->hchip, pmod);
 					if (!is_vatek_success(nres))vatek_transform_stop(pustream->htransform);
 				}
 

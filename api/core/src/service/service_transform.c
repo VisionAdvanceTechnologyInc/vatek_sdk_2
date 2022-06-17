@@ -173,6 +173,7 @@ vatek_result transform_broadcast_set(hvatek_chip hchip, Ptransform_broadcast pbc
     if(is_vatek_success(nres))
     {
         Ppid_filter pfilter = &pbc->filters;
+
         nres = vatek_badparam;
         if (pfilter->filter_nums < MUX_FILTER_NAX_NUMS)
         {

@@ -144,7 +144,7 @@ vatek_result vatek_transform_start_capture(hvatek_transform htr, Ptransform_capt
 	return nres;
 }
 
-vatek_result vatek_transform_start_broadcast(hvatek_transform htr, Ptransform_broadcast pbc, uint32_t freqkhz)
+vatek_result vatek_transform_start_broadcast(hvatek_transform htr, Ptransform_broadcast pbc, r2_param r2param)
 {
 	Phandle_transform phtr = (Phandle_transform)htr;
 	vatek_result nres = vatek_badstatus;
@@ -157,8 +157,8 @@ vatek_result vatek_transform_start_broadcast(hvatek_transform htr, Ptransform_br
 
 		if (is_vatek_success(nres))
 		{
-			if (phtr->is_rfmixer && freqkhz) {
-				nres = rfmixer_start(phtr->hchip, HALREG_TRANSFORM_CNTL, freqkhz);
+			if (phtr->is_rfmixer && r2param.freqkhz) {
+				nres = rfmixer_r2_start(phtr->hchip, HALREG_TRANSFORM_CNTL, &r2param);
 			}
 		}
 

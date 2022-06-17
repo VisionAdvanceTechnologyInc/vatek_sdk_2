@@ -99,7 +99,8 @@ typedef struct _usbstream_param{
 	usbstream_mode mode;
 	usbstream_remux remux;
 	pcr_adjust_mode pcradjust;
-	uint32_t freq_khz;
+	//uint32_t freq_khz;
+	r2_param r2param;
 	modulator_param modulator;
 	union
 	{

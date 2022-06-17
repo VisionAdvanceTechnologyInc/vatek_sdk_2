@@ -42,7 +42,7 @@ extern "C" {
 
 	HAL_API vatek_result vatek_transform_start_enum(hvatek_transform htr, Ptransform_enum penum);
 	HAL_API vatek_result vatek_transform_start_capture(hvatek_transform htr, Ptransform_capture pcapture);
-	HAL_API vatek_result vatek_transform_start_broadcast(hvatek_transform htr, Ptransform_broadcast pbc,uint32_t freqkhz);
+	HAL_API vatek_result vatek_transform_start_broadcast(hvatek_transform htr, Ptransform_broadcast pbc, r2_param r2param);
 
 	HAL_API vatek_result vatek_transform_polling(hvatek_transform htr, Ptransform_info* pinfo);
 	HAL_API Ptransform_info vatek_transform_get_info(hvatek_transform htr);

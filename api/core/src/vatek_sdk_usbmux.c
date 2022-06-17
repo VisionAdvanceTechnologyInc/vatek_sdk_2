@@ -458,7 +458,8 @@ vatek_result usbmux_start_stream(Phandle_usbmux pumux)
 {
 	vatek_result nres = vatek_memfail;
 	usbstream_param ustream;
-	ustream.freq_khz = pumux->uparam.freq_khz;
+	ustream.r2param.freqkhz = pumux->uparam.r2param.freqkhz;
+	ustream.r2param.mode = pumux->uparam.r2param.mode;
 	ustream.mode = ustream_mode_async;
 	ustream.remux = ustream_remux_pcr;
 	//ustream.pcradjust = pcr_disable;
