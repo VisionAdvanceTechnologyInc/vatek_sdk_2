@@ -59,7 +59,7 @@ _ui_enum_end
 
 _ui_struct_start(qtv_usbstream_param)
 	_prop_enum(qtv_usbstream_param, qtv_property_pathmode,mode,"usbstream - source mode(path)",NULLHAL)
-	_prop_enum(qtv_usbstream_param, qtv_filter_mode, filter,"usbstream - filter mode",NULLHAL)
+	//_prop_enum(qtv_usbstream_param, qtv_filter_mode, filter,"usbstream - filter mode",NULLHAL)
 	_prop_path(qtv_usbstream_param, url,"usbstream - source [url | path]", _UIPROP_STRBUF_LEN_MAX)
 _ui_struct_end
 
