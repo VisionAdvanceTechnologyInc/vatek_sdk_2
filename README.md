@@ -49,6 +49,11 @@ As the Encmoder with both HDMI and USB 2.0 inputs, it provides outstanding solut
 	- The sample executables are built in directories bin/bin.
 	- The shared objects (libvatek.so) are built in directories bin/lib.
 
+### Download
+
+Pre-built [binary packages](https://github.com/VisionAdvanceTechnologyInc/vatek_sdk_2/releases/download/v3.00/VATek-Win64-3.00.exe) are available
+for Windows.On Linux (Ubuntu) provides open source. On macOS,[use the Homebrew packager].
+
 ### License
 
 Vision Advance Technology - Software Development Kit is distributed under the terms of the Simplified BSD License.
