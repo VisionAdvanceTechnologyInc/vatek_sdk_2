@@ -71,7 +71,7 @@ void qusbstream_properties::refreshProperties()
 	}
 	else if (m_param.usbstream.mode == qpathmode_passthrough)
 	{
-		insertProperties(_ui_struct(qtv_usbstream_passthroudh), (uint8_t*)&m_param.usbstream);
+		insertProperties(_ui_struct(qtv_usbstream_passthrough), (uint8_t*)&m_param.usbstream);
 		setValid(false);
 	}
 	else

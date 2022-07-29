@@ -52,7 +52,7 @@ _ui_struct_end
 _ui_enum_start(qtv_property_pathmode)
 	_val(qpathmode_file_ts, Remux_File)
 	_val(qpathmode_url_udp, Remux_UDP)
-	_val(qpathmode_passthrough, Passthroudh_File)
+	_val(qpathmode_passthrough, Passthrough_File)
 	_val(qpathmode_null, Test)
 
 _ui_enum_end
@@ -71,7 +71,7 @@ _ui_struct_start(qtv_usbstream_param_test)
 	_prop_enum(qtv_usbstream_param, qtv_property_pathmode, mode, "usbstream - source mode(path)", NULLHAL)
 _ui_struct_end
 
-_ui_struct_start(qtv_usbstream_passthroudh)
+_ui_struct_start(qtv_usbstream_passthrough)
 	_prop_enum(qtv_usbstream_param, qtv_property_pathmode, mode, "usbstream - source mode(path)", NULLHAL)
 	_prop_path(qtv_usbstream_param, url, "usbstream - source [url | path]", _UIPROP_STRBUF_LEN_MAX)
 _ui_struct_end

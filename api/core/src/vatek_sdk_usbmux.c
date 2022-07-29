@@ -462,7 +462,7 @@ vatek_result usbmux_start_stream(Phandle_usbmux pumux)
 	ustream.r2param.mode = pumux->uparam.r2param.mode;
 	ustream.mode = ustream_mode_async;
 	ustream.remux = ustream_remux_pcr;
-	//ustream.pcradjust = pcr_disable;
+	ustream.pcradjust = pcr_adjust;
 	memcpy(&ustream.modulator, &pumux->uparam.modulator, sizeof(modulator_param));
 	ustream.async.bitrate = pumux->uparam.bitrate;
 	ustream.async.prepare_ms = pumux->uparam.latency_ms;

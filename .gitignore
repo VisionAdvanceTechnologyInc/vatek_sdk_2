@@ -1,0 +1,16 @@
+﻿################################################################################
+# 這個 .gitignore 檔案由 Microsoft(R) Visual Studio 自動建立。
+################################################################################
+
+/sample
+/output
+/extend
+/build
+/bin
+CMakeLists.txt
+LICENSE
+sample/app_bridge/CMakeLists.txt
+sample/app_broadcast/CMakeLists.txt
+sample/app_romtool/CMakeLists.txt
+sample/app_stream/CMakeLists.txt
+sample/README.md
