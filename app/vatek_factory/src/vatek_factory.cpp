@@ -97,9 +97,9 @@ vatek_factory::~vatek_factory()
 
 vatek_result vatek_factory::openRomImage(QString& fimg)
 {
-    std::string szimg = fimg.toStdString();
+    //std::string szimg = fimg.toStdString();
     Pstorage_handle pstorage = NULL;
-    vatek_result nres = vatek_storage_open_file_handle(szimg.c_str(), &pstorage, storage_handler, this);
+    vatek_result nres = vatek_storage_open_file_handle(fimg.toLocal8Bit(), &pstorage, storage_handler, this);
     if (is_vatek_success(nres))
     {
         hvatek_storage hstorage = NULL;
@@ -124,13 +124,13 @@ vatek_result vatek_factory::openRomImage(QString& fimg)
 
 vatek_result vatek_factory::openRom(QString& floader, QString& fapp, QString& fr2_tune)
 {
-    std::string szloader = floader.toStdString();
-    std::string szapp = fapp.toStdString();
+    //std::string szloader = floader.toStdString();
+    //std::string szapp = fapp.toStdString();
     //std::string szr2_tune = fr2_tune.toStdString();
 
     Pstorage_handle pstorage = NULL;
 
-    vatek_result nres = vatek_storage_create_file_handle(imageTempFile, szloader.c_str(), szapp.c_str(), &pstorage, storage_handler, this);
+    vatek_result nres = vatek_storage_create_file_handle(imageTempFile, floader.toLocal8Bit(), fapp.toLocal8Bit(), &pstorage, storage_handler, this);
     if (is_vatek_success(nres))
     {
         hvatek_storage hstorage = NULL;

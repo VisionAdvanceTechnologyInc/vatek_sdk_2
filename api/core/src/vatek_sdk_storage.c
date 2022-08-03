@@ -1049,6 +1049,7 @@ vatek_result vatek_storage_create_file_handle(const char* fimage, const char* fl
 vatek_result vatek_storage_open_file_handle(const char* filename, Pstorage_handle* phandle, fprom_progress fpcb, void* cbparam)
 {
 	FILE* hfile = fopen(filename, "rb+");
+
 	vatek_result nres = vatek_hwfail;
 	if (hfile)
 	{

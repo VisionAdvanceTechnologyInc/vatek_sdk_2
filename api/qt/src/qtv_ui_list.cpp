@@ -173,6 +173,7 @@ void qtvUIListDelegate::paint(QPainter* painter, const QStyleOptionViewItem& opt
 			QRect rect = option.rect;
 			QRect recticon = rect;
 			QFont fttext(painter->font());
+			fttext.setFamily("Arial");
 			rect.adjust(ICON_OFFSET, ICON_OFFSET, -ICON_OFFSET, -ICON_OFFSET);
 			//recticon.setRight(recticon.left() + m_logosize);
 

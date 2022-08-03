@@ -86,7 +86,7 @@
         <widget class="QComboBox" name="cb_codecs">
          <property name="font">
           <font>
-           <family>Times New Roman</family>
+           <family>Arial</family>
            <pointsize>14</pointsize>
           </font>
          </property>
@@ -104,7 +104,7 @@
        </property>
        <property name="font">
         <font>
-         <family>Times New Roman</family>
+         <family>Arial</family>
          <pointsize>14</pointsize>
         </font>
        </property>

@@ -38,6 +38,7 @@
      </property>
      <property name="font">
       <font>
+       <family>Arial</family>
        <pointsize>12</pointsize>
       </font>
      </property>
@@ -47,6 +48,7 @@
     <widget class="QStackedWidget" name="st_context">
      <property name="font">
       <font>
+       <family>Arial</family>
        <pointsize>12</pointsize>
       </font>
      </property>

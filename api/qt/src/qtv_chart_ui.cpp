@@ -126,6 +126,7 @@ void qtvChartPattern::setFontSizeH(QPainter& p, int32_t h, int32_t maxfont)
 	int32_t ftsize = 0;
 	QFont newfont = p.font();
 	newfont.setPixelSize(maxfont);
+	newfont.setFamily("Arial");
 	ftsize = newfont.pixelSize();
 
 	while (ftsize)
