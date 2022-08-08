@@ -307,24 +307,41 @@ elseif(UNIX AND NOT APPLE)
     target_compile_definitions(vatek_core PRIVATE -D_VA2_DLL_)
     target_link_libraries(vatek_core PRIVATE usb-1.0)
     target_link_libraries(vatek_core PRIVATE ${CMAKE_DL_LIBS})
-
+        
     set_target_properties(vatek_core PROPERTIES
                           ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/lib"
                           LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/lib"
                           RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin")
-
+    
+    if(BUILD_STATIC_LIB)
+    	set(ORIGINAL_STATIC_LIB_NAME vatek_core_static)
+    	add_library(${ORIGINAL_STATIC_LIB_NAME} STATIC ${sdk2_SOURCES} ${sdk2_HEADERS})
+    
+    	target_link_libraries(${ORIGINAL_STATIC_LIB_NAME} PRIVATE usb-1.0)
+    	target_link_libraries(${ORIGINAL_STATIC_LIB_NAME} PRIVATE ${CMAKE_DL_LIBS})
+    	
+    	    set_target_properties(${ORIGINAL_STATIC_LIB_NAME} PROPERTIES
+                          ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/lib"
+                          LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/lib"
+                          RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin")    	
+    endif()
 elseif(APPLE)
     
-    add_library(libvatek_core SHARED ${sdk2_SOURCES} ${sdk2_HEADERS})
-    target_compile_definitions(libvatek_core PRIVATE -D_VA2_DLL_)
-    target_link_libraries(libvatek_core PRIVATE usb-1.0)
-    target_link_libraries(libvatek_core PRIVATE ${CMAKE_DL_LIBS})
+    add_library(vatek_core SHARED ${sdk2_SOURCES} ${sdk2_HEADERS})
+    target_compile_definitions(vatek_core PRIVATE -D_VA2_DLL_)
+    target_link_libraries(vatek_core PRIVATE usb-1.0)
+    target_link_libraries(vatek_core PRIVATE ${CMAKE_DL_LIBS})
 
-    include_directories("/usr/local/Cellar/libusb/1.0.26/include")
+    execute_process(COMMAND uname -m OUTPUT_VARIABLE OSX_ARCH OUTPUT_STRIP_TRAILING_WHITESPACE)
+    if(OSX_ARCH STREQUAL "x86_64")
+        include_directories("/usr/local/include")
+        target_link_directories(vatek_core PRIVATE "/usr/local/lib")
+    else()
+        include_directories("/opt/homebrew/include")
+        target_link_directories(vatek_core PRIVATE "/opt/homebrew/lib")
+    endif()
 
-    target_link_directories(libvatek_core PRIVATE "/usr/local/Cellar/libusb/1.0.26/lib")
-
-    set_target_properties(libvatek_core PROPERTIES
+    set_target_properties(vatek_core PROPERTIES
                           ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/lib"
                           LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/lib"
                           RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin")
