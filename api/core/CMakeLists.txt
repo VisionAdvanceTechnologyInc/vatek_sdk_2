@@ -324,7 +324,7 @@ elseif(UNIX AND NOT APPLE)
 		          LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/lib"
 		          RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin") 
     
-    install(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/inc/." DESTINATION "include/")
+    	install(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/inc/." DESTINATION "include/")
     			                        
 	INSTALL(TARGETS vatek_core LIBRARY)         
 		
@@ -346,12 +346,12 @@ elseif(APPLE)
     endif()
 
     set_target_properties(vatek_core PROPERTIES
-    			          PUBLIC_HEADER "${sdk2_HEADERS}"
                           ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/lib"
                           LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/lib"
                           RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin")
 
-    INSTALL(TARGETS vatek_core
-       	    LIBRARY DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/vatek"
-       	    PUBLIC_HEADER DESTINATION "${CMAKE_INSTALL_PREFIX}/include/vatek")         
+    	install(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/inc/." DESTINATION "include/")
+    			                        
+	INSTALL(TARGETS vatek_core LIBRARY)               
+        
 endif()
