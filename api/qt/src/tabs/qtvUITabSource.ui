@@ -22,6 +22,11 @@
     <height>16777215</height>
    </size>
   </property>
+  <property name="font">
+   <font>
+    <family>Arial</family>
+   </font>
+  </property>
   <property name="windowTitle">
    <string>Form</string>
   </property>
@@ -141,7 +146,7 @@
        </property>
        <property name="font">
         <font>
-         <family>Times New Roman</family>
+         <family>Arial</family>
          <pointsize>15</pointsize>
         </font>
        </property>

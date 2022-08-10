@@ -576,6 +576,7 @@ vatek_result usb_api_ll_enum_common(fpenum_check fpcheck, husb_device_list* hlis
 					newdevice->is_dma = 0;
 					newdevice->none_dmabuf = malloc(CHIP_STREAM_SLICE_LEN);
 					newdevice->bulksize = Pipe.MaximumPacketSize;
+					sprintf(&newdevice->name[0], "%s",  name);
 
 					if (pnext == NULL)proot = newdevice;
 					else pnext->next = newdevice;

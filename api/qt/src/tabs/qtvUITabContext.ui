@@ -12,7 +12,7 @@
   </property>
   <property name="font">
    <font>
-    <family>Times New Roman</family>
+    <family>Arial</family>
     <pointsize>14</pointsize>
    </font>
   </property>
@@ -54,7 +54,7 @@
         <widget class="qtvUITreeContext" name="tr_channel">
          <property name="font">
           <font>
-           <family>Times New Roman</family>
+           <family>Arial</family>
            <pointsize>14</pointsize>
           </font>
          </property>
@@ -64,7 +64,7 @@
         <widget class="QListWidget" name="li_stream">
          <property name="font">
           <font>
-           <family>Times New Roman</family>
+           <family>Arial</family>
            <pointsize>14</pointsize>
           </font>
          </property>
@@ -76,7 +76,7 @@
       <widget class="qtvUITableBase" name="table_props">
        <property name="font">
         <font>
-         <family>Times New Roman</family>
+         <family>Arial</family>
          <pointsize>14</pointsize>
         </font>
        </property>
