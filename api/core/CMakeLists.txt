@@ -353,8 +353,7 @@ elseif(APPLE)
                           RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin")
 
     INSTALL(TARGETS vatek_core
-       	    LIBRARY DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/vatek"
-       	    PUBLIC_HEADER DESTINATION "${CMAKE_INSTALL_PREFIX}/include/vatek")         
+       	    LIBRARY DESTINATION "${CMAKE_INSTALL_PREFIX}/lib")
        	    
     INSTALL(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/inc/." DESTINATION "${CMAKE_INSTALL_PREFIX}/include/vatek")
 endif()
