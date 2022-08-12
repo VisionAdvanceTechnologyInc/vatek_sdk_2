@@ -23,7 +23,7 @@ elseif(UNIX AND NOT APPLE)
     option(SDK2_EN_APP "build demo app enable" ON)
     option(SDK2_EN_SAMPLE "build sample app enable" ON)
     
-    install(FILES "${PROJECT_SOURCE_DIR}/build/linux/udev/50-usb-vatek.rules" DESTINATION "/etc/udev/rules.d/")
+    install(FILES "${PROJECT_SOURCE_DIR}/build/linux/udev/50-usb-vatek.rules" DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/udev/rules.d/")
 
 elseif(APPLE)
 
