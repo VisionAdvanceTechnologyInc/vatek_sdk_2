@@ -2,8 +2,6 @@
 #include <cross/cross_os_api.h>
 #include <pthread.h>
 
-#define MUTEX_EN_DBG                 1
-
 #if MUTEX_EN_DBG
     #define _mlockd                  _cos_log
 #else
