@@ -5,6 +5,8 @@ set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 set(CMAKE_C_STANDARD 99)
 set(CMAKE_C_STANDARD_REQUIRED ON)
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
+SET(CMAKE_C_ARCHIVE_FINISH   "<CMAKE_RANLIB> -no_warning_for_no_symbols -c <TARGET>")
+SET(CMAKE_CXX_ARCHIVE_FINISH "<CMAKE_RANLIB> -no_warning_for_no_symbols -c <TARGET>")
 
 set(core_INC_BRIDGE
     inc/bridge/bridge_base.h
@@ -334,7 +336,7 @@ elseif(UNIX AND NOT APPLE)
 	INSTALL(TARGETS ${ORIGINAL_STATIC_LIB_NAME} ARCHIVE DESTINATION "${CMAKE_INSTALL_PREFIX}/lib")     
     
     
-elseif(APPLE)
+elseif(APPLE)    
     add_library(vatek_core SHARED ${sdk2_SOURCES} ${sdk2_HEADERS})
     target_compile_definitions(vatek_core PRIVATE -D_VA2_DLL_)
     target_link_libraries(vatek_core PRIVATE usb-1.0)
@@ -354,8 +356,25 @@ elseif(APPLE)
                           LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/lib"
                           RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin")
 
-    INSTALL(TARGETS vatek_core
-       	    LIBRARY DESTINATION "${CMAKE_INSTALL_PREFIX}/lib")
-       	    
+	set(ORIGINAL_STATIC_LIB_NAME vatek_core_static)
+	add_library(${ORIGINAL_STATIC_LIB_NAME} STATIC ${sdk2_SOURCES} ${sdk2_HEADERS})
+	set_target_properties(${ORIGINAL_STATIC_LIB_NAME} PROPERTIES OUTPUT_NAME vatek_core)
+
+	target_link_libraries(${ORIGINAL_STATIC_LIB_NAME} PRIVATE usb-1.0)
+	target_link_libraries(${ORIGINAL_STATIC_LIB_NAME} PRIVATE ${CMAKE_DL_LIBS})
+
+	set_target_properties(${ORIGINAL_STATIC_LIB_NAME} PROPERTIES
+			    ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/lib"
+		        LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/lib"
+		        RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin") 
+    
     INSTALL(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/inc/." DESTINATION "${CMAKE_INSTALL_PREFIX}/include/vatek")
+    			                        
+    INSTALL(TARGETS vatek_core
+            LIBRARY DESTINATION "${CMAKE_INSTALL_PREFIX}/lib")
+ 
+	INSTALL(TARGETS ${ORIGINAL_STATIC_LIB_NAME} ARCHIVE DESTINATION "${CMAKE_INSTALL_PREFIX}/lib")     
+    
+
+
 endif()
