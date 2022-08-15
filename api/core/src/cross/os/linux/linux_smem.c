@@ -8,8 +8,6 @@
 
 #include <sys/mman.h>
 
-#define SMEM_EN_DBG                 1
-
 #if SMEM_EN_DBG
     #define _smemd                  _cos_log
 #else

@@ -4,6 +4,7 @@ project(libvatek_core)
 set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 set(CMAKE_C_STANDARD 99)
 set(CMAKE_C_STANDARD_REQUIRED ON)
+set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 
 set(core_INC_BRIDGE
     inc/bridge/bridge_base.h
@@ -316,6 +317,7 @@ elseif(UNIX AND NOT APPLE)
 
 	set(ORIGINAL_STATIC_LIB_NAME vatek_core_static)
 	add_library(${ORIGINAL_STATIC_LIB_NAME} STATIC ${sdk2_SOURCES} ${sdk2_HEADERS})
+	set_target_properties(${ORIGINAL_STATIC_LIB_NAME} PROPERTIES OUTPUT_NAME vatek_core)
 
 	target_link_libraries(${ORIGINAL_STATIC_LIB_NAME} PRIVATE usb-1.0)
 	target_link_libraries(${ORIGINAL_STATIC_LIB_NAME} PRIVATE ${CMAKE_DL_LIBS})
