@@ -540,6 +540,9 @@ vatek_result muxplayload_set_raw(hvatek_chip hchip, Ppsi_table_raw praw)
 			if (!is_vatek_success(nres))break;
 			praw = praw->next;
 		}
+		nres = _wrhal(pos, RAWPSI_EN_ENDTAG);
+		if (is_vatek_success(nres) && pos > HALRANGE_PLAYLOAD_END)
+			nres = vatek_memfail;
 	}
 	return nres;
 }
