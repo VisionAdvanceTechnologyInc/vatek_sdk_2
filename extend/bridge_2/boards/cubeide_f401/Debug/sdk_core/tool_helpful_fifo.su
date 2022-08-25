@@ -1,7 +1,0 @@
-D:/vatek/master/vatek_sdk_2/api/core/src/core/tool_helpful_fifo.c:3:10:th_fifo_create_pool	32	static
-D:/vatek/master/vatek_sdk_2/api/core/src/core/tool_helpful_fifo.c:18:10:th_fifo_create	32	static
-D:/vatek/master/vatek_sdk_2/api/core/src/core/tool_helpful_fifo.c:33:6:th_fifo_free	16	static
-D:/vatek/master/vatek_sdk_2/api/core/src/core/tool_helpful_fifo.c:39:6:th_fifo_reset	16	static
-D:/vatek/master/vatek_sdk_2/api/core/src/core/tool_helpful_fifo.c:44:6:th_fifo_push	24	static
-D:/vatek/master/vatek_sdk_2/api/core/src/core/tool_helpful_fifo.c:53:7:th_fifo_pop	24	static
-D:/vatek/master/vatek_sdk_2/api/core/src/core/tool_helpful_fifo.c:60:7:th_fifo_peek	16	static

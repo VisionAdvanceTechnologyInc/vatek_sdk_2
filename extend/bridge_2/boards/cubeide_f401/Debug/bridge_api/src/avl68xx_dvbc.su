@@ -1,5 +1,0 @@
-D:/vatek/master/vatek_bridge_2/api/src/avl68xx_dvbc.c:86:14:avl_dvbc_initial	32	static
-D:/vatek/master/vatek_bridge_2/api/src/avl68xx_dvbc.c:142:14:avl_dvbc_config	24	static
-D:/vatek/master/vatek_bridge_2/api/src/avl68xx_dvbc.c:192:14:avl_dvbc_check_lock	24	static
-D:/vatek/master/vatek_bridge_2/api/src/avl68xx_dvbc.c:216:17:avl_dvbc_get_qam	16	static
-D:/vatek/master/vatek_bridge_2/api/src/avl68xx_dvbc.c:229:20:avl_dvbc_get_constellation	16	static

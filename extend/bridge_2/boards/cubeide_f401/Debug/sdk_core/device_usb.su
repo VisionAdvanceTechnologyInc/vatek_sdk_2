@@ -1,5 +1,0 @@
-D:/vatek/master/vatek_sdk_2/api/core/src/core/device_usb.c:6:9:usbbulk_buffer_check	16	static
-D:/vatek/master/vatek_sdk_2/api/core/src/core/device_usb.c:11:14:usbbulk_command_set	32	static
-D:/vatek/master/vatek_sdk_2/api/core/src/core/device_usb.c:36:14:usbbulk_command_get	32	static
-D:/vatek/master/vatek_sdk_2/api/core/src/core/device_usb.c:65:14:usbbulk_result_set	32	static
-D:/vatek/master/vatek_sdk_2/api/core/src/core/device_usb.c:81:14:usbbulk_result_get	32	static

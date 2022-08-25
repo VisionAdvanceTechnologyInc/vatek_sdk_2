@@ -121,12 +121,12 @@ typedef struct _ep9555e_param
 
 static const ep9555e_param def_ep9555e_param = { sscale_i_2_p ,sbaseclk_1001, };
 
-typedef struct _sx1804_param
+typedef struct _h1_param
 {
 	bsource_scale scale;
-}sx1804_param,*Psx1804_param;
+}h1_param,*Ph1_param;
 
-static const sx1804_param def_sx1804_param = { sscale_bypass, };
+static const h1_param def_h1_param = { sscale_bypass, };
 
 typedef struct _ep9351_param
 {

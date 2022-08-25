@@ -1,4 +1,0 @@
-D:/vatek/master/vatek_sdk_2/api/core/src/core/tool_crc32.c:51:10:tool_crc32	24	static
-D:/vatek/master/vatek_sdk_2/api/core/src/core/tool_crc32.c:62:6:tool_crc32_step_reset	16	static
-D:/vatek/master/vatek_sdk_2/api/core/src/core/tool_crc32.c:67:10:tool_crc32_step_put	24	static
-D:/vatek/master/vatek_sdk_2/api/core/src/core/tool_crc32.c:75:14:tool_crc32_step_put_buffer	32	static

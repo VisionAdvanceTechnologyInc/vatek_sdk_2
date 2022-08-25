@@ -1,5 +1,0 @@
-D:/vatek/master/vatek_sdk_2/api/core/src/core/output_modulator.c:4:14:modulator_param_reset	24	static
-D:/vatek/master/vatek_sdk_2/api/core/src/core/output_modulator.c:21:21:modulator_param_get_ui_props	32	static
-D:/vatek/master/vatek_sdk_2/api/core/src/core/output_modulator.c:30:14:modulator_param_set	24	static
-D:/vatek/master/vatek_sdk_2/api/core/src/core/output_modulator.c:43:14:modulator_param_get	24	static
-D:/vatek/master/vatek_sdk_2/api/core/src/core/output_modulator.c:56:10:modulator_param_get_bitrate	24	static
