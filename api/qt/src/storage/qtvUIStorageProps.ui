@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>800</width>
-    <height>866</height>
+    <height>897</height>
    </rect>
   </property>
   <property name="font">
@@ -36,7 +36,7 @@
          <widget class="QComboBox" name="cb_main">
           <property name="font">
            <font>
-            <family>Times New Roman</family>
+            <family>Arial</family>
             <pointsize>12</pointsize>
            </font>
           </property>
@@ -57,7 +57,7 @@
          <widget class="QComboBox" name="cb_title0">
           <property name="font">
            <font>
-            <family>Times New Roman</family>
+            <family>Arial</family>
             <pointsize>12</pointsize>
            </font>
           </property>
@@ -78,7 +78,7 @@
          <widget class="QComboBox" name="cb_title1">
           <property name="font">
            <font>
-            <family>Times New Roman</family>
+            <family>Arial</family>
             <pointsize>12</pointsize>
            </font>
           </property>
@@ -93,7 +93,7 @@
     <widget class="qtvUITableBase" name="tablemain">
      <property name="font">
       <font>
-       <family>Times New Roman</family>
+       <family>Arial</family>
        <pointsize>14</pointsize>
       </font>
      </property>
@@ -103,7 +103,7 @@
     <widget class="qtvUITableBase" name="tablesub">
      <property name="font">
       <font>
-       <family>Times New Roman</family>
+       <family>Arial</family>
        <pointsize>14</pointsize>
       </font>
      </property>
@@ -159,6 +159,17 @@
            </size>
           </property>
          </spacer>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <layout class="QVBoxLayout" name="verticalLayout_3">
+        <item>
+         <widget class="QCheckBox" name="cb_vsync">
+          <property name="text">
+           <string>enable External VSYNC</string>
+          </property>
+         </widget>
         </item>
        </layout>
       </item>
@@ -246,7 +257,7 @@
            <widget class="qtvUIUSBStringEditor" name="txtusbstr">
             <property name="font">
              <font>
-              <family>Times New Roman</family>
+              <family>Arial</family>
               <pointsize>12</pointsize>
              </font>
             </property>

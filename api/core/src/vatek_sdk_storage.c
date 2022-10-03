@@ -451,6 +451,57 @@ vatek_result vatek_storage_write_image(hvatek_storage hstorage, Promfile_handle 
 	return nres;
 }
 
+// only write application
+vatek_result vatek_storage_write_app(hvatek_storage hstorage, Promfile_handle papp)
+{
+	vatek_result nres = vatek_format;
+	uint8_t* psection = &storage_buf(hstorage)[0];
+
+	storage_progress_str(hstorage, "verify app file ...");
+	nres = romfile_get_section(papp, 0, storage_buf(hstorage));
+	if (is_vatek_success(nres) && nres > 0)
+	{
+		nres = storage_section_check_loader(psection);
+		if (is_vatek_success(nres))
+		{
+			storage_progress_pos(hstorage, 50);
+			nres = romfile_get_section(papp, LOADER_SIZE / BINARY_SECTION_SIZE, storage_buf(hstorage));
+			if (is_vatek_success(nres))
+				nres = storage_section_check_app(psection);
+			storage_progress_pos(hstorage, 100);
+		}
+	}
+
+	if (is_vatek_success(nres))
+	{
+		int32_t section_len = romfile_get_length(papp);
+		nres = vatek_format;
+		if (section_len % BINARY_SECTION_SIZE == 0)
+		{
+			int32_t section_pos = 0;
+			section_len = section_len / BINARY_SECTION_SIZE;
+			storage_progress_str(hstorage, "write image file ...");
+			for (section_pos = 16; section_pos < section_len; section_pos++)
+			{
+				storage_progress_pos(hstorage, ((section_pos * 100) / section_len));
+				nres = romfile_get_section(papp, section_pos, storage_buf(hstorage));
+				if (is_vatek_success(nres))
+					nres = storage_write_section(hstorage, section_pos, storage_buf(hstorage));
+				if (!is_vatek_success(nres))break;
+			}
+
+			if (is_vatek_success(nres))
+			{
+				memset(storage_buf(hstorage), 0xFF, BINARY_SECTION_SIZE);
+				nres = storage_write_section(hstorage, section_pos, storage_buf(hstorage));
+			}
+			storage_progress_pos(hstorage, 100);
+		}
+	}
+
+	return nres;
+}
+
 vatek_result vatek_storage_write_update(hvatek_storage hstorage, Promfile_handle pimage)
 {
 	vatek_result nres = vatek_format;
@@ -1049,7 +1100,6 @@ vatek_result vatek_storage_create_file_handle(const char* fimage, const char* fl
 vatek_result vatek_storage_open_file_handle(const char* filename, Pstorage_handle* phandle, fprom_progress fpcb, void* cbparam)
 {
 	FILE* hfile = fopen(filename, "rb+");
-
 	vatek_result nres = vatek_hwfail;
 	if (hfile)
 	{

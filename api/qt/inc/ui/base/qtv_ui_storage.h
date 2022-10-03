@@ -238,6 +238,7 @@ protected Q_SLOTS:
 
 	void recvDCBlockStateChanged(int state);
 	void recvR2BlockStateChanged(int state);
+	void recvVSYNCStateChanged(int state);
 	void recvUSBIDStateChanged(int state);
 	void recvUSBStrStateChanged(int state);
 	void recvStateLEDStateChanged(int state);

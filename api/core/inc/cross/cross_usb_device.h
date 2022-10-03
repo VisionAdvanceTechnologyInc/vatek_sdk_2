@@ -20,7 +20,6 @@ _usb_table_start
 	_usb_broadcast(USBDEV_VID, 0x1011)
 	_usb_broadcast(USBDEV_VID, 0x1031)
 	_usb_broadcast(USBDEV_VID, 0x2031)
-	_usb_broadcast(0x17a7, 0x0008)     //customer Dempa VID PID
 	_usb_rescure(USBDEV_VID, 0x1010)
 	_usb_rescure(USBDEV_VID, 0x1030)
 	_usb_rescure(USBDEV_VID, 0x2010)

@@ -161,7 +161,7 @@ vatek_result vatek_usbstream_start(hvatek_usbstream husstream, Pusbstream_param 
 				if (puparam->remux == ustream_remux_passthrough)
 				{
 					pustream->broadcast.stream.usb.mode = stream_passthrogh;
-					//pustream->broadcast.stream.usb.pcrmode = pcr_disable;
+					pustream->broadcast.stream.usb.pcrmode = pcr_disable;
 				}
 				else
 				{
@@ -172,7 +172,6 @@ vatek_result vatek_usbstream_start(hvatek_usbstream husstream, Pusbstream_param 
 
 			if (is_vatek_success(nres))
 			{
-				pustream->broadcast.stream.tsin.streammode = stream_remux;
 				nres = vatek_transform_start_broadcast(pustream->htransform,&pustream->broadcast, puparam->r2param);
 				if (is_vatek_success(nres))
 				{

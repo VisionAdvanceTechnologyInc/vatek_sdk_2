@@ -390,6 +390,7 @@ qtvUIStorageProps::qtvUIStorageProps(qtvUIMain* main, storage_props_mode mode, Q
 
 	connect(ui->chdcblock, SIGNAL(stateChanged(int)), this, SLOT(recvDCBlockStateChanged(int)));
 	connect(ui->chr2block, SIGNAL(stateChanged(int)), this, SLOT(recvR2BlockStateChanged(int)));
+	connect(ui->cb_vsync, SIGNAL(stateChanged(int)), this, SLOT(recvVSYNCStateChanged(int)));
 	connect(ui->chusbid, SIGNAL(stateChanged(int)), this, SLOT(recvUSBIDStateChanged(int)));
 	connect(ui->chusbstr, SIGNAL(stateChanged(int)), this, SLOT(recvUSBStrStateChanged(int)));
 	connect(ui->cbenstatusled, SIGNAL(stateChanged(int)), this, SLOT(recvStateLEDStateChanged(int)));
@@ -406,6 +407,7 @@ qtvUIStorageProps::~qtvUIStorageProps()
 
 	disconnect(ui->chdcblock, SIGNAL(stateChanged(int)), this, SLOT(recvDCBlockStateChanged(int)));
 	disconnect(ui->chr2block, SIGNAL(stateChanged(int)), this, SLOT(recvR2BlockStateChanged(int)));
+	disconnect(ui->cb_vsync, SIGNAL(stateChanged(int)), this, SLOT(recvVSYNCStateChanged(int)));
 	disconnect(ui->chusbid, SIGNAL(stateChanged(int)), this, SLOT(recvUSBIDStateChanged(int)));
 	disconnect(ui->chusbstr, SIGNAL(stateChanged(int)), this, SLOT(recvUSBStrStateChanged(int)));
 	disconnect(ui->cbenstatusled, SIGNAL(stateChanged(int)), this, SLOT(recvStateLEDStateChanged(int)));
@@ -564,6 +566,7 @@ void qtvUIStorageProps::loadChipConfig()
 		Pchip_config pcfg = m_data->_chip_config();
 		ui->chdcblock->setChecked((pcfg->functions & CHIP_EN_DAC_EXTR) != 0);
 		ui->chr2block->setChecked((pcfg->functions & CHIP_EN_R2_EXTR) != 0);
+		ui->cb_vsync->setChecked((pcfg->vendor_functions & VENDOR_EN_EXT_VSYNC) != 0);
 		ui->chusbid->setChecked((pcfg->functions & CHIP_EN_USBID) != 0);
 		ui->chusbstr->setChecked((pcfg->functions & CHIP_EN_USBSTR) != 0);
 		ui->cbenstatusled->setChecked((pcfg->functions & CHIP_EN_STATUSLED) != 0);
@@ -573,6 +576,7 @@ void qtvUIStorageProps::loadChipConfig()
 	{
 		ui->chdcblock->setChecked(false);
 		ui->chr2block->setChecked(false);
+		ui->cb_vsync->setChecked(false);
 		ui->chusbid->setChecked(false);
 		ui->chusbstr->setChecked(false);
 		ui->cbenstatusled->setChecked(false);
@@ -580,6 +584,7 @@ void qtvUIStorageProps::loadChipConfig()
 
 	recvDCBlockStateChanged(ui->chdcblock->checkState());
 	recvR2BlockStateChanged(ui->chr2block->checkState());
+	recvVSYNCStateChanged(ui->cb_vsync->checkState());
 	recvUSBIDStateChanged(ui->chusbid->checkState());
 	recvUSBStrStateChanged(ui->chusbstr->checkState());
 	recvStateLEDStateChanged(ui->cbenstatusled->checkState());
@@ -726,6 +731,17 @@ void qtvUIStorageProps::recvR2BlockStateChanged(int state)
 		Pchip_config pcfg = m_data->_chip_config();
 		pcfg->functions &= ~CHIP_EN_R2_EXTR;
 		if (bchecked)pcfg->functions |= CHIP_EN_R2_EXTR;
+	}
+}
+
+void qtvUIStorageProps::recvVSYNCStateChanged(int state)
+{
+	bool bchecked = (ui->cb_vsync->checkState() == Qt::Checked);
+	if (m_data)
+	{
+		Pchip_config pcfg = m_data->_chip_config();
+		pcfg->vendor_functions &= ~VENDOR_EN_EXT_VSYNC;
+		if (bchecked)pcfg->vendor_functions |= VENDOR_EN_EXT_VSYNC;
 	}
 }
 

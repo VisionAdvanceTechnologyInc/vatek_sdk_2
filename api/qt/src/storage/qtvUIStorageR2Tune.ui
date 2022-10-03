@@ -10,6 +10,11 @@
     <height>317</height>
    </rect>
   </property>
+  <property name="font">
+   <font>
+    <family>Arial</family>
+   </font>
+  </property>
   <property name="windowTitle">
    <string>Form</string>
   </property>
@@ -105,7 +110,7 @@
              <widget class="QComboBox" name="cbpath">
               <property name="font">
                <font>
-                <family>Times New Roman</family>
+                <family>Arial</family>
                 <pointsize>14</pointsize>
                </font>
               </property>
@@ -137,7 +142,7 @@
     <widget class="qtvUITableR2Tune" name="tabler2tune">
      <property name="font">
       <font>
-       <family>Times New Roman</family>
+       <family>Arial</family>
        <pointsize>14</pointsize>
       </font>
      </property>

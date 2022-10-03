@@ -37,13 +37,12 @@ int main(int argc, char *argv[])
     QApplication a(argc, argv);
     vatek_factory w;
 
-
-	QFont font;
-    font.setFamily("Arial");
+#ifdef WIN32
+	QFont font("Aria");
 	font.setStyleHint(QFont::Monospace);
 	font.setPixelSize(18);
 	QApplication::setFont(font);
-
+#endif
     w.show();
     return a.exec();
 }
