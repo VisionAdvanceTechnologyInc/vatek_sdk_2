@@ -304,8 +304,10 @@ vatek_result vatek_device_calibration_save(hvatek_chip hchip, Pcalibration_param
 	if (pvatek->info.peripheral_en & PERIPHERAL_CALIBRATION)
 	{
 		nres = calibration_set(hchip, pcalibration, 0);
+		cross_os_sleep(200);
 		if (is_vatek_success(nres))
 			nres = chip_send_command(hchip, BASE_CMD_CALIBRATION_SAVE, HALREG_SERVICE_BASE_CNTL, HALREG_SYS_ERRCODE);
+		cross_os_sleep(200);
 	}
 	return nres;
 }
