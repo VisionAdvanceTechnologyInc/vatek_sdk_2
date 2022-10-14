@@ -60,6 +60,7 @@
 #define CHIP_STREAM_SLICE_LEN			24064
 #define CHIP_STREAM_SLICE_PACKET_NUMS   (CHIP_STREAM_SLICE_LEN / CHIP_TS_PACKET_LEN)
 
+#define VATEK_VERSION 30700
 
 typedef void* hvatek_devices;
 typedef void* hvatek_chip;
@@ -103,6 +104,8 @@ typedef enum _vatek_debug_level
 #ifdef __cplusplus
 extern "C" {
 #endif
+
+    HAL_API int vatek_version();
 
 	HAL_API uint32_t vatek_get_tick_ms(void);
 	HAL_API void vatek_sleep_ms(uint32_t ms);

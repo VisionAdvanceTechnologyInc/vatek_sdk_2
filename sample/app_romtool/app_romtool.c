@@ -84,7 +84,7 @@ int main(int argc, char *argv[])
 					nres = vatek_storage_open(pstorage,&hstorage,0);
 					if(is_vatek_success(nres))
 					{
-						nres = vatek_storage_write_image(hstorage,promfile);
+						nres = vatek_storage_write_app(hstorage,promfile);
 						if(!is_vatek_success(nres))_disp_err("update rom file fail : %d",nres);
 						else _disp_l("update rom file finish - %d",nres);
 						vatek_storage_close(hstorage);
@@ -97,7 +97,8 @@ int main(int argc, char *argv[])
 				step 4 : 
 				clean all handle and resources.
 			*/
-			if(hchip)vatek_device_close(hchip);
+			if (hchip)vatek_device_close_reboot(hchip);
+			//if(hchip)vatek_device_close(hchip);
 			if(hdevlist)vatek_device_list_free(hdevlist);
 			vatek_storage_romfile_free(promfile);
 		}else _disp_err("open rom file fail : %d [bad format]",nres);
@@ -145,7 +146,7 @@ vatek_result cmd_parser_romfile(int argc, char *argv[],char** romfile)
 	if(nres == vatek_unsupport)
 	{
 		_disp_l("support param below : ");
-		_disp_l("	- app_stream [filename]");
+		_disp_l("	- app_romtool [filename]");
 	}
 
 	return nres;

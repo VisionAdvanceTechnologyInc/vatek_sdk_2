@@ -39,7 +39,7 @@ qusbstream_properties::qusbstream_properties()
 	m_param.usbstream.mode = qpathmode_file_ts;
 	m_param.source.source = stream_source_usb;
 	m_param.source.stream.usb.mode = stream_remux;
-	m_param.source.stream.usb.pcrmode = pcr_adjust;
+	m_param.source.stream.usb.pcrmode = pcr_disable;
 	resetProperties();
 	refreshProperties();
 }

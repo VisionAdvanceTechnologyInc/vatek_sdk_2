@@ -39,10 +39,13 @@
 #include "../common/inc/tool_tspacket.h"
 #include "../common/inc/tool_stream.h"
 
+#define TRANSFORM_RF_TEST		0
+#define TRANSFORM_NORMAL		1
+
 static usbstream_param usbcmd =
 {
 	.mode = ustream_mode_sync,
-	.remux = ustream_remux_passthrough,
+	.remux = ustream_remux_pcr,
 	.pcradjust = pcr_disable,
 	.r2param.freqkhz = 473000,							/* output _rf frequency */
 	.r2param.mode = r2_cntl_path_0,
@@ -51,7 +54,7 @@ static usbstream_param usbcmd =
 		6,
 		modulator_dvb_t,
 		ifmode_disable,0,0,
-		.mod = {.dvb_t = {dvb_t_qam64,fft_8k,guard_interval_1_32,coderate_3_4},},
+		.mod = {.dvb_t = {dvb_t_qam64, fft_8k, guard_interval_1_16, coderate_5_6},},
 	},
 	.sync = {NULL,NULL},
 };
@@ -119,6 +122,12 @@ int main(int argc, char *argv[])
 			- config used usb_stream sync mode and start stream
 	*/
 
+#if TRANSFORM_RF_TEST
+	vatek_device_start_test(hchip, (Pmodulator_param)&usbcmd.modulator, 900000);
+	vatek_device_start_sine(hchip, 900000);
+#endif
+
+#if TRANSFORM_NORMAL
 	if (is_vatek_success(nres))
 	{
 		nres = vatek_usbstream_open(hchip, &hustream);
@@ -191,6 +200,7 @@ int main(int argc, char *argv[])
 	printf_app_end();
 	cross_os_sleep(10);
 	return (int32_t)1;
+#endif
 }
 
 vatek_result source_sync_get_buffer(void* param, uint8_t** pslicebuf)
@@ -208,33 +218,48 @@ vatek_result source_sync_get_buffer(void* param, uint8_t** pslicebuf)
 vatek_result parser_cmd_source(int32_t argc, char** argv, Ptsstream_source psource, Pusbstream_param pustream)
 {
 	vatek_result nres = vatek_unsupport;
-	if(argc == 1)nres = stream_source_test_get(&usbcmd.modulator, psource);
-	else if(argc > 3)
-	{
-		nres = vatek_success;
-		if (strcmp(argv[1], "file") == 0)nres = stream_source_file_get(argv[2], psource);
-		else if (strcmp(argv[1], "udp") == 0 || strcmp(argv[1], "rtp") == 0)
-			nres = stream_source_udp_get(argv[2], psource);
+
+
+	if (argc >= 2) {
+		if (strcmp(argv[1], "atsc") == 0) modulator_param_reset(modulator_atsc, &usbcmd.modulator);
+		else if (strcmp(argv[1], "dvbt") == 0) modulator_param_reset(modulator_dvb_t, &usbcmd.modulator);
+		else if (strcmp(argv[1], "isdbt") == 0) {
+			modulator_param_reset(modulator_isdb_t, &usbcmd.modulator);
+			usbcmd.modulator.ifmode = ifmode_iqoffset;
+			usbcmd.modulator.iffreq_offset = 143;
+		}
+		else if (strcmp(argv[1], "j83a") == 0) modulator_param_reset(modulator_j83a, &usbcmd.modulator);
+		else if (strcmp(argv[1], "j83b") == 0) modulator_param_reset(modulator_j83b, &usbcmd.modulator);
+		else if (strcmp(argv[1], "j83c") == 0) modulator_param_reset(modulator_j83c, &usbcmd.modulator);
+		else if (strcmp(argv[1], "dtmb") == 0) modulator_param_reset(modulator_dtmb, &usbcmd.modulator);
+		else if (strcmp(argv[1], "dvbt2") == 0) modulator_param_reset(modulator_dvb_t2, &usbcmd.modulator);
 		else nres = vatek_unsupport;
 
-		if (is_vatek_success(nres))
-		{
-			pustream->remux = ustream_remux_pcr;
-			if (argc == 4)
-			{
-				if (strcmp(argv[3], "passthrough") == 0)
-					pustream->remux = ustream_remux_passthrough;
+		if (argc >= 3) {
+			if (strcmp(argv[2], "test") == 0) {
+				if (strcmp(argv[3], "passthrough") == 0) pustream->remux = ustream_remux_passthrough;
+				else pustream->remux = ustream_remux_pcr;
+				nres = stream_source_test_get(&usbcmd.modulator, psource);
 			}
+			else if (strcmp(argv[2], "file") == 0)
+				nres = stream_source_file_get(argv[3], psource);
+			else if (strcmp(argv[2], "udp") == 0 || strcmp(argv[2], "rtp") == 0)
+				nres = stream_source_udp_get(argv[2], psource);
+			else nres = vatek_unsupport;
+		}
+		if (argc == 5) {
+			if (strcmp(argv[4], "passthrough") == 0) pustream->remux = ustream_remux_passthrough;
+			else pustream->remux = ustream_remux_pcr;
 		}
 	}
 	
 	if(nres == vatek_unsupport)
 	{
 		_disp_l("support command below : ");
-		_disp_l("	- app_stream [empty] : test stream mode");
-		_disp_l("	- app_stream file [*.ts|*.trp] [pcr|passthrough]");
-		_disp_l("	- app_stream udp [ip address] [pcr|passthrough]");
-		_disp_l("	- app_stream rtp [ip address] [pcr|passthrough]");
+		_disp_l("	- app_stream [modulation] [empty] : test stream mode");
+		_disp_l("	- app_stream [modulation] file [*.ts|*.trp] [remux|passthrough]");
+		_disp_l("	- app_stream [modulation] udp  [ip address] [remux|passthrough]");
+		_disp_l("	- app_stream [modulation] rtp  [ip address] [remux|passthrough]");
 	}
 
 	return nres;

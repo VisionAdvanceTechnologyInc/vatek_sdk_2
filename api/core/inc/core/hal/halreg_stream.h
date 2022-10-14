@@ -67,6 +67,7 @@
 
 #define HALREG_MUX_FILTER_EN			0x648				
 	#define MUX_FILTER_EN_TAG			0xA5F00000
+	#define MUX_FILTER_INV_TAG			0x00010000
 
 #define MUX_FILTER_MASK					0xFF
 	#define MUX_FILTER_NAX_NUMS			16

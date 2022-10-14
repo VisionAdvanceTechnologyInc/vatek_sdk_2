@@ -1,8 +1,0 @@
-D:/vatek/master/vatek_bridge_2/api/src/cmd_bridge.c:12:14:cmd_bridge_source	88	static
-D:/vatek/master/vatek_bridge_2/api/src/cmd_bridge.c:98:14:cmd_bridge_device	64	static
-D:/vatek/master/vatek_bridge_2/api/src/cmd_bridge.c:141:14:cmd_bridge_demod	32	static
-D:/vatek/master/vatek_bridge_2/api/src/cmd_bridge.c:172:14:cmd_bridge_rfmixer	32	static
-D:/vatek/master/vatek_bridge_2/api/src/cmd_bridge.c:179:17:cmdsource_get_source	32	static
-D:/vatek/master/vatek_bridge_2/api/src/cmd_bridge.c:193:14:cmdsource_start	32	static
-D:/vatek/master/vatek_bridge_2/api/src/cmd_bridge.c:218:14:cmdsource_stop	32	static
-D:/vatek/master/vatek_bridge_2/api/src/cmd_bridge.c:231:14:cmdsource_map_bsource	24	static

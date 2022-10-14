@@ -1,8 +1,0 @@
-D:/SDK/Code/SDK_master_20220111/master/vatek_sdk_2/api/core/inc/core/tools/tool_bufstream.h:22:21:putbuf_byte	16	static
-D:/SDK/Code/SDK_master_20220111/master/vatek_sdk_2/api/core/inc/core/tools/tool_bufstream.h:23:24:getbuf_byte	16	static
-D:/SDK/Code/SDK_master_20220111/master/vatek_sdk_2/api/core/inc/core/tools/tool_bufstream.h:24:25:getbuf_ptr	16	static
-D:/vatek/master/vatek_sdk_2/api/core/src/core/tool_bufstream.c:3:6:putbuf_buf	24	static
-D:/vatek/master/vatek_sdk_2/api/core/src/core/tool_bufstream.c:9:6:getbuf_buf	24	static
-D:/vatek/master/vatek_sdk_2/api/core/src/core/tool_bufstream.c:15:10:setbuf_offset	16	static
-D:/vatek/master/vatek_sdk_2/api/core/src/core/tool_bufstream.c:21:6:putbuf_uint32_t	16	static
-D:/vatek/master/vatek_sdk_2/api/core/src/core/tool_bufstream.c:29:10:getbuf_uint32_t	32	static

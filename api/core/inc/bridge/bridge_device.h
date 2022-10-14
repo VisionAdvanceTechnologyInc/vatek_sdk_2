@@ -100,7 +100,7 @@ typedef struct _bstorage_config
 	{
 		uint8_t raw[BFLASH_CONFIG_OFFSET - 4];
 		ep9555e_param ep9555e;
-		sx1804_param h1; //sx1804;
+		h1_param h1;
 		adv718x_param adv718x;
 		ep9351_param ep9351;
 	}cfg;
@@ -125,7 +125,6 @@ static const bridge_tag bridge_tags[] =
 	{bsource_ep9555e	,"ep9555e",},
 	{bsource_ep9351		,"ep9351",},
 	{bsource_adv718x	,"adv718x",},
-	//{bsource_sx1804a	,"sx1804a",},
 	{bsource_h1			,"h1",},
 	{bdemod_avl68xx		,"avl68xx",},
 	{brfmixer_fintek_r2	,"fintek_r2",},

@@ -125,6 +125,8 @@ typedef app_header* Papp_header;
 #define CHIPLED_OFFSET_RUN				8
 #define CHIPLED_OFFSET_ERR				16
 
+#define VENDOR_EN_EXT_VSYNC				0x00000001
+
 typedef struct _chip_config
 {
 	uint32_t tag;
@@ -133,6 +135,7 @@ typedef struct _chip_config
 	uint32_t usb_vid;
 	uint32_t usb_pid;
 	char usb_str[CHIP_USBSTR_LEN];
+	uint32_t vendor_functions;
 }chip_config;
 
 typedef chip_config* Pchip_config;

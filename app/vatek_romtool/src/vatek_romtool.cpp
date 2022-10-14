@@ -32,6 +32,7 @@
 #include "ui_vatek_romtool.h"
 #include "..\..\..\api\qt\inc\ui\base\qtv_ui_storage.h"
 
+#include <QTextCodec>
 #include <QMessageBox>
 #include <QFileDialog>
 #include "progressdlg.h"
@@ -297,9 +298,11 @@ void vatek_romtool::setStatus(romtool_status status)
 
 vatek_result vatek_romtool::openRomImage(QString& fimg)
 {
-    std::string szimg = fimg.toStdString();
     Pstorage_handle pstorage = NULL;
-    vatek_result nres = vatek_storage_open_file_handle(szimg.c_str(), &pstorage, storage_handler, this);
+
+    // 20220803 - fix chinese path
+    vatek_result nres = vatek_storage_open_file_handle(fimg.toLocal8Bit(), &pstorage, storage_handler, this);
+    
     if (is_vatek_success(nres))
     {
         hvatek_storage hstorage = NULL;

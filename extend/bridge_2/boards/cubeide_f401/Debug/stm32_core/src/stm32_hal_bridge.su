@@ -1,9 +1,0 @@
-D:/SDK/Code/SDK_master_20220111/master/vatek_sdk_2/api/core/inc/core/vatek_base.h:98:28:vatek_buffer_2_uint32	16	static
-D:/SDK/Code/SDK_master_20220111/master/vatek_sdk_2/api/core/inc/core/vatek_base.h:103:24:vatek_uint32_2_buffer	16	static
-D:/vatek/master/vatek_bridge_2/boards/stm32/core/src/stm32_hal_bridge.c:18:14:hal_bridge_usb_open	24	static
-D:/vatek/master/vatek_bridge_2/boards/stm32/core/src/stm32_hal_bridge.c:53:22:hal_bridge_usb_get_status	24	static
-D:/vatek/master/vatek_bridge_2/boards/stm32/core/src/stm32_hal_bridge.c:63:17:hal_bridge_usb_get_command	24	static
-D:/vatek/master/vatek_bridge_2/boards/stm32/core/src/stm32_hal_bridge.c:71:20:hal_bridge_usb_get_result	24	static
-D:/vatek/master/vatek_bridge_2/boards/stm32/core/src/stm32_hal_bridge.c:79:14:hal_bridge_usb_commit	32	static
-D:/vatek/master/vatek_bridge_2/boards/stm32/core/src/stm32_hal_bridge.c:93:6:hal_bridge_usb_close	16	static
-D:/vatek/master/vatek_bridge_2/boards/stm32/core/src/stm32_hal_bridge.c:98:14:stm32_bridge_recv_handler	40	static

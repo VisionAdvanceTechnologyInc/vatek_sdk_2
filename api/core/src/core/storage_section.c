@@ -643,6 +643,7 @@ vatek_result section_put_chip_config(Pbufstream pstream,Pchip_config pcfg)
 		putbuf_uint32_t(pstream, pcfg->usb_vid);
 		putbuf_uint32_t(pstream, pcfg->usb_pid);
 		putbuf_buf(pstream, (uint8_t*)&pcfg->usb_str[0], CHIP_USBSTR_LEN);
+		putbuf_uint32_t(pstream, pcfg->vendor_functions);
 
 		while (flen)
 		{
@@ -666,6 +667,7 @@ vatek_result section_get_chip_config(Pbufstream pstream,Pchip_config pcfg)
 		pcfg->usb_vid = getbuf_uint32_t(pstream);
 		pcfg->usb_pid = getbuf_uint32_t(pstream);
 		getbuf_buf(pstream, (uint8_t*)&pcfg->usb_str[0], CHIP_USBSTR_LEN);
+		pcfg->vendor_functions = getbuf_uint32_t(pstream);
 		pstream->pos = CONFIG_CHIP_BASE_LEN + stpos;
 		nres = vatek_success;
 	}

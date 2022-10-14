@@ -8,22 +8,22 @@ typedef void* husb_device;
 typedef void* husb_device_list;
 
 #define _usb_table_start	static const  usbdevice_id usb_device_ids[] = {
-#define _usb_broadcast(pid)	{ usb_type_broadcast	,USBDEV_VID	,pid,},
-#define _usb_rescure(pid)	{ usb_type_rescure		,USBDEV_VID	,pid,},
+#define _usb_broadcast(vid, pid)	{ usb_type_broadcast ,vid ,pid,},
+#define _usb_rescure(vid, pid)	{ usb_type_rescure	,vid ,pid,},
 #define _usb_table_end		{ usb_type_unknown,0,0, },};
 
 #define _usb_table 			((const Pusbdevice_id)&usb_device_ids[0])
 
 _usb_table_start
-	_usb_broadcast(0x2011)
-	_usb_broadcast(0x2021)
-	_usb_broadcast(0x1011)
-	_usb_broadcast(0x1031)
-	_usb_broadcast(0x2031)
-	_usb_rescure(0x1010)
-	_usb_rescure(0x1030)
-	_usb_rescure(0x2010)
-	_usb_rescure(0x2030)
+	_usb_broadcast(USBDEV_VID, 0x2011)
+	_usb_broadcast(USBDEV_VID, 0x2021)
+	_usb_broadcast(USBDEV_VID, 0x1011)
+	_usb_broadcast(USBDEV_VID, 0x1031)
+	_usb_broadcast(USBDEV_VID, 0x2031)
+	_usb_rescure(USBDEV_VID, 0x1010)
+	_usb_rescure(USBDEV_VID, 0x1030)
+	_usb_rescure(USBDEV_VID, 0x2010)
+	_usb_rescure(USBDEV_VID, 0x2030)
 _usb_table_end
 
 #define USBDEVICE_ID_NUMS		(sizeof(usb_device_ids)/sizeof(usbdevice_id))

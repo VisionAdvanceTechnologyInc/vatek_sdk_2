@@ -118,6 +118,7 @@ extern "C" {
 
 	HAL_API vatek_result vatek_storage_write_image(hvatek_storage hstorage, Promfile_handle pimage);
 	HAL_API vatek_result vatek_storage_write_update(hvatek_storage hstorage, Promfile_handle pimage);
+	HAL_API vatek_result vatek_storage_write_app(hvatek_storage hstorage, Promfile_handle papp);
 
 	HAL_API uint32_t vatek_storage_crc(uint8_t* pbuf, int32_t len);
 

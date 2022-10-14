@@ -42,10 +42,13 @@
 #include "../common/inc/tool_stream.h"
 
 
-#define BROADCAST_EN_AUX		1
-#define BROADCAST_EN_BML		1
-#define BROADCAST_EN_COLORBAR	0
-#define BROADCAST_EN_BRIDGE		1
+#define BROADCAST_EN_AUX		0
+#define BROADCAST_EN_BML		0
+#define BROADCAST_EN_COLORBAR	1
+#define BROADCAST_EN_BRIDGE		0
+
+#define BROADCAST_RF_TEST		0
+#define BROADCAST_NORMAL		1
 
 /* broadcast parameters*/
 static broadcast_param bc_param =
@@ -206,7 +209,26 @@ int main(int argc, char* argv[])
 		step 2 :
 			- check video and audio source ready or used bootlogo_ or colorbar_
 	*/
+#if BROADCAST_RF_TEST
+	//vatek_device_start_sine(hchip, 473000);
+	//vatek_device_start_test(hchip, (Pmodulator_param)&bc_param.mod, 900000);
 
+	r2_param r2param;
+	nres = rfmixer_r2_get_param(hchip, &r2param);
+	if (is_vatek_success(nres)) {
+		r2param.mode = r2_cntl_path_1;          // switch j83b qam inversion used r2_cntl_path_1
+		r2param.freqkhz = 471000;
+		nres = rfmixer_r2_set_param(hchip, &r2param);
+		nres = rfmixer_r2_start(hchip, 0x600, &r2param);
+	}
+
+
+
+#endif
+
+
+
+#if BROADCAST_NORMAL
 #if BROADCAST_EN_BRIDGE
 
 	if (is_vatek_success(nres))
@@ -457,6 +479,7 @@ int main(int argc, char* argv[])
 	if (hbc)vatek_broadcast_close(hbc);
 	if (hchip) vatek_device_close(hchip);
 	if (hdevlist)vatek_device_list_free(hdevlist);
+#endif
 	printf_app_end();
 	return (int32_t)1;
 }

@@ -123,3 +123,8 @@ vatek_result vatek_chip_read_buffer(hvatek_chip hchip, int32_t addr, uint8_t* bu
 	Pcross_device pcross = ((Pvatek_device)hchip)->cross;
 	return pcross->core->read_buffer(pcross->hcross, addr, buf, wlen);
 }
+
+vatek_result vatek_version()
+{
+	return VATEK_VERSION;
+}
