@@ -217,7 +217,7 @@ int main(int argc, char* argv[])
 	nres = rfmixer_r2_get_param(hchip, &r2param);
 	if (is_vatek_success(nres)) {
 		r2param.mode = r2_cntl_path_1;          // switch j83b qam inversion used r2_cntl_path_1
-		r2param.freqkhz = 471000;
+		r2param.freqkhz = 473000;
 		nres = rfmixer_r2_set_param(hchip, &r2param);
 		nres = rfmixer_r2_start(hchip, 0x600, &r2param);
 	}
@@ -405,9 +405,16 @@ int main(int argc, char* argv[])
 		- start broadcast
 	*/
 
+	r2_param r2param;
+	nres = rfmixer_r2_get_param(hchip, &r2param);
+	if (is_vatek_success(nres)) {
+		r2param.mode = r2_cntl_path_0;          // switch j83b qam inversion used r2_cntl_path_1
+		r2param.freqkhz = 473000;
+	}
+
 	if (is_vatek_success(nres))
 	{
-		nres = vatek_broadcast_start(hbc, &bc_param, pauxstream, 473000);
+		nres = vatek_broadcast_start(hbc, &bc_param, pauxstream, r2param);
 		if (!is_vatek_success(nres))_disp_err("start broadcast fail : %d", nres);
 	}
 

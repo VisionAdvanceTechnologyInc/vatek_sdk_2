@@ -39,7 +39,7 @@ public:
 					hvatek_chip hchip,
 					Pbroadcast_param param,
 					qtvSourceBroadcast* source,
-					uint32_t freqkhz);
+					r2_param r2param);
 	~broadcast_handle();
 
 protected:
@@ -49,6 +49,7 @@ protected:
 	qtvChartDataCaptureService* m_chartdata;
 	Pbroadcast_info m_info;
 	uint32_t m_freqkhz;
+	r2_param m_r2param;
 
 	vatek_result startService() override;
 	vatek_result pollingService() override;
@@ -105,7 +106,7 @@ vatek_result qi_service_broadcast::startBroadcast(qtvSourceBase* source, qtvMuxS
 			if (is_vatek_success(nres))
 			{
 				changedStatus(qstatus_ready);
-				nres = startHandle((qtvServiceHandle*)new broadcast_handle(m_chartdata, m_hbc, m_device->_handle(), &m_param, bcsource, m_output._param()->r2param.freqkhz));
+				nres = startHandle((qtvServiceHandle*)new broadcast_handle(m_chartdata, m_hbc, m_device->_handle(), &m_param, bcsource, m_output._param()->r2param));
 			}
 		}
 	}
@@ -192,12 +193,12 @@ broadcast_handle::broadcast_handle(qtvChartDataCaptureService* chartdata,
 								hvatek_chip hchip, 
 								Pbroadcast_param param, 
 								qtvSourceBroadcast* source, 
-								uint32_t freqkhz) :
+								r2_param r2param) :
 	qi_servicehandle(hchip),
 	m_hbc(hbc),
 	m_param(param),
 	m_chartdata(chartdata),
-	m_freqkhz(freqkhz),
+	m_r2param(r2param),
 	m_source(source),
 	m_info(NULL)
 {
@@ -249,7 +250,7 @@ Pbroadcast_info broadcast_handle::getServiceInfo()
 
 vatek_result broadcast_handle::startBroadcast()
 {
-	vatek_result nres = vatek_broadcast_start(m_hbc, m_param,NULL, m_freqkhz);
+	vatek_result nres = vatek_broadcast_start(m_hbc, m_param,NULL, m_r2param);
 	if (is_vatek_success(nres))
 	{
 		nres = vatek_broadcast_polling(m_hbc, &m_info);

@@ -96,7 +96,7 @@ void vatek_broadcast_close(hvatek_broadcast hbc)
 	free(pbc);
 }
 
-vatek_result vatek_broadcast_start(hvatek_broadcast hbc, Pbroadcast_param pbcparam, Pbroadcast_auxstream paux, uint32_t freqkhz)
+vatek_result vatek_broadcast_start(hvatek_broadcast hbc, Pbroadcast_param pbcparam, Pbroadcast_auxstream paux, r2_param r2param)
 {
 	Phandle_broadcast pbc = (Phandle_broadcast)hbc;
 	vatek_result nres = chip_status_check(pbc->hchip,chip_status_waitcmd);
@@ -110,8 +110,8 @@ vatek_result vatek_broadcast_start(hvatek_broadcast hbc, Pbroadcast_param pbcpar
 
 		if (is_vatek_success(nres))
 		{
-			pbc->is_rfstart = pbc->is_rfmixer && freqkhz;
-			if (pbc->is_rfstart)nres = rfmixer_start(pbc->hchip, HALREG_BROADCAST_CNTL, freqkhz);
+			pbc->is_rfstart = pbc->is_rfmixer && r2param.freqkhz;
+			if (pbc->is_rfstart)nres = rfmixer_r2_start(pbc->hchip, HALREG_BROADCAST_CNTL, &r2param);
 			else nres = vatek_success;
 		}
 

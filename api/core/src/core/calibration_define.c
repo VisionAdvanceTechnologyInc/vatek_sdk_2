@@ -52,6 +52,14 @@ vatek_result calibration_set(hvatek_chip hchip, Pcalibration_param pcalibration,
 	return nres;
 }
 
+vatek_result calibration_adjust_gain(hvatek_chip hchip, int8_t gain) {
+	calibration_param calibration;
+	memset(&calibration, 0, sizeof(calibration_param));
+	calibration.dac.igain = gain;
+	calibration.dac.qgain = gain;
+	return calibration_set(hchip, &calibration, 1);
+}
+
 vatek_result calibration_check(hvatek_chip hchip)
 {
 	uint32_t val = 0;

@@ -131,6 +131,15 @@ vatek_result qi_servicehandle::calibrationSave()
 	return nres;
 }
 
+vatek_result qi_servicehandle::PowerSave(int8_t r2_power,int8_t dac_gain)
+{
+	vatek_result nres = vatek_badstatus;
+
+	nres = calibration_adjust_gain(m_hchip, dac_gain);
+	nres = rfmixer_r2_adjust_pagain(m_hchip, r2_power);
+	return nres;
+}
+
 vatek_result qi_servicehandle::polling(Pbroadcast_info* pinfo)
 {
 	vatek_result nres = vatek_badstatus;

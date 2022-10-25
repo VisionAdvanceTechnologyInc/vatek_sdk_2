@@ -56,7 +56,7 @@ extern "C" {
 
     HAL_API Pbroadcast_info vatek_broadcast_get_info(hvatek_broadcast hbc);
 
-    HAL_API vatek_result vatek_broadcast_start(hvatek_broadcast hbc, Pbroadcast_param pbcparam, Pbroadcast_auxstream paux,uint32_t freqkhz);
+    HAL_API vatek_result vatek_broadcast_start(hvatek_broadcast hbc, Pbroadcast_param pbcparam, Pbroadcast_auxstream paux, r2_param r2param);
     HAL_API vatek_result vatek_broadcast_polling(hvatek_broadcast hbc, Pbroadcast_info* pinfo);
     HAL_API vatek_result vatek_broadcast_stop(hvatek_broadcast hbc);
 

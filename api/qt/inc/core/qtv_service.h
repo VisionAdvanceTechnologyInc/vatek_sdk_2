@@ -46,6 +46,7 @@ public:
 	virtual vatek_result polling(Pbroadcast_info* pinfo) = 0;
 	virtual vatek_result calibrationGet(Pcalibration_param pcalibration) = 0;
 	virtual vatek_result calibrationSet(Pcalibration_param pcalibration) = 0;
+	virtual vatek_result PowerSave(int8_t r2_power, int8_t dac_gain) = 0;
 	virtual vatek_result calibrationSave() = 0;
 	virtual uint32_t calibratiobCheck() = 0;
 	virtual void stop() = 0;

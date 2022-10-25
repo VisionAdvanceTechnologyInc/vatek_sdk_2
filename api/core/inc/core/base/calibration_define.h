@@ -58,7 +58,7 @@ extern "C" {
 	HAL_API vatek_result calibration_set(hvatek_chip hchip, Pcalibration_param pcalibration,int32_t isapply);
 	HAL_API vatek_result calibration_check(hvatek_chip hchip);
 	HAL_API vatek_result calibration_get(hvatek_chip hchip, Pcalibration_param pcalibration);
-
+	HAL_API vatek_result calibration_adjust_gain(hvatek_chip hchip, int8_t gain);
 #ifdef __cplusplus
 }
 #endif

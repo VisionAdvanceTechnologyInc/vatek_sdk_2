@@ -166,6 +166,11 @@ vatek_result rfmixer_r2_set_param(hvatek_chip hchip,Pr2_param pr2)
     return nres;
 }
 
+vatek_result rfmixer_r2_adjust_pagain(hvatek_chip hchip, int8_t gain) {
+    uint32_t nvalue = EXT_R2_GAIN_EN_TAG | (EXT_R2_GAIN_MASK & gain);
+    return writehal(HALREG_EXT_R2_GAIN, nvalue);
+}
+
 vatek_result rfmixer_r2_start(hvatek_chip hchip,uint32_t cntl,Pr2_param pr2param)
 {
     vatek_result nres = rfmixer_r2_set_param(hchip,pr2param);

@@ -244,7 +244,7 @@ vatek_result parser_cmd_source(int32_t argc, char** argv, Ptsstream_source psour
 			else if (strcmp(argv[2], "file") == 0)
 				nres = stream_source_file_get(argv[3], psource);
 			else if (strcmp(argv[2], "udp") == 0 || strcmp(argv[2], "rtp") == 0)
-				nres = stream_source_udp_get(argv[2], psource);
+				nres = stream_source_udp_get(argv[3], psource);
 			else nres = vatek_unsupport;
 		}
 		if (argc == 5) {
@@ -256,7 +256,7 @@ vatek_result parser_cmd_source(int32_t argc, char** argv, Ptsstream_source psour
 	if(nres == vatek_unsupport)
 	{
 		_disp_l("support command below : ");
-		_disp_l("	- app_stream [modulation] [empty] : test stream mode");
+		_disp_l("	- app_stream [modulation] test [remux|passthrough] : test stream mode");
 		_disp_l("	- app_stream [modulation] file [*.ts|*.trp] [remux|passthrough]");
 		_disp_l("	- app_stream [modulation] udp  [ip address] [remux|passthrough]");
 		_disp_l("	- app_stream [modulation] rtp  [ip address] [remux|passthrough]");
