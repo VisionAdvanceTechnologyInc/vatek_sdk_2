@@ -293,6 +293,23 @@ vatek_result vatek_device_calibration_apply(hvatek_chip hchip, Pcalibration_para
 		nres = vatek_unsupport;
 		if (pvatek->info.peripheral_en & PERIPHERAL_CALIBRATION)
 			nres = calibration_set(hchip, pcalibration,1);
+		nres = calibration_adjust_gain(hchip, pcalibration->dac_power, pcalibration);
+		nres = rfmixer_r2_adjust_pagain(hchip, pcalibration->r2_power);
+
+	}
+	return nres;
+}
+
+vatek_result vatek_device_r2_apply(hvatek_chip hchip, int r2_power)
+{
+	Pvatek_device pvatek = (Pvatek_device)hchip;
+	vatek_result nres = vatek_badstatus;
+	Pchip_info pinfo = vatek_device_get_info(hchip);
+	if (pinfo->status == chip_status_running)
+	{
+		nres = vatek_unsupport;
+		if (pvatek->info.peripheral_en & PERIPHERAL_CALIBRATION)
+			nres = rfmixer_r2_adjust_pagain(hchip, r2_power);
 	}
 	return nres;
 }

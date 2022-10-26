@@ -51,7 +51,8 @@ qtvUITabCalibration::qtvUITabCalibration(qtvUIMain* main, QWidget* parent) :
     m_splist.append(ui->sb_qoffect_1);
     m_splist.append(ui->sb_image_1);
     m_splist.append(ui->sb_phase_1);
-
+    m_splist.append(ui->sb_dac);
+    m_splist.append(ui->sb_r2);
     ui->sb_dac->setRange(-60 , 60);
     ui->sb_r2->setRange(0, 15);
 
@@ -59,7 +60,6 @@ qtvUITabCalibration::qtvUITabCalibration(qtvUIMain* main, QWidget* parent) :
         connect(m_splist[i], SIGNAL(valueChanged(int)), this, SLOT(recvSpinValueChanged(int)));
     connect(&m_timerupdate, SIGNAL(timeout()), this, SLOT(recvUpdateTimeout()));
     connect(ui->btn_save, SIGNAL(clicked(bool)), this, SLOT(recvSaveClick(bool)));
-    connect(ui->btn_power, SIGNAL(clicked(bool)), this, SLOT(recv_powerapply_Click(bool)));
 
     memset(&m_calibration, 0, sizeof(calibration_param));
 	if (m_main && m_main->_service())
@@ -84,7 +84,6 @@ qtvUITabCalibration::~qtvUITabCalibration()
 		disconnect(m_splist[i], SIGNAL(valueChanged(int)), this, SLOT(recvSpinValueChanged(int)));
     disconnect(&m_timerupdate, SIGNAL(timeout()), this, SLOT(recvUpdateTimeout()));
     disconnect(ui->btn_save, SIGNAL(clicked(bool)), this, SLOT(recvSaveClick(bool)));
-    disconnect(ui->btn_power, SIGNAL(clicked(bool)), this, SLOT(recv_powerapply_Click(bool)));
 
     m_splist.clear();
     delete ui;
@@ -137,7 +136,8 @@ void qtvUITabCalibration::applyCalibration()
     m_calibration.r2.qoffset = rfmixer_r2_int2tune(ui->sb_qoffect_1->value(), R2_RANGE_Q);
     m_calibration.r2.imgoffset = rfmixer_r2_int2tune(ui->sb_image_1->value(), R2_RANGE_IMG);
     m_calibration.r2.phaseoffset = rfmixer_r2_int2tune(ui->sb_phase_1->value(), R2_RANGE_PHASE);
-
+    m_calibration.r2_power = ui->sb_r2->value();
+    m_calibration.dac_power = ui->sb_dac->value();
     nres = m_handle->calibrationSet(&m_calibration);
     if(!is_vatek_success(nres))
         QMessageBox::warning(this, "calibration", "apply calibration param fail");
@@ -181,23 +181,4 @@ void qtvUITabCalibration::recvSaveClick(bool bclick)
 
     ui->btn_save->setEnabled(true);
     enableCalibration(true);
-}
-
-void qtvUITabCalibration::recv_powerapply_Click(bool bclick)
-{
-    vatek_result nres = vatek_success;
-    int r2_power = 0;
-    int dac_gain = 0;
-    int r2_res = 0;
-    int dac_res = 0;
-
-    r2_power = ui->sb_r2->value();
-    dac_gain = ui->sb_dac->value();
-
-    r2_res |= r2_power & 15;
-    dac_res |= dac_gain & 60;
-
-    nres = m_handle->PowerSave(r2_power, dac_gain);
-    if (!is_vatek_success(nres))
-        QMessageBox::warning(this, "power", "apply power param fail");
 }

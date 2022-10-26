@@ -112,7 +112,6 @@ public:
 	uint32_t calibratiobCheck() override;
 	vatek_result polling(Pbroadcast_info* pinfo) override;
 	void stop() override;
-	vatek_result PowerSave(int8_t r2_power, int8_t dac_gain) override;
 
 protected:
 	hvatek_chip m_hchip;

@@ -241,7 +241,6 @@ protected Q_SLOTS:
 	void recvSpinValueChanged(int i);
 	void recvUpdateTimeout();
 	void recvSaveClick(bool bclick);
-	void recv_powerapply_Click(bool bclick);
 
 
 private:

@@ -445,14 +445,11 @@ void storage_chip_config_reset(Pstorage_chip_config pcfg)
 
 	FILE* output_file = fopen(filename, "rb+");
 	if (!output_file) {
-		perror("fopen");
 		memcpy(pcfg, str, sizeof(storage_chip_config));
 	}
 	else {
 		fread(buffer, sizeof(storage_chip_config), 1, output_file);
 		memcpy(pcfg, buffer, sizeof(storage_chip_config));
-
-		printf("done writing!\n");
 		fclose(output_file);
 	}
 } 

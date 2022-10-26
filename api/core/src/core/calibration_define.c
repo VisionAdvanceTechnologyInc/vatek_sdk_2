@@ -52,11 +52,28 @@ vatek_result calibration_set(hvatek_chip hchip, Pcalibration_param pcalibration,
 	return nres;
 }
 
-vatek_result calibration_adjust_gain(hvatek_chip hchip, int8_t gain) {
+vatek_result calibration_adjust_gain(hvatek_chip hchip, int8_t gain, Pcalibration_param m_calibration) {
 	calibration_param calibration;
-	memset(&calibration, 0, sizeof(calibration_param));
-	calibration.dac.igain = gain;
-	calibration.dac.qgain = gain;
+	memset(&calibration, 0, sizeof(Pcalibration_param));
+	calibration.clock = m_calibration->clock;
+
+
+	calibration.r2.ioffset = m_calibration->r2.ioffset;
+	calibration.r2.qoffset = m_calibration->r2.qoffset;
+	calibration.r2.imgoffset = m_calibration->r2.imgoffset;
+	calibration.r2.phaseoffset = m_calibration->r2.phaseoffset;
+
+	calibration.dac.ioffect = m_calibration->dac.ioffect;
+	calibration.dac.qoffect = m_calibration->dac.qoffect;
+
+	if ((m_calibration->dac.qgain == 0) && (m_calibration->dac.igain == 0)) {
+		calibration.dac.igain = gain;
+		calibration.dac.qgain = gain;
+	}
+	else {
+		calibration.dac.igain = m_calibration->dac.igain;
+		calibration.dac.qgain = m_calibration->dac.qgain;
+	}
 	return calibration_set(hchip, &calibration, 1);
 }
 

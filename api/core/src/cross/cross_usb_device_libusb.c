@@ -315,8 +315,6 @@ vatek_result usb_api_ll_bulk_send_command(husb_device husb, Pusbbulk_command pcm
 			int32_t rlen = 0;
 			uint8_t* prawbuf = &pusb->none_dmabuf[pusb->bulksize];
 			usb_ll_convert_bufffer(pusb->none_dmabuf, prawbuf, pusb->bulksize);
-			printf("pusb->bulksize : %d\n", pusb->bulksize);
-			printf("prawbuf size : %d\n", sizeof(prawbuf));
 
 			nres = (vatek_result)libusb_bulk_transfer(hdevice, USBDEV_BULK_WRITE_EP, prawbuf, pusb->bulksize, &rlen, USBDEV_TIMEOUT);
 			if (is_vatek_success(nres))nres = (vatek_result)rlen;

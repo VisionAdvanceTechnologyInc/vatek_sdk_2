@@ -62,6 +62,7 @@ extern "C" {
 	HAL_API vatek_result vatek_device_calibration_load(hvatek_chip hchip, Pcalibration_param pcalibration);
 	HAL_API vatek_result vatek_device_calibration_apply(hvatek_chip hchip, Pcalibration_param pcalibration);
 	HAL_API vatek_result vatek_device_calibration_save(hvatek_chip hchip, Pcalibration_param pcalibration);
+	HAL_API vatek_result vatek_device_r2_apply(hvatek_chip hchip, int r2_power);
 
 	/* used with transform service for usb stream */
 	HAL_API vatek_result vatek_device_stream_start(hvatek_chip hchip,Pmodulator_param pmod);
