@@ -2,7 +2,7 @@
 #include <driver/av/avsource_adv718x.h>
 #include <driver/av/avsource_ep9351.h>
 #include <driver/av/avsource_ep9555e.h>
-#include <driver/av/avsource_sx1804a.h>
+#include <driver/av/avsource_h1.h>
 
 #define _bsource(tag)	{#tag,bsource_##tag,tag##_check_support,tag##_open,tag##_config,tag##_get_status,tag##_set_output,tag##_close,},
 static const bdriver_source bsource_tables[] = 

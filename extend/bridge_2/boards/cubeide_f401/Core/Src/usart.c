@@ -19,7 +19,7 @@
 
 /* Includes ------------------------------------------------------------------*/
 #include "usart.h"
-
+#include "stdio.h"
 /* USER CODE BEGIN 0 */
 
 /* USER CODE END 0 */
@@ -110,7 +110,16 @@ void HAL_UART_MspDeInit(UART_HandleTypeDef* uartHandle)
 }
 
 /* USER CODE BEGIN 1 */
-
+int ch;
+int fputc(int ch, FILE *f){
+	HAL_UART_Transmit(&huart1,(uint8_t *)&ch,1,0x1fff);
+	return ch;
+}
+int fgetc(FILE *f){
+	HAL_UART_Receive(&huart1,(uint8_t *)&ch,1,0x1fff);
+//	HAL_UART_GETSTATE(&huart1);
+	return ch;
+}
 /* USER CODE END 1 */
 
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

@@ -44,7 +44,7 @@ typedef enum _bsource_id
 #define BSOURCE_EP9555E_BIT			BBRIDGE_DRI_TO_BIT(bsource_ep9555e)
 #define BSOURCE_EP9351_BIT			BBRIDGE_DRI_TO_BIT(bsource_ep9351)
 #define BSOURCE_ADV718X_BIT			BBRIDGE_DRI_TO_BIT(bsource_adv718x)
-#define BSOURCE_SA1804A_BIT			BBRIDGE_DRI_TO_BIT(bsource_h1)
+#define BSOURCE_H1_BIT				BBRIDGE_DRI_TO_BIT(bsource_h1)
 
 /* bridge source command define */
 

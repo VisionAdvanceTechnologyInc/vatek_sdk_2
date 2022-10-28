@@ -34,8 +34,12 @@ extern vatek_result ep9555e_get_scale_timing(video_resolution resolution,video_f
 vatek_result ep9555e_check_support(void)
 {
     vatek_result nres = hal_i2c_check_device(EP9555E_SYS_ADDR);
-	if(is_vatek_success(nres))
+	if(is_vatek_success(nres)){
+		printf("check ep9555e success\r\n");
 		nres = hal_i2c_check_device(EP9555E_CHIP_ADDR);
+	}
+	if(is_vatek_success(nres))
+		printf("check device success\r\n");
 	return nres;
 }
 
@@ -45,6 +49,7 @@ vatek_result ep9555e_open(hbridge_source* hsource)
     vatek_result nres = EP9555E_CHIP_RD(EP9555E_POWER_STATUS,&val,1);
     if(is_vatek_success(nres))
     {
+    	printf("ep9555e open success\r\n");
     	Pep9555e_handle newep = (Pep9555e_handle)malloc(sizeof(ep9555e_handle));
     	nres = vatek_memfail;
     	if(newep)
@@ -57,6 +62,8 @@ vatek_result ep9555e_open(hbridge_source* hsource)
     		else *hsource = newep;
     	}
     }
+    else
+    	printf("ep9555e open fail %d\r\n",nres);
 	return nres;
 }
 
@@ -153,6 +160,7 @@ vatek_result ep9555e_set_output(hbridge_source hsource,int32_t isoutput)
 									 OUTPUT_DISABLE_CNTL_I2S_PCM)
 
 	uint8_t val = EP9555E_DISABLE_OUTPUT;
+	uint32_t rd_val = 0;
 	vatek_result nres = vatek_success;
 	if (isoutput)
     {
@@ -175,7 +183,9 @@ vatek_result ep9555e_set_output(hbridge_source hsource,int32_t isoutput)
         }
     }
     if(is_vatek_success(nres))
-        nres = EP9555E_CHIP_WR(EP9555E_OUTPUT_DISABLE_CNTL,&val,1);      
+        nres = EP9555E_CHIP_WR(EP9555E_OUTPUT_DISABLE_CNTL,&val,1);
+    	EP9555E_CHIP_RD(EP9555E_OUTPUT_DISABLE_CNTL,&rd_val,1);
+    	printf("EP9555E_OUTPUT_DISABLE_CNTL(0x78) = 0x%08x\r\n",rd_val);
 	return nres;
 }
 

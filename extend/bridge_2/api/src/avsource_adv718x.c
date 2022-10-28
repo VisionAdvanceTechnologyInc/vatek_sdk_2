@@ -34,7 +34,12 @@ extern vatek_result adv718x_get_check_status(Padv718x_handle padv,bridge_status*
 
 vatek_result adv718x_check_support()
 {
-    return hal_i2c_check_device(ADV718X_DEVICE_ADDR);
+    vatek_result nres = hal_i2c_check_device(ADV718X_DEVICE_ADDR);
+    if(is_vatek_success(nres))
+        	printf("check ADV718X success\r\n");
+	else
+		printf("check ADV718X fail %d\r\n",nres);
+    return nres;
 }
 
 vatek_result adv718x_open(hbridge_source* hsource)
@@ -87,6 +92,7 @@ vatek_result adv718x_get_status(hbridge_source hsource,Pbridge_source pbsourcest
 
 vatek_result adv718x_set_output(hbridge_source hsource,int32_t isoutput)
 {
+	uint32_t val = 0;
     vatek_result nres = vatek_success;
     Padv718x_handle padv = (Padv718x_handle)hsource;
     if(isoutput)
@@ -99,28 +105,56 @@ vatek_result adv718x_set_output(hbridge_source hsource,int32_t isoutput)
             else 
             {
                 nres = adv718x_write_reg(ADV718X_BRIGHTNESS,padv->param.brightnes);
-                if(is_vatek_success(nres))
+                adv718x_read_req(ADV718X_BRIGHTNESS, &val);
+                printf("ADV718X_BRIGHTNESS(0x0A) = 0x%08x\r\n",val);
+                if(is_vatek_success(nres)){
                     nres = adv718x_write_reg(ADV718X_HUE,-padv->param.hue);
-                if(is_vatek_success(nres))
+                    adv718x_read_req(ADV718X_HUE, &val);
+                    printf("ADV718X_HUE(0x0B) = 0x%08x\r\n",val);
+                }
+                if(is_vatek_success(nres)){
                     nres = adv718x_write_reg(ADV718X_CONTRAST,padv->param.contrast);
-                if(is_vatek_success(nres))
+                    adv718x_read_req(ADV718X_CONTRAST, &val);
+                    printf("first ADV718X_CONTRAST(0x08) = 0x%08x\r\n",val);
+                }
+                if(is_vatek_success(nres)){
                     nres = adv718x_write_reg(ADV718X_CONTRAST,padv->param.contrast);
-                if(is_vatek_success(nres))
+                    adv718x_read_req(ADV718X_CONTRAST, &val);
+                    printf("second ADV718X_CONTRAST(0x08) = 0x%08x\r\n",val);
+                }
+                if(is_vatek_success(nres)){
                     nres = adv718x_write_reg(ADV718X_SD_SATURATION_CB,padv->param.saturation);
-                if(is_vatek_success(nres))
+                    adv718x_read_req(ADV718X_SD_SATURATION_CB, &val);
+                    printf("ADV718X_SD_SATURATION_CB(0xE3) = 0x%08x\r\n",val);
+                }
+                if(is_vatek_success(nres)){
                     nres = adv718x_write_reg(ADV718X_SD_SATURATION_CR,padv->param.saturation);
+                    adv718x_read_req(ADV718X_SD_SATURATION_CR, &val);
+                    printf("ADV718X_SD_SATURATION_CR(0xE4) = 0x%08x\r\n",val);
+                }
                 
-                if(is_vatek_success(nres))
+                if(is_vatek_success(nres)){
                     nres = adv718x_write_reg(ADV718X_ADI_CTRL_2,ADV718X_EN_LLC);
-                if(is_vatek_success(nres))
+                    adv718x_read_req(ADV718X_ADI_CTRL_2, &val);
+                    printf("ADV718X_ADI_CTRL_2(0x1D) = 0x%08x\r\n",val);
+                }
+                if(is_vatek_success(nres)){
                     nres = adv718x_write_reg(ADV718X_OUT_CTRL,padv->reg_out & 0x0F);
+                    adv718x_read_req(ADV718X_OUT_CTRL, &val);
+                    printf("ADV718X_OUT_CTRL(0x03) = 0x%08x\r\n",val);
+                }
             }
         }
     }else 
     {
         nres = adv718x_write_reg(ADV718X_ADI_CTRL_2,ADV718X_TRI_LLC);
-        if(is_vatek_success(nres))
+        adv718x_read_req(ADV718X_ADI_CTRL_2, &val);
+        printf("else ADV718X_ADI_CTRL_2(0x1D) = 0x%08x\r\n",val);
+        if(is_vatek_success(nres)){
             nres = adv718x_write_reg(ADV718X_OUT_CTRL,padv->reg_out);
+            adv718x_read_req(ADV718X_OUT_CTRL, &val);
+            printf("else ADV718X_OUT_CTRL(0x03) = 0x%08x\r\n",val);
+        }
     }
     return nres;
 }
@@ -140,6 +174,7 @@ vatek_result adv718x_get_check_status(Padv718x_handle padv,bridge_status* bstatu
 {
     uint8_t status0 = 0;
     vatek_result nres = adv718x_read_req(ADV718X_STATUS_1,&status0);
+    //printf("ADV718X_STATUS_1(0x10) = 0x%08x\r\n",status0);
     if(is_vatek_success(nres))
     {
         *bstatus = bstatus_idle;
@@ -147,6 +182,7 @@ vatek_result adv718x_get_check_status(Padv718x_handle padv,bridge_status* bstatu
         {
             uint8_t status3 = 0;
             nres = adv718x_read_req(ADV718X_STATUS_3,&status3);
+            //printf("ADV718X_STATUS_3(0x13) = 0x%08x\r\n",status3);
             status0 = (status0 & ADV718X_STATUS1_AUTOD_MASK) >> 4;
             
             if(is_vatek_success(nres))
@@ -223,33 +259,61 @@ vatek_result adv718x_chip_reset(Padv718x_handle padv)
 vatek_result adv718x_chip_open(Padv718x_handle padv)
 {
     vatek_result nres = adv718x_chip_reset(padv);
+    uint32_t val = 0;
+    if(!is_vatek_success(nres))
+    	printf("ADV718X open fail %d",nres);
     if(is_vatek_success(nres))
     {
+    	printf("ADV718X chip reset success\r\n");
         if(is_adv_7282(padv))
         {
             nres = adv7182_select_input(padv);
-        }else nres = adv718x_write_reg(ADV718X_IN_CTRL,padv->input_std);
+        }else{
+        	nres = adv718x_write_reg(ADV718X_IN_CTRL,padv->input_std);
+        	adv718x_read_req(ADV718X_IN_CTRL,&val);
+        	printf("ADV718X_IN_CTRL(0x00) = 0x%08x\r\n",val);
+        }
     }
+    if(!is_vatek_success(nres))
+        printf("ADV718X select input fail %d",nres);
 
     if(is_vatek_success(nres))
     {
+    	printf("ADV718X select input success\r\n");
         nres = adv718x_write_reg(ADV718X_OUT_CTRL,padv->reg_out);
+        adv718x_read_req(ADV718X_OUT_CTRL,&val);
+        printf("ADV718X_OUT_CTRL(0x03) = 0x%08x\r\n",val);
         if(is_vatek_success(nres))nres = adv718x_write_reg(ADV718X_EXT_OUT_CTRL,padv->reg_ext_out);
+        adv718x_read_req(ADV718X_EXT_OUT_CTRL,&val);
+        printf("ADV718X_EXT_OUT_CTRL(0x04) = 0x%08x\r\n",val);
         //if(is_hal_lite_success(nres))nres = adv718x_write_reg(padv->i2c,ADV718X_VS_FIELD_CTRL_1,0x02);
         if(is_vatek_success(nres))nres = adv718x_write_reg(ADV718X_ADI_CTRL_2,ADV718X_TRI_LLC);
-            
+        adv718x_read_req(ADV718X_ADI_CTRL_2,&val);
+        printf("ADV718X_ADI_CTRL_2(0x1D) = 0x%08x\r\n",val);
             
         if(is_vatek_success(nres))
         {
-            if(is_adv_7282(padv))nres = adv718x_write_reg(ADV718X_STATUS_3,0x00);
+            if(is_adv_7282(padv)){
+            	nres = adv718x_write_reg(ADV718X_STATUS_3,0x00);
+            	adv718x_read_req(ADV718X_STATUS_3,&val);
+            	printf("ADV718X_STATUS_3(0x13) = 0x%08x\r\n",val);
+            }
             else
             {
                 nres = adv718x_write_reg(ADV718X_NTSC_V_END,0x4F);
+                adv718x_read_req(ADV718X_NTSC_V_END,&val);
+                printf("ADV718X_NTSC_V_END(0xE6) = 0x%08x\r\n",val);
                 if(is_vatek_success(nres))
                 nres = adv718x_write_reg(ADV718X_IN_CTRL,padv->input_std);
+                adv718x_read_req(ADV718X_IN_CTRL,&val);
+                printf("ADV718X_IN_CTRL(0x00) = 0x%08x\r\n",val);
             }
         }
     }
+    if(!is_vatek_success(nres))
+        printf("ADV718X write register fail %d",nres);
+    else
+    	printf("ADV718X write register success\r\n");
     return nres;
 }
 
@@ -267,6 +331,7 @@ uint8_t adv718x_chip_get_input_type(Padv718x_handle padv)
 
 vatek_result adv7182_select_input(Padv718x_handle padv)
 {
+	uint32_t val = 0;
     static const uint8_t adv7182_lbias_regs[][3] = 
     {
         {0xCB, 0x4E, 0x80,},
@@ -279,11 +344,17 @@ vatek_result adv7182_select_input(Padv718x_handle padv)
 	if(type != ADV718X_INPUT_TYPE_UNKNOWN)
 	{
 		nres = adv718x_write_reg(ADV718X_IN_CTRL,padv->input_std & 0xF);
-		if(is_vatek_success(nres))
+		adv718x_read_req(ADV718X_IN_CTRL,&val);
+		printf("ADV718X_IN_CTRL(0x00) = 0x%08x\r\n",val);
+		if(is_vatek_success(nres)){
 			nres = adv718x_write_reg(ADV7182_IN_SEL_2,(padv->input_std & 0xF0) | 0x04);
-		if(is_vatek_success(nres))
+			adv718x_read_req(ADV7182_IN_SEL_2,&val);
+			printf("ADV7182_IN_SEL_2(0x02) = 0x%08x\r\n",val);
+		}
+		if(is_vatek_success(nres)){
 			nres = adv7182_reset_clamp();
-						
+		}
+
 		if(is_vatek_success(nres))
 		{
 			uint8_t* plbias = (uint8_t*)&adv7182_lbias_regs[type];                        
@@ -293,10 +364,17 @@ vatek_result adv7182_select_input(Padv718x_handle padv)
 				if(!is_vatek_success(nres))break;
 			}
 							
-			if(type == ADV718X_INPUT_TYPE_CVBS)
+			if(type == ADV718X_INPUT_TYPE_CVBS){
 				nres = adv718x_write_reg(ADV718X_SHAP_FILT_CTRL,0x41);
-			else nres = adv718x_write_reg(ADV718X_SHAP_FILT_CTRL,0x01);
-			
+				adv718x_read_req(ADV718X_SHAP_FILT_CTRL,&val);
+				printf("ADV718X_SHAP_FILT_CTRL(0x17) = 0x%08x\r\n",val);
+			}
+			else{
+				nres = adv718x_write_reg(ADV718X_SHAP_FILT_CTRL,0x01);
+				adv718x_read_req(ADV718X_SHAP_FILT_CTRL,&val);
+				printf("ADV718X_SHAP_FILT_CTRL(0x17) = 0x%08x\r\n",val);
+			}
+
 			#if 0
 			if(is_hal_lite_success(nres))
 			{

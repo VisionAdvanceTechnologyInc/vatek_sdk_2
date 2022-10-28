@@ -12,7 +12,7 @@ typedef union _bavsource_param
     ep9351_param ep9351;
     ep9555e_param ep9555e;
     adv718x_param adv718x;
-    sx1804_param h1;
+    h1_param h1;
 }bavsource_param;
 
 typedef bavsource_param* Pbavsource_param;

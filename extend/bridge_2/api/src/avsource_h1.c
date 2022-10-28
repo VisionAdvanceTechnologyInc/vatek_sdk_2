@@ -258,6 +258,11 @@ vatek_result h1_write_output(h1_param output,Pbridge_source psource)
 
     if(is_vatek_success(nres))
     {
+        nres = h1_write(H1_OUT_CNTL, 0x40);
+		hal_system_sleep(100);
+		nres = h1_read(H1_OUT_CNTL,&reg_val);
+		printf("h1_write_output function H1_OUT_CNTL(0x0300) = 0x%08x\r\n",reg_val);
+
         nres = h1_write(H1_AOUT_CFG, 0x13);
         hal_system_sleep(100); //wait to write
         nres = h1_read(H1_AOUT_CFG,&reg_val);
@@ -275,11 +280,7 @@ vatek_result h1_write_output(h1_param output,Pbridge_source psource)
         hal_system_sleep(100);//wait to write
         nres = h1_read(H1_INT_CNTL,&reg_val);
         printf("h1_write_output function H1_INT_CNTL(0x0103) = 0x%08x\r\n",reg_val);
-        nres = h1_write(H1_OUT_CNTL, 0x00);
-        hal_system_sleep(100);
-        nres = h1_read(H1_OUT_CNTL,&reg_val);
-        printf("h1_write_output function H1_OUT_CNTL(0x0300) = 0x%08x\r\n",reg_val);
-    }
+     }
     return nres;
 }
 #if 1
@@ -393,16 +394,14 @@ vatek_result h1_enable(){
 	return nres;
 }
 
-uint8_t h1_version(){
+uint32_t h1_version(){
 	vatek_result nres = vatek_unknown;
 	uint8_t ver_num = 0;
 	uint8_t ver_numa = 0;
-	uint8_t h1_allver = 0;
+	uint32_t h1_allver = 0;
 	nres = h1_read(H1_VER1, &ver_num);
 
 	if(nres == vatek_success)nres = h1_read(H1_VER2, &ver_numa);
-	if(nres == vatek_success)h1_allver = ver_num | ver_numa;
-	printf("ver_num : 0x%08x\r\n",ver_num);
-	printf("ver_numa : 0x%08x\r\n",ver_numa);
+	if(nres == vatek_success)h1_allver = ver_num << 8 | ver_numa;
 	return h1_allver;
 }

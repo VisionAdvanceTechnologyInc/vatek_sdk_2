@@ -28,6 +28,7 @@ vatek_result hal_board_open(void)
         nres = stm32_core_init(&huart1);
         if(is_vatek_success(nres))
         {
+        	printf("board I2C create success\r\n");
         }
         stmhal_init = 1;
     }
@@ -91,6 +92,8 @@ vatek_result hal_i2c_start(uint8_t devaddr,int32_t restart)
     Pstm32_i2c pi2c = stm32_core_get_main_i2c();
     if(pi2c)
         nres = pi2c->start(pi2c->hi2c,devaddr,restart);
+    else
+    	printf("pi2c = null so print unsupported(hal_i2c_start)\r\n");
     return nres;  
 }
 
@@ -100,6 +103,8 @@ vatek_result hal_i2c_write(const uint8_t* pbuf,int32_t len)
     Pstm32_i2c pi2c = stm32_core_get_main_i2c();
     if(pi2c)
         nres = pi2c->write(pi2c->hi2c,pbuf,len);
+    else
+        printf("pi2c = null so print unsupported(hal_i2c_write)\r\n");
     return nres; 
 }
 
@@ -109,6 +114,8 @@ vatek_result hal_i2c_read(uint8_t* pbuf,int32_t len)
     Pstm32_i2c pi2c = stm32_core_get_main_i2c();
     if(pi2c)
         nres = pi2c->read(pi2c->hi2c,pbuf,len);
+    else
+    	printf("pi2c = null so print unsupported(hal_i2c_read)\r\n");
     return nres; 
 }
 

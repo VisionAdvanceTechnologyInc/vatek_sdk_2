@@ -44,6 +44,7 @@ vatek_result stm32_core_pin_set_status(Pstm32_pin spin,int32_t isset)
 vatek_result stm32_core_pin_get_status(Pstm32_pin spin)
 {
     GPIO_PinState status = HAL_GPIO_ReadPin(spin->port,spin->index);
+
     if(status == GPIO_PIN_SET)return (vatek_result)1;
     else if(status == GPIO_PIN_RESET)return vatek_success;
     return vatek_hwfail;

@@ -66,7 +66,7 @@ void Error_Handler(void);
 #define RP_PIN11_GPIO_Port GPIOE
 #define RP_PIN13_Pin GPIO_PIN_5
 #define RP_PIN13_GPIO_Port GPIOE
-#define RP_PIN06_Pin GPIO_PIN_6
+#define RP_PIN06_Pin GPIO_PIN_6  //pin12=PE6 pin6=G
 #define RP_PIN06_GPIO_Port GPIOE
 #define SPI_1_CS0_Pin GPIO_PIN_4
 #define SPI_1_CS0_GPIO_Port GPIOA

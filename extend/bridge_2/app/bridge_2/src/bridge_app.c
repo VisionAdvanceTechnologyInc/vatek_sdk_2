@@ -15,10 +15,14 @@ static const char* bridge_logo[] =
 
 #define _BRIDGE_WAITCHIP_TIMEOUT		5000
 
+#define BRIDGE_VERSION					20221026
+
 #define _pl_title(fmt,...)				printf(" [%08x] - "fmt"\r\n",hal_system_get_tick(),##__VA_ARGS__)
 #define _pl_uint32(t,v)					printf("%-11s - [%-16s] : 0x%08x\r\n","",#t,v)
 #define _pl_sub(fmt,...)				printf("%-11s - " fmt "\r\n","",##__VA_ARGS__)
 #define _pl_spiltline()					printf("---------------------------------------------------------------------------------------------\r\n")
+#define _pl_uint8(t,v)					printf("%-11s - [%-16s] : %s\r\n","",#t,v)
+#define _pl_int(t,v)					printf("%-11s - [%-16s] : 0x%d\r\n","",#t,v)
 
 extern void printf_logo(void);
 extern void printf_bsource(hvatek_bridge hbridge);
@@ -32,7 +36,8 @@ int main(void)
 	hvatek_chip hchip = NULL;
 	vatek_result nres = vatek_bridge_open(&hbridge);
 	printf_logo();
-	
+
+
 	if(is_vatek_success(nres))
 	{
 		nres = connect_chip(hbridge,&hchip);
@@ -101,6 +106,7 @@ vatek_result connect_chip(hvatek_bridge hbridge,hvatek_chip* hchip)
 				_pl_uint32(input,info.input_support);
 				_pl_uint32(output,info.output_support);
 				_pl_uint32(peripheral,info.peripheral_en);
+				_pl_int(bridge_version,BRIDGE_VERSION);
 				_pl_spiltline();
 			}else _pl_title("read chip information fail : %d",nres);
 		}else _pl_title("connect chip but service not found");
@@ -134,7 +140,10 @@ void printf_bsource(hvatek_bridge hbridge)
 		while(bptr)
 		{
 			Pbdevice_source pdevice = vatek_source_get_next(&bptr);
-			_pl_sub("bsource [%-10s: %08x]",pdevice->driver->name,pdevice->driver->id);
+			_pl_sub("bsource [%s: %08x]",pdevice->driver->name,pdevice->driver->id);
+			if (strcmp(pdevice->driver->name, "h1") == 0){
+				_pl_sub("h1_version [%08x]",h1_version());
+			}
 		}
 	}
 	_pl_spiltline();

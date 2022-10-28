@@ -1,7 +1,6 @@
 #include <vatek_bridge_2.h>
 #include <cmds/cmd_mod.h>
 #include <cmds/cmd_bridge.h>
-
 #include "./internal/bridge_internal.h"
 
 static Pbridge_handle hbboard = NULL;
@@ -87,6 +86,7 @@ vatek_result vatek_bridge_polling(hvatek_bridge hbridge)
             else if(IS_BOARDBRIDGE_CMD(usbcmd))
 			{
 				if(IS_BRIDGE_SOURCE_CMD(usbcmd)){
+					hal_system_sleep(100);
 					nres = cmd_bridge_source(hbridge, pcmd,presult);
 					if(nres != vatek_success){
 						printf("cmd_bridge_source fail %d\r\n",nres);
@@ -116,6 +116,7 @@ vatek_result vatek_bridge_polling(hvatek_bridge hbridge)
 
 				}
                 else nres = vatek_unsupport;
+
 			}else nres = vatek_unsupport;
 
             if(!is_vatek_success(nres))
@@ -127,8 +128,12 @@ vatek_result vatek_bridge_polling(hvatek_bridge hbridge)
 
 		}
     }
+
+
 //    printf("tick time = %d\r\n",vatek_get_tick_ms()-run_tick);
 //    run_tick = vatek_get_tick_ms();
+
+//    cmdline_read();
     return nres;
 }
 

@@ -53,6 +53,7 @@ void MX_GPIO_Init(void)
   __HAL_RCC_GPIOB_CLK_ENABLE();
   __HAL_RCC_GPIOD_CLK_ENABLE();
 
+  HAL_GPIO_WritePin(RP_PIN22_GPIO_Port, RP_PIN22_Pin, GPIO_PIN_RESET);
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(SPI_1_CS0_GPIO_Port, SPI_1_CS0_Pin, GPIO_PIN_RESET);
 
@@ -62,17 +63,23 @@ void MX_GPIO_Init(void)
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(GPIOD, LCD_K_Pin|LCD_RS_Pin|LCD_RW_Pin|LCD_EE_Pin
                           |LCD_D4_Pin|LCD_D5_Pin|LCD_D6_Pin|LCD_D7_Pin
-                          |RP_PINCS1_Pin, GPIO_PIN_RESET);
+						  |RP_PINCS1_Pin, GPIO_PIN_RESET);//|RP_PINCS1_Pin
 
   /*Configure GPIO pins : PEPin PEPin PEPin PEPin
                            PEPin PEPin PEPin PEPin
                            PEPin PEPin PEPin PEPin */
-  GPIO_InitStruct.Pin = RP_PIN22_Pin|RP_PIN07_Pin|RP_PIN11_Pin|RP_PIN13_Pin
+  GPIO_InitStruct.Pin =   RP_PIN22_Pin|RP_PIN07_Pin|RP_PIN11_Pin|RP_PIN13_Pin //RP_PIN22_Pin|
                           |RP_PIN06_Pin|SW_01_Pin|SW_02_Pin|SW_03_Pin
                           |SW_04_Pin|SW_05_Pin|RP_PIN15_Pin|RP_PIN16_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   HAL_GPIO_Init(GPIOE, &GPIO_InitStruct);
+
+  //PIN22 reset independence
+//  GPIO_InitStruct.Pin = RP_PIN22_Pin;
+//  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_OD;
+//  GPIO_InitStruct.Pull = GPIO_NOPULL;
+//  HAL_GPIO_Init(GPIOE, &GPIO_InitStruct);
 
   /*Configure GPIO pins : PC13 PC0 PC1 PC2
                            PC3 PC4 PC5 PC6

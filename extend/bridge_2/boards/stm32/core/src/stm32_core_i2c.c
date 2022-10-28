@@ -1,6 +1,6 @@
 #include <stm32_core.h>
 
-#define STM32_LL_I2C_TIMEOUT        200
+#define STM32_LL_I2C_TIMEOUT        500
 
 #define IS_CR1_FLAG_SET(a,flag)     ((a->Instance->CR1 & flag) == flag)
 #define CR1_FLAG_SET(a,flag)        (a->Instance->CR1 |= flag)

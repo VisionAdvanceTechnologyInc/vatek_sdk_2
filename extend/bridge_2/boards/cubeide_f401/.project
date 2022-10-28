@@ -33,22 +33,22 @@
 		<link>
 			<name>bridge_api</name>
 			<type>2</type>
-			<location>D:/vatek/master/vatek_bridge_2/api</location>
+			<location>D:/Richie Documents/GitHub/vatek_sdk_2/extend/bridge_2/api/src</location>
 		</link>
 		<link>
 			<name>bridge_app</name>
 			<type>2</type>
-			<location>D:/vatek/master/vatek_bridge_2/app/bridge_2</location>
+			<location>D:/Richie Documents/GitHub/vatek_sdk_2/extend/bridge_2/app/bridge_2/src</location>
 		</link>
 		<link>
 			<name>sdk_core</name>
 			<type>2</type>
-			<location>D:/vatek/master/vatek_sdk_2/api/core/src/core</location>
+			<location>D:/Richie Documents/GitHub/vatek_sdk_2/api/core/src/core</location>
 		</link>
 		<link>
 			<name>stm32_core</name>
 			<type>2</type>
-			<location>D:/vatek/master/vatek_bridge_2/boards/stm32/core</location>
+			<location>D:/Richie Documents/GitHub/vatek_sdk_2/extend/bridge_2/boards/stm32/core/src</location>
 		</link>
 	</linkedResources>
 </projectDescription>

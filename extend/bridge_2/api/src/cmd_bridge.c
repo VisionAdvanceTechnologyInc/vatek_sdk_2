@@ -20,6 +20,9 @@ vatek_result cmd_bridge_source(hvatek_bridge hbridge, Phid_bridge_cmd pcmd, Phid
 		printf("start system time = 0x%08x\r\n",tick_start);
 		count_once = 1;
     }
+    //printf("cmd value = 0x%08x\r\n",cmd);
+    //hal_system_sleep(100);
+
     if((cmd & 0xFFFFFF00) == BSOURCE_CMD_STATUS)
     {
         Pbdevice_source psource = cmdsource_get_source(hbridge,cmd & 0xFF);
@@ -45,7 +48,7 @@ vatek_result cmd_bridge_source(hvatek_bridge hbridge, Phid_bridge_cmd pcmd, Phid
             if(cmd.source_cntl == BSOURCE_CNTL_START)
             {
             	if(cmd.source_id == bsource_h1){
-            		//hal_system_sleep(100);
+            		hal_system_sleep(100);
 					nres = hal_gpio_config(HAL_IO_AUDIO_SWITCH,1);
 
             	}
@@ -82,7 +85,10 @@ vatek_result cmd_bridge_source(hvatek_bridge hbridge, Phid_bridge_cmd pcmd, Phid
             	nres = cmdsource_map_bsource(&binfo,&pres->data.raw[0]);
             }
 
+
         }
+    }else{
+    	printf("cmd value = 0x%08x\r\n",cmd);
     }
     return nres;
 }
@@ -116,8 +122,10 @@ vatek_result cmd_bridge_device(hvatek_bridge hbridge, Phid_bridge_cmd pcmd, Phid
 			{
 				uint8_t* ptrbuf = NULL;
 				nres = bstorage_get(pbridge,&ptrbuf,rlen);
-				if(is_vatek_success(nres))
+				if(is_vatek_success(nres)){
 					memcpy(&pres->data.raw[0],ptrbuf,rlen);
+
+				}
 			}
 		}
 	}else if(cmd == BDEVICE_CMD_BFLASH_END)
