@@ -41,7 +41,13 @@ As the Encmoder with both HDMI and USB 2.0 inputs, it provides outstanding solut
 	- Use CMake application, select vatek_sdk_2 folder in the “source code” section, select bin folder under vatek_sdk_2 folder in the “build the binaries” section.（You can choose to use QT interface or not. If not, please uncheck sdk2_ EN_ QT.）
 	- In the bin folder, there are VS project file (vatek_sdk_2.sln), execute and compile.
 	- The executables and binaries (.dll) are built in directories bin\Release or bin\Debug.
-
+	
+	##### Windows
+	
+	- [Vatek_toolkit - Modulator Series user guide](http://www.vatek.com.tw/static/files/VATek_Toolkit_A_220406.pdf)
+	- [Vatek_toolkit - Enmoder Series user guide](http://www.vatek.com.tw/static/files/vatek_toolkit_B.pdf)
+	- [Vatek_romtool - user guide](http://www.vatek.com.tw/static/files/vatek_romtool Guideline_220211.pdf)
+	
 	#### Linux 
 
 	- Being tested based on Ubuntu.
