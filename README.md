@@ -42,11 +42,11 @@ As the Encmoder with both HDMI and USB 2.0 inputs, it provides outstanding solut
 	- In the bin folder, there are VS project file (vatek_sdk_2.sln), execute and compile.
 	- The executables and binaries (.dll) are built in directories bin\Release or bin\Debug.
 	
-	##### Windows
+	##### Windows tool user guide
 	
-	- [Vatek_toolkit - Modulator Series user guide](http://www.vatek.com.tw/static/files/VATek_Toolkit_A_220406.pdf)
-	- [Vatek_toolkit - Enmoder Series user guide](http://www.vatek.com.tw/static/files/vatek_toolkit_B.pdf)
-	- [Vatek_romtool - user guide](http://www.vatek.com.tw/static/files/vatek_romtool Guideline_220211.pdf)
+	- [Vatek_toolkit - Modulator Series](http://www.vatek.com.tw/static/files/VATek_Toolkit_A_220406.pdf)
+	- [Vatek_toolkit - Enmoder Series](http://www.vatek.com.tw/static/files/vatek_toolkit_B.pdf)
+	- [Vatek_romtool](http://www.vatek.com.tw/static/files/vatek_romtool%20Guideline_220211.pdf)
 	
 	#### Linux 
 
