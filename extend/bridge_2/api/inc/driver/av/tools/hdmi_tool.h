@@ -114,23 +114,23 @@ CEA-861
 
 static const hdmi_video_id hdmi_video_table[] =
 {
-    {VID_480P_59_4_3    ,PIXEL_REPETITION_0,resolution_480p ,framerate_59_94,aspectrate_4_3 ,27000,16,62,60,9,20,6,},
-    {VID_480P_59_16_9   ,PIXEL_REPETITION_0,resolution_480p ,framerate_59_94,aspectrate_16_9,27000,16,62,60,9,20,6,},
-    {VID_720P_60        ,PIXEL_REPETITION_0,resolution_720p ,framerate_60   ,aspectrate_16_9,74250,110,40,220,5,20,5,},
-    {VID_1080I_60       ,PIXEL_REPETITION_0,resolution_1080i,framerate_60   ,aspectrate_16_9,74250,88,44,148,2,15,5,},
-    {VID_480I_59_4_3    ,PIXEL_REPETITION_2,resolution_480i ,framerate_60   ,aspectrate_4_3 ,27000,38,124,114,4,15,3,},
-    {VID_480I_59_16_9   ,PIXEL_REPETITION_2,resolution_480i ,framerate_60   ,aspectrate_16_9,27000,38,124,114,4,15,3,},
-    {VID_1080P_60       ,PIXEL_REPETITION_0,resolution_1080p,framerate_60   ,aspectrate_16_9,148500,88,44,148,4,36,5,},
-    {VID_576P_50_4_3    ,PIXEL_REPETITION_0,resolution_576p ,framerate_50   ,aspectrate_4_3 ,27000,16,64,68,5,39,5,},
-    {VID_576P_50_16_9   ,PIXEL_REPETITION_0,resolution_576p ,framerate_50   ,aspectrate_16_9,27000,16,64,68,5,39,5,},
-    {VID_720P_50        ,PIXEL_REPETITION_0,resolution_720p ,framerate_50   ,aspectrate_16_9,74250,440,40,220,5,20,5,},
-    {VID_1080I_50       ,PIXEL_REPETITION_0,resolution_1080i,framerate_50   ,aspectrate_16_9,74250,528,44,148,2,15,5,},
-    {VID_576I_50_4_3    ,PIXEL_REPETITION_2,resolution_576i ,framerate_50   ,aspectrate_4_3 ,27000,24,126,138,2,19,3,},
-    {VID_576I_50_16_9   ,PIXEL_REPETITION_2,resolution_576i ,framerate_50   ,aspectrate_16_9,27000,24,126,138,2,19,3,},
+	{VID_1080P_60       ,PIXEL_REPETITION_0,resolution_1080p,framerate_60   ,aspectrate_16_9,148500,88,44,148,4,36,5,},
     {VID_1080P_50       ,PIXEL_REPETITION_0,resolution_1080p,framerate_50   ,aspectrate_16_9,148500,528,44,148,4,36,5,},
-    {VID_1080P_24       ,PIXEL_REPETITION_0,resolution_1080p,framerate_24   ,aspectrate_16_9,74250,638,44,148,4,36,5,},
-    {VID_1080P_25       ,PIXEL_REPETITION_0,resolution_1080p,framerate_25   ,aspectrate_16_9,74250,528,44,148,4,36,5,},
     {VID_1080P_30       ,PIXEL_REPETITION_0,resolution_1080p,framerate_30   ,aspectrate_16_9,74250,88,44,148,4,36,5,},
+    {VID_1080P_25       ,PIXEL_REPETITION_0,resolution_1080p,framerate_25   ,aspectrate_16_9,74250,528,44,148,4,36,5,},
+    {VID_1080P_24       ,PIXEL_REPETITION_0,resolution_1080p,framerate_24   ,aspectrate_16_9,74250,638,44,148,4,36,5,},
+    {VID_1080I_60       ,PIXEL_REPETITION_0,resolution_1080i,framerate_60   ,aspectrate_16_9,74250,88,44,148,2,15,5,},
+    {VID_1080I_50       ,PIXEL_REPETITION_0,resolution_1080i,framerate_50   ,aspectrate_16_9,74250,528,44,148,2,15,5,},
+    {VID_720P_60        ,PIXEL_REPETITION_0,resolution_720p ,framerate_60   ,aspectrate_16_9,74250,110,40,220,5,20,5,},
+    {VID_720P_50        ,PIXEL_REPETITION_0,resolution_720p ,framerate_50   ,aspectrate_16_9,74250,440,40,220,5,20,5,},
+    {VID_576P_50_16_9   ,PIXEL_REPETITION_0,resolution_576p ,framerate_50   ,aspectrate_16_9,27000,16,64,68,5,39,5,},
+    {VID_576P_50_4_3    ,PIXEL_REPETITION_0,resolution_576p ,framerate_50   ,aspectrate_4_3 ,27000,16,64,68,5,39,5,},
+    {VID_576I_50_16_9   ,PIXEL_REPETITION_2,resolution_576i ,framerate_50   ,aspectrate_16_9,27000,24,126,138,2,19,3,},
+    {VID_576I_50_4_3    ,PIXEL_REPETITION_2,resolution_576i ,framerate_50   ,aspectrate_4_3 ,27000,24,126,138,2,19,3,},
+    {VID_480P_59_16_9   ,PIXEL_REPETITION_0,resolution_480p ,framerate_60   ,aspectrate_16_9,27000,16,62,60,9,20,6,},
+	{VID_480P_59_4_3    ,PIXEL_REPETITION_0,resolution_480p ,framerate_60   ,aspectrate_4_3 ,27000,16,62,60,9,20,6,},
+    {VID_480I_59_16_9   ,PIXEL_REPETITION_2,resolution_480i ,framerate_60   ,aspectrate_16_9,27000,38,124,114,4,15,3,},
+	{VID_480I_59_4_3    ,PIXEL_REPETITION_2,resolution_480i ,framerate_60   ,aspectrate_4_3 ,27000,38,124,114,4,15,3,},
 };
 
 #define HDMI_VIDEO_ID_NUMS  (sizeof(hdmi_video_table)/sizeof(hdmi_video_id))

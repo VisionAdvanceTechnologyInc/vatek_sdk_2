@@ -109,6 +109,7 @@ void qtvUITabCalibration::resetCalibration()
 	vatek_result nres = m_handle->calibrationGet(&m_calibration);
 	if (!is_vatek_success(nres))memset(&m_calibration, 0, sizeof(calibration_param));
 
+
 	ui->sb_clock->setValue(m_calibration.clock);
 	ui->sb_ioffect_0->setValue(m_calibration.dac.ioffect);
 	ui->sb_qoffect_0->setValue(m_calibration.dac.qoffect);
@@ -118,6 +119,7 @@ void qtvUITabCalibration::resetCalibration()
 	ui->sb_qoffect_1->setValue(rfmixer_r2_tune2int(m_calibration.r2.qoffset, R2_RANGE_Q));
 	ui->sb_image_1->setValue(rfmixer_r2_tune2int(m_calibration.r2.imgoffset, R2_RANGE_IMG));
 	ui->sb_phase_1->setValue(rfmixer_r2_tune2int(m_calibration.r2.phaseoffset, R2_RANGE_PHASE));
+    ui->sb_r2->setValue(m_calibration.r2_power);
 
     if (!is_vatek_success(nres))QMessageBox::warning(this, "calibration", "get calibration param fail");
 }

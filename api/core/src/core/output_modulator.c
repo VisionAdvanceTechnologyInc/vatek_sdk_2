@@ -35,8 +35,14 @@ vatek_result modulator_param_reset(modulator_type type, Pmodulator_param pmod)
 	vatek_result nres = tool_ofdm_get_modulation(type, &pofdm);
 	if(is_vatek_success(nres))
 	{
-		pmod->ifmode = ifmode_disable;
-		pmod->iffreq_offset = 0;
+		if (type == modulator_isdb_t) {
+			pmod->ifmode = ifmode_iqoffset;
+			pmod->iffreq_offset = 143;
+		}
+		else {
+			pmod->ifmode = ifmode_disable;
+			pmod->iffreq_offset = 0;
+		}
 		pmod->dac_gain = 0;
 		pmod->bandwidth_symbolrate = default_bw_sb[type];
 		pmod->type = type;

@@ -96,6 +96,7 @@ vatek_result calibration_get(hvatek_chip hchip, Pcalibration_param pcalibration)
 	{
 		uint32_t val = 0;
 		nres = vatek_chip_read_memory(hchip, HALREG_CALIBRATION_CLOCK, &val);
+
 		if (is_vatek_success(nres))
 		{
 			pcalibration->clock = (int32_t)val;
@@ -107,6 +108,10 @@ vatek_result calibration_get(hvatek_chip hchip, Pcalibration_param pcalibration)
 				pcalibration->dac.igain = _calibration_dac_igain(val);
 				pcalibration->dac.qgain = _calibration_dac_qgain(val);
 				nres = ui_props_read_hal(hchip, _ui_struct(r2_tune_calibration0), (uint8_t*)&pcalibration->r2);
+				
+				// read PA_gain (write PA_GAIN TAG) 
+				nres = vatek_chip_write_memory(hchip, HALREG_EXT_R2_GAIN, EXT_R2_GAIN_EN_READ);
+
 			}
 		}
 	}

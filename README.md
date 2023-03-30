@@ -33,7 +33,7 @@ As the Encmoder with both HDMI and USB 2.0 inputs, it provides outstanding solut
 
 ### Building & Usage
 - The SDK was originally compiled in the way of CMAKE to obtain the example execution file. Vatek provides instructions for CMAKE compilation, so that users can get started quickly. Users can also compile on their own with a familiar compilation platform and read the file to get more relevant operation.
-- See more detail in [SDK document](http://www.vatek.com.tw/static/files/VATEK%20%20Development%20Guideline.pdf)
+- See more detail in [SDK document](http://www.vatek.com.tw/static/files/VATEK%20%20Development%20Guideline_20220526.pdf)
 
 	#### Windows
 
@@ -41,13 +41,7 @@ As the Encmoder with both HDMI and USB 2.0 inputs, it provides outstanding solut
 	- Use CMake application, select vatek_sdk_2 folder in the “source code” section, select bin folder under vatek_sdk_2 folder in the “build the binaries” section.（You can choose to use QT interface or not. If not, please uncheck sdk2_ EN_ QT.）
 	- In the bin folder, there are VS project file (vatek_sdk_2.sln), execute and compile.
 	- The executables and binaries (.dll) are built in directories bin\Release or bin\Debug.
-	
-	##### Windows tool user guide
-	
-	- [Vatek_toolkit - Modulator Series](http://www.vatek.com.tw/static/files/VATek_Toolkit_A_220406.pdf)
-	- [Vatek_toolkit - Enmoder Series](http://www.vatek.com.tw/static/files/vatek_toolkit_B.pdf)
-	- [Vatek_romtool](http://www.vatek.com.tw/static/files/vatek_romtool%20Guideline_220211.pdf)
-	
+
 	#### Linux 
 
 	- Being tested based on Ubuntu.
@@ -57,8 +51,8 @@ As the Encmoder with both HDMI and USB 2.0 inputs, it provides outstanding solut
 
 ### Download
 
-- On Windows：(Windows 10) provides [binary](https://github.com/VisionAdvanceTechnologyInc/vatek_sdk_2/releases/download/v3.08/VATek-Win64-3.08.exe) and [open source](https://github.com/VisionAdvanceTechnologyInc/vatek_sdk_2/archive/refs/tags/v3.08.zip).
-- On Linux： (Ubuntu) provides [binary](https://github.com/VisionAdvanceTechnologyInc/vatek_sdk_2/releases/download/v3.08/VATek-Linux-x86_64-3.08.tgz) and [open source](https://github.com/VisionAdvanceTechnologyInc/vatek_sdk_2/archive/refs/tags/v3.08.tar.gz). 
+- On Windows：(Windows 10) provides [binary](https://www.vatek.com.tw/static/files/VATek-Win64-3.06.exe) and [open source](https://github.com/VisionAdvanceTechnologyInc/vatek_sdk_2/archive/refs/tags/v3.06.zip).
+- On Linux： (Ubuntu) provides [binary](https://www.vatek.com.tw/static/files/VATek-Linux-x86_64-3.06.tgz) and [open source](https://github.com/VisionAdvanceTechnologyInc/vatek_sdk_2/archive/refs/tags/v3.06.tar.gz). 
 - On macOS： [Homebrew packager] Use `brew install libvatek`.
 
 ### License

@@ -31,7 +31,7 @@
 #include <core/hal/halservice_rescure.h>
 #include <core/hal/halreg_calibration.h>
 #include <core/base/output_rfmixer.h>
-
+#include <service/ui/ui_service_transform.h>
 #include "device/internal/cross_device_tool.h"
 
 extern vatek_result vatek_device_malloc(Pcross_device pcross,Pvatek_device* pvatek);
@@ -329,7 +329,7 @@ vatek_result vatek_device_calibration_save(hvatek_chip hchip, Pcalibration_param
 	return nres;
 }
 
-vatek_result vatek_device_stream_start(hvatek_chip hchip, Pmodulator_param pmod)
+vatek_result vatek_device_stream_start(hvatek_chip hchip, Pmodulator_param pmod, uint32_t stream_mode)
 {
 	Pvatek_device pvatek = (Pvatek_device)hchip;
 	Pcross_stream pstream = pvatek->cross->stream;
@@ -348,8 +348,9 @@ vatek_result vatek_device_stream_start(hvatek_chip hchip, Pmodulator_param pmod)
 		if (is_vatek_success(nres))
 		{
 			cross_stream_mode mode = stream_mode_output;
-			/* _isdb-t must disable usb_dma because chip memory bandwidth limited. */
-			if (pmod->type == modulator_isdb_t || pmod->type == modulator_dtmb)
+			/* _isdb-t must disable usb_dma because chip memory bandwidth limited. 
+				DVB-T2 only remux set output_nodma*/
+			if (pmod->type == modulator_isdb_t || pmod->type == modulator_dtmb || (stream_mode == stream_remux && pmod->type == modulator_dvb_t2))
 				mode = stream_mode_output_nodma;
 			nres = pstream->start_stream(pvatek->cross->hcross, mode);
 			if (is_vatek_success(nres))

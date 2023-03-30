@@ -55,10 +55,13 @@ typedef struct _bridge_encoder_param
 	audio_codec acodec;
 	audio_channel channel;
 	bridge_tag_device source;
-	uint32_t en_flags;		/*!< extend encoder function select */
+	uint32_t en_flags;		
+	uint32_t manual_en_flags;		/*!< extend encoder function manual write */
 	quality_param quality;
 	uint32_t vi_flags;
-	//uint16_t en_viparam;
+	uint32_t manual_vi_flags;		/*!< extend vi function manual write */
+	uint32_t mux_bitrate;
+
 }bridge_encoder_param, * Pbridge_encoder_param;
 
 class qbridge_avsource_property : public qi_property

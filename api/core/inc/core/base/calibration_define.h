@@ -47,7 +47,7 @@ typedef struct _calibration_param
 	int32_t clock;
 	calibration_dac dac;
 	r2_tune r2;
-	int r2_power;
+	uint32_t r2_power;
 	int dac_power;
 }calibration_param;
 

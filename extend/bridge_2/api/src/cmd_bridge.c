@@ -63,7 +63,7 @@ vatek_result cmd_bridge_source(hvatek_bridge hbridge, Phid_bridge_cmd pcmd, Phid
             	tick_stop = vatek_get_tick_ms();
             	printf("stop time = 0x%08x\r\n",tick_stop);
             	printf("bridge during time = 0x%08x\r\n",(tick_stop-tick_start));
-                nres = cmdsource_stop(hbridge);
+            	nres = cmdsource_stop(hbridge);
             }
             else nres = vatek_badparam;
         }

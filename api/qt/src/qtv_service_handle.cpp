@@ -105,9 +105,17 @@ vatek_result qi_servicehandle::calibrationSet(Pcalibration_param pcalibration)
 vatek_result qi_servicehandle::calibrationGet(Pcalibration_param pcalibration)
 {
 	vatek_result nres = vatek_unsupport;
+	uint32_t val = 0;
+
 	if (m_encalibration)
 	{
 		memcpy(pcalibration, &m_calibration, sizeof(calibration_param));
+		
+		if (m_calibration.r2_power == 0) {
+			nres = vatek_chip_read_memory(m_hchip, HALREG_EXT_R2_GAIN, &val); // read PA_Gain
+			pcalibration->r2_power = val;
+		}
+
 		nres = vatek_success;
 	}
 	return nres;

@@ -40,6 +40,7 @@ qusbstream_properties::qusbstream_properties()
 	m_param.source.source = stream_source_usb;
 	m_param.source.stream.usb.mode = stream_remux;
 	m_param.source.stream.usb.pcrmode = pcr_disable;
+	m_param.source.stream.usb.usb_flags = USB_EN_ASYNCBUFFER;
 	resetProperties();
 	refreshProperties();
 }

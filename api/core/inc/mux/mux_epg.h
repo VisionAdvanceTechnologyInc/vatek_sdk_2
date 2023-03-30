@@ -33,14 +33,16 @@
 
 /* first section started at current hour (default start at 00:00:00)*/
 #define EPG_FLAG_START_HOUR				0x00000001	
-#define EPG_TITLE_MAX_LEN				64
+#define EPG_TITLE_MAX_LEN				256
 #define EPG_DESC_MAX_LEN				64
-#define EPG_CONTENT_MAX_LEN				256
+#define EPG_CONTENT_MAX_LEN				512
 
 typedef enum _mux_epg_mode{
+	epg_mode_null = -1,
 	epg_mode_dvb = 0,
 	epg_mode_arib_0 = 1,
 	epg_mode_arib_1 = 2,
+	epg_mode_simple = 3,
 }mux_epg_mode;
 
 #define  is_current_mux_epg_mode(mode)	(mode >= epg_mode_dvb && mode <= epg_mode_arib_1)
@@ -81,38 +83,21 @@ typedef struct _mux_epg_section{
 
 typedef mux_epg_section* Pmux_epg_section;
 
-typedef struct _mux_epg_desc{
-	struct _mux_epg_desc* next;
-	uint32_t tag;
-	uint32_t len;
-	uint8_t desc_buf[EPG_DESC_MAX_LEN];
-}mux_epg_desc;
-
-typedef mux_epg_desc* Pmux_epg_desc;
-
 typedef struct _mux_epg_param{
 	mux_epg_mode mode;
-	uint32_t epg_flags;
 	mux_time start_time;
 	uint16_t event_id;
-	uint8_t days;
-	uint8_t recv;
-	uint32_t loop_ms;
+	uint16_t recv;
 	Pmux_epg_section sections;
-	Pmux_epg_desc descriptors;
 }mux_epg_param;
 
 typedef mux_epg_param* Pmux_epg_param;
-
-/* first section started at current hour (default start at 00:00:00)*/
-#define EPG_FLAG_START_HOUR			0x00000001	
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
 	HAL_API vatek_result muxepg_create(Pth_mempool pmem, mux_epg_mode mode, Pmux_epg_param* pepg);
-	HAL_API vatek_result muxepg_create_desc(Pth_mempool pmem, Pmux_epg_param pepg, Pmux_epg_desc* pdesc);
 	HAL_API vatek_result muxepg_check(Pmux_epg_param pepg);
 
 #ifdef __cplusplus

@@ -194,6 +194,16 @@ vatek_result usb_api_ll_set_dma(husb_device husb, int32_t isdma)
 	return nres;
 }
 
+void usb_api_ll_lock(husb_device husb) {
+	Pusb_handle pusb = (Pusb_handle)husb;
+	cross_os_lock_mutex(pusb->lock);
+}
+
+void usb_api_ll_unlock(husb_device husb) {
+	Pusb_handle pusb = (Pusb_handle)husb;
+	cross_os_release_mutex(pusb->lock);
+}
+
 vatek_result usb_api_ll_write(husb_device husb, uint8_t* pbuf, int32_t len)
 {
 	Pusb_handle pusb = (Pusb_handle)husb;
@@ -202,7 +212,6 @@ vatek_result usb_api_ll_write(husb_device husb, uint8_t* pbuf, int32_t len)
 	{
 		WINUSB_INTERFACE_HANDLE* hdevice = (WINUSB_INTERFACE_HANDLE*)pusb->husb;
 		int32_t rlen = 0;
-		cross_os_lock_mutex(pusb->lock);
 		if (!pusb->is_dma)
 		{
 			usb_ll_convert_bufffer(pbuf, pusb->none_dmabuf, len);
@@ -210,7 +219,6 @@ vatek_result usb_api_ll_write(husb_device husb, uint8_t* pbuf, int32_t len)
 		}
 		nres = (vatek_result)WinUsb_WritePipe(hdevice, USBDEV_BULK_WRITE_EP, pbuf, len, &rlen, NULL);
 		if (is_vatek_success(nres))nres = (vatek_result)rlen;
-		cross_os_release_mutex(pusb->lock);
 	}
 	return nres;
 }
@@ -219,8 +227,6 @@ vatek_result usb_api_ll_read(husb_device husb, uint8_t* pbuf, int32_t len)
 {
 	Pusb_handle pusb = (Pusb_handle)husb;
 	vatek_result nres = vatek_success;
-	cross_os_lock_mutex(pusb->lock);
-
 	if (len > CHIP_STREAM_SLICE_LEN || (len % 64) != 0)nres = vatek_badparam;
 	else
 	{
@@ -229,8 +235,6 @@ vatek_result usb_api_ll_read(husb_device husb, uint8_t* pbuf, int32_t len)
 		nres = (vatek_result)WinUsb_ReadPipe(hdevice, USBDEV_BULK_READ_EP, pbuf, len, &rlen, NULL);
 		if (is_vatek_success(nres))nres = (vatek_result)rlen;
 	}
-
-	cross_os_release_mutex(pusb->lock);
 	return nres;
 }
 
@@ -267,11 +271,9 @@ vatek_result usb_api_ll_command(husb_device husb, uint8_t cmd, uint32_t param0, 
 	SetupPacket_rx.Index = widx;
 	SetupPacket_rx.Length = 0;
 
-	cross_os_lock_mutex(pusb->lock);
 	if (rxbuf != NULL)
 		nres = WinUsb_ControlTransfer(pusb->husb, SetupPacket_tx, rxbuf, 8, &cbSent, NULL);
 	else nres = WinUsb_ControlTransfer(pusb->husb, SetupPacket_rx, NULL, 0, &cbSent, NULL);
-	cross_os_release_mutex(pusb->lock);
 
 	if (!is_vatek_success(nres))nres = vatek_hwfail;
 	return nres;
@@ -289,7 +291,6 @@ vatek_result usb_api_ll_bulk_send_command(husb_device husb, Pusbbulk_command pcm
 	vatek_result nres = vatek_badstatus;
 	if (!pusb->is_dma)
 	{
-		cross_os_lock_mutex(pusb->lock);
 		nres = usbbulk_command_set(pcmd, pusb->none_dmabuf);
 		if (is_vatek_success(nres))
 		{
@@ -301,7 +302,6 @@ vatek_result usb_api_ll_bulk_send_command(husb_device husb, Pusbbulk_command pcm
 			nres = (vatek_result)WinUsb_WritePipe(hdevice, USBDEV_BULK_WRITE_EP, prawbuf, pusb->bulksize, &rlen, NULL);
 			if (is_vatek_success(nres))nres = (vatek_result)rlen;
 		}
-		cross_os_release_mutex(pusb->lock);
 	}
 	return nres;
 }
@@ -315,14 +315,12 @@ vatek_result usb_api_ll_bulk_get_result(husb_device husb, Pusbbulk_result presul
 		WINUSB_INTERFACE_HANDLE* hdevice = (WINUSB_INTERFACE_HANDLE*)pusb->husb;
 		int32_t rlen = 0;
 		uint8_t* prawbuf = &pusb->none_dmabuf[pusb->bulksize];
-		cross_os_lock_mutex(pusb->lock);
 		nres = (vatek_result)WinUsb_ReadPipe(hdevice, USBDEV_BULK_READ_EP, pusb->none_dmabuf, pusb->bulksize, &rlen, NULL);
 		if (is_vatek_success(nres))
 		{
 			usb_ll_convert_bufffer(pusb->none_dmabuf, prawbuf, pusb->bulksize);
 			nres = usbbulk_result_get(presult, prawbuf);
 		}
-		cross_os_release_mutex(pusb->lock);
 	}
 	return nres;
 }
@@ -340,7 +338,6 @@ vatek_result usb_api_ll_bulk_write(husb_device husb, uint8_t* pbuf, int32_t len)
 		uint8_t* ptrbuf = pbuf;
 		uint8_t* prawbuf = pusb->none_dmabuf;
 		int32_t pos = 0;
-		cross_os_lock_mutex(pusb->lock);
 		while (len > pos)
 		{
 			int32_t nrecv = len - pos;
@@ -356,7 +353,6 @@ vatek_result usb_api_ll_bulk_write(husb_device husb, uint8_t* pbuf, int32_t len)
 			}
 			else pos += neach;
 		}
-		cross_os_release_mutex(pusb->lock);
 	}
 	return nres;
 }
@@ -372,7 +368,6 @@ vatek_result usb_api_ll_bulk_read(husb_device husb, uint8_t* pbuf, int32_t len)
 		uint8_t* ptrbuf = pbuf;
 		uint8_t* prawbuf = pusb->none_dmabuf;
 		int32_t pos = 0;
-		cross_os_lock_mutex(pusb->lock);
 		while (len > pos)
 		{
 			int32_t nrecv = len - pos;
@@ -387,7 +382,6 @@ vatek_result usb_api_ll_bulk_read(husb_device husb, uint8_t* pbuf, int32_t len)
 				pos += neach;
 			}
 		}
-		cross_os_release_mutex(pusb->lock);
 	}
 	return nres;
 }
@@ -425,13 +419,9 @@ vatek_result usb_api_ll_command_buffer(husb_device husb, uint8_t cmd, uint8_t* p
 	SetupPacket_rx.Index = widx;
 	SetupPacket_rx.Length = 0;
 
-	cross_os_lock_mutex(pusb->lock);
-
 	if (rxbuf != NULL)
 		nres = WinUsb_ControlTransfer(pusb->husb, SetupPacket_tx, rxbuf, 8, &cbSent, NULL);
 	else nres = WinUsb_ControlTransfer(pusb->husb, SetupPacket_rx, NULL, 0, &cbSent, NULL);
-
-	cross_os_release_mutex(pusb->lock);
 
 	if (!is_vatek_success(nres))nres = vatek_hwfail;
 	return nres;

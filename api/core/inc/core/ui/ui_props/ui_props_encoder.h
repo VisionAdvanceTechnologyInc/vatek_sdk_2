@@ -157,6 +157,7 @@ _ui_flags_start(vi_param, vi_flags)
 	_val(VI_HSYNC_INVERSE, en_hsync_negative)
 	_val(VI_VSYNC_INVERSE, en_vsync_negative)
 	_val(VI_EXT_HALF_FPS, en_half_fps)
+	_val(VI_FIELD_INVERSE, en_field_inverse)
 _ui_flags_end
 
 /* struct vi param*/
@@ -167,6 +168,7 @@ _ui_flags_start(bridge_encoder_param, vi_flags)
 	_val(VI_HSYNC_INVERSE, en_hsync_negative)
 	_val(VI_VSYNC_INVERSE, en_vsync_negative)
 	_val(VI_EXT_HALF_FPS, en_half_fps)
+	_val(VI_FIELD_INVERSE, en_field_inverse)
 _ui_flags_end
 
 _ui_struct_start(vi_param)
@@ -190,6 +192,8 @@ _ui_flags_start(encoder_param, encoder_flags)
 	_val(ENC_DIS_LATENCY_Q, disable_latency_q)
 	_val(ENC_EN_SW_I2S, en_sw_i2s)
 	_val(ENC_EN_SW_CLK, en_sw_clk)
+	_val(ENC_EN_DROP_FRAME, en_drop_frame)
+	_val(ENC_EN_Q_COST, en_q_cost)
 _ui_flags_end
 
 _ui_struct_start(encoder_param)
@@ -209,6 +213,9 @@ _ui_flags_start(bridge_encoder_param, en_flags)
 	_val(ENC_DIS_LATENCY_Q, disable_latency_q)
 	_val(ENC_EN_SW_I2S, en_sw_i2s)
 	_val(ENC_EN_SW_CLK, en_sw_clk)
+	_val(ENC_EN_DROP_FRAME, en_drop_frame)
+	_val(ENC_EN_Q_COST, en_q_cost)
+		
 _ui_flags_end
 
 /* audio codec define */

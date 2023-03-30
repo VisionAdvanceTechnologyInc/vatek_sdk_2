@@ -215,7 +215,7 @@ void vatek_factory::recvBuildImage()
             szfilename = QFileDialog::getSaveFileName(this, "Build Image", szfilename, "v2Image (*.v2img)");
             if (!szfilename.isEmpty())
             {
-                std::string szimg = szfilename.toStdString();
+                std::string szimg = szfilename.toLocal8Bit();
                 nres = vatek_storage_save(m_hstorage, szimg.c_str());
             }
             else return;

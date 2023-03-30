@@ -36,6 +36,7 @@
 #include <core/base/stream_base.h>
 #include <mux/mux_define.h>
 #include <core/ui/ui_props_define.h>
+#include <service/service_broadcast.h>
 
 #ifdef LIBVATEK_QT_STATIC
 	#define QTV_DECL
@@ -138,6 +139,7 @@ typedef struct _qtv_source_param
 	{
 		tsin_param tsin;
 		encoder_param encoder;
+		mux_param mux;
 		usb_param usb;
 	}stream;
 }qtv_source_param,*Pqtv_source_param;

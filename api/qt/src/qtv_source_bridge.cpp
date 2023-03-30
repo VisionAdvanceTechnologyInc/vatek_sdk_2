@@ -29,6 +29,7 @@
 #include "./internal/source/qsource_bridge.h"
 #include <core/qtv_service.h>
 
+
 extern const ui_prop_item bridge_encoder_param_struct[];
 
 /* qbridge_avsource_property */
@@ -62,26 +63,23 @@ qbridge_encoder_properties::qbridge_encoder_properties(qtvDevice* device) :
 	m_device(device)
 {
 	m_param.vcodec = encvideo_mpeg2;
-	//m_param.video.resolution = resolution_1080p;
-	//m_param.video.framerate = framerate_60;
-	//m_param.video.aspectrate = aspectrate_16_9;
 	m_param.acodec = encaudio_mp2;
 	m_param.channel = channel_stereo;
-	//m_param.audio.samplerate = sample_rate_32;
 
+
+	m_param.vi_flags = EP9555E_VI_FLAG;
 	if (m_device->_chip_info()->chip_module == ic_module_b3_lite)
 		m_param.vcodec = encvideo_h264;
+
 	m_param.source = (bridge_tag_device)m_bridge->_sources().first()->source_id;
 	m_param.pcrpid = 0x100;
 	m_param.pmtpid = 0x1000;
 	m_param.video_pid = 0x1001;
 	m_param.audio_pid = 0x1002;
 	m_param.en_flags = 0;
-	//m_param.viparam.offset_x = 0;
-	//m_param.viparam.offset_y = 0;
-	m_param.vi_flags = EP9555E_VI_FLAG;
-	//m_param.viparam.vi_pixelclk = 148500;
-	//m_param.en_viparam = 0;
+	m_param.manual_en_flags = 0;
+	m_param.manual_vi_flags = 0;
+	m_param.mux_bitrate = 21000000;
 	resetProperties();
 	refreshProperties();
 }
@@ -97,11 +95,7 @@ void qbridge_encoder_properties::refreshProperties()
 {
 	clearProperties();
 	insertProperties(_ui_struct(bridge_encoder_param), (uint8_t*)&m_param);
-	insertProperties(_ui_struct(quality_param), (uint8_t*)&m_param.quality);
-	//insertProperties(_ui_struct(vi_param), (uint8_t*)&m_param.viparam);
-
-	
-	
+	insertProperties(_ui_struct(quality_param), (uint8_t*)&m_param.quality);	
 }
 
 void qbridge_encoder_properties::insertProperty(const Pui_prop_item uiprop, uint8_t* raw)
@@ -290,24 +284,28 @@ qtv_status qbridge_encoder_source::checkSourceStatus()
 
 void qbridge_encoder_source::resetParam(qtv_status qstatus)
 {
-	Pencoder_param penc = &m_param.stream.encoder;
 	bridge_encoder_param benc = m_properties->_bridge_param();
+
+	Pencoder_param penc = &m_param.stream.encoder;
+	//Pmux_param pmux = &m_param.stream.mux;
 
 	memset(&m_param, 0, sizeof(qtv_source_param));
 	m_param.filter = qfilter_disable;
 	m_param.source = stream_source_encoder;
+
 	memcpy(penc, &default_encoder_param, sizeof(encoder_param));
+	//memcpy(pmux, &default_mux_param, sizeof(mux_param));
 
 	penc->pmt_pid = benc.pmtpid;
 	penc->audio_pid = benc.audio_pid;
 	penc->video_pid = benc.video_pid;
-	penc->encoder_flags = benc.en_flags;
+	penc->encoder_flags = benc.en_flags | benc.manual_en_flags;
 	penc->mode = encoder_source_colorbar;
 	memcpy(&penc->quality, &benc.quality, sizeof(quality_param));
 	penc->audio.acodec = benc.acodec;
 	penc->audio.channel = benc.channel;
 	penc->video.vcodec = benc.vcodec; 
-	penc->viparam.vi_flags = benc.vi_flags;
+	penc->viparam.vi_flags = benc.vi_flags | benc.manual_vi_flags;
 
 	if (qstatus == qstatus_lock)
 	{
@@ -319,6 +317,8 @@ void qbridge_encoder_source::resetParam(qtv_status qstatus)
 		penc->video.framerate = m_bsource->video_info.framerate;
 		penc->video.aspectrate = m_bsource->video_info.aspectrate;
 		penc->audio.samplerate = m_bsource->audio_info.samplerate;
+		// mux bitrate
+		//pmux->bitrate = benc.mux_bitrate;
 	}
 }
 
@@ -336,12 +336,14 @@ _ui_struct_start(bridge_encoder_param)
 	_prop_h16(bridge_encoder_param, pcrpid, "pcr pid", NULLHAL)
 	_prop_h16(bridge_encoder_param, pmtpid, "pmt pid", NULLHAL)
 	_prop_flag(bridge_encoder_param, en_flags, "enc - function flag", ENCODER_FLAGS)
+	_prop_h32(bridge_encoder_param, manual_en_flags, "manual enc - function flag", NULLHAL)
 	_prop_flag(bridge_encoder_param, vi_flags, "vi - function flag", VI_0_FLAGS)
+	_prop_h32(bridge_encoder_param, manual_vi_flags, "manual vi - function flag", NULLHAL)
 	_prop_h16(bridge_encoder_param, video_pid, "video pid", NULLHAL)
 	_prop_h16(bridge_encoder_param, audio_pid, "audio pid", NULLHAL)
 	_prop_enum(bridge_encoder_param, video_codec, vcodec, "video codec", NULLHAL)
 	_prop_enum(bridge_encoder_param, audio_codec, acodec, "audio codec", NULLHAL)
 	_prop_enum(bridge_encoder_param, audio_channel, channel, "audio codec", NULLHAL)
 	_prop_enum(bridge_encoder_param, bridge_tag_device, source, "source", NULLHAL)
-	//_prop_h16(bridge_encoder_param, en_viparam, "en_vi_param", NULLHAL)
+	//_prop_u32(bridge_encoder_param, mux_bitrate, "mux_bitrate", NULLHAL)
 _ui_struct_end

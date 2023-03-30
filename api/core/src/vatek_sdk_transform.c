@@ -180,9 +180,12 @@ vatek_result vatek_transform_start_broadcast(hvatek_transform htr, Ptransform_br
 vatek_result vatek_transform_polling(hvatek_transform htr, Ptransform_info* pinfo)
 {
 	Phandle_transform phtr = (Phandle_transform)htr;
+	uint32_t val = 0;
+
 	vatek_result nres = vatek_badstatus;
 	if (phtr->info.mode != trmode_null)
 	{
+
 		nres = transform_check_status(phtr->hchip, chip_status_running);
 		if (!is_vatek_success(nres))nres = broadcast_info_get(phtr->hchip, &phtr->info.info);
 		else

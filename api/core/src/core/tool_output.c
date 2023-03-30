@@ -40,7 +40,7 @@ typedef struct _modoutput_clock
 	mux_clock_tick tickpkt;
 	mux_clock_tick tickframe;
 	modulator_type modtype;
-	uint32_t adjusttick;
+	int32_t adjusttick;
 	int32_t adjustvalue;
 	ofdm_position pos;
 	union
@@ -134,7 +134,7 @@ vatek_result tool_output_clock_get_pcrpacket(houtput_clock houtclk, int32_t* int
 	}
 }
 
-void tool_output_clock_adjust_tick(houtput_clock houtclk,uint32_t tick27mhz)
+void tool_output_clock_adjust_tick(houtput_clock houtclk,int32_t tick27mhz)
 {
 	Pmodoutput_clock pout = (Pmodoutput_clock)houtclk;
 	pout->adjusttick = tick27mhz;
@@ -148,7 +148,7 @@ Pmux_clock_tick tool_output_clock_append(houtput_clock houtclk)
 	if (pout->pos.packetptr == pout->pos.packetnums)
 	{
 		Pofdm_frame pofdm = &pout->_h.ofdm;
-		uint32_t adjvalue = pout->adjustvalue / 5000;
+		int32_t adjvalue = pout->adjustvalue / 5000;
 
 		pout->adjustvalue %= 5000;
 
@@ -210,12 +210,8 @@ vatek_result tool_output_clock_reset(houtput_clock houtclk)
 		memset(&pout->tickframe, 0, sizeof(mux_clock_tick));
 		memset(&pout->tickpkt, 0, sizeof(mux_clock_tick));
 		pout->pos.packetnums = pofdm->packetnums;
-		if (!pofdm->packetnums == 0) {
-			pout->pos.pkttick = pofdm->frametick / pofdm->packetnums;
-		}
-		else {
-			pout->pos.pkttick = 0;
-		}
+		pout->pos.pkttick = pofdm->frametick / pofdm->packetnums;
+
 		nres = vatek_success;
 	}
 	return nres;

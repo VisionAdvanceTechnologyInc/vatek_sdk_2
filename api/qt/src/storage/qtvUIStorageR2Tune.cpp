@@ -85,6 +85,18 @@ protected:
 	}
 };
 
+class qi_r2tune_pa_editor : public QLineEdit
+{
+public:
+	qi_r2tune_pa_editor(int32_t index, uint32_t val, QWidget* parent = nullptr) :
+		QLineEdit(parent)
+	{
+		setText(QString(val));
+	}
+protected:
+
+};
+
 class qi_r2gpio_editor : public QComboBox
 {
 public:
@@ -158,12 +170,12 @@ public:
 			else if (index.column() == R2TABLE_IDX_IMG)return new qi_r2tune_editor(R2_RANGE_IMG,prule->tune.imgoffset, parent);
 			else if (index.column() == R2TABLE_IDX_PHASE)return new qi_r2tune_editor(R2_RANGE_PHASE,prule->tune.phaseoffset, parent);
 			else if (index.column() == R2TABLE_IDX_ADV_GPIO)return new qi_r2gpio_editor(prule->gpiocntl, parent);
-			else if (index.column() == R2TABLE_IDX_PA)return new qi_r2tune_editor(R2_RANGE_POWER,prule->pagain,parent);
+			else if (index.column() == R2TABLE_IDX_PA)return new qi_r2tune_pa_editor(R2_RANGE_POWER,prule->pagain,parent);
 		}
 		else
 		{
 			if (index.column() == R2TABLE_IDX_NORM_GPIO)return new qi_r2gpio_editor(prule->gpiocntl, parent);
-			else if (index.column() == R2TABLE_IDX_NORM_PA)return new qi_r2tune_editor(R2_RANGE_POWER, prule->pagain, parent);
+			else if (index.column() == R2TABLE_IDX_NORM_PA)return new qi_r2tune_pa_editor(R2_RANGE_POWER, prule->pagain, parent);
 		}
 		return QStyledItemDelegate::createEditor(parent, option, index);
 	}
@@ -181,14 +193,18 @@ public:
 			else
 			{
 				qi_r2tune_editor* pedit = static_cast<qi_r2tune_editor*>(editor);
+				qi_r2tune_pa_editor* pedit_pa = static_cast<qi_r2tune_pa_editor*>(editor);
+
 				if (index.column() == R2TABLE_IDX_I)prule->tune.ioffset = rfmixer_r2_int2tune(pedit->value(), R2_RANGE_I);
 				else if (index.column() == R2TABLE_IDX_Q)prule->tune.qoffset = rfmixer_r2_int2tune(pedit->value(), R2_RANGE_Q);
 				else if (index.column() == R2TABLE_IDX_IMG)prule->tune.imgoffset = rfmixer_r2_int2tune(pedit->value(), R2_RANGE_IMG);
 				else if (index.column() == R2TABLE_IDX_PHASE)prule->tune.phaseoffset = rfmixer_r2_int2tune(pedit->value(), R2_RANGE_PHASE);
 				else if (index.column() == R2TABLE_IDX_PA)
 				{
-					//prule->pagain = R2_REGDEF_GAIN;
-					prule->pagain = pedit->value();
+					QByteArray qArr = pedit_pa->text().toLatin1();
+					const char* cStr2 = qArr.data();
+					int num = (int)strtol(cStr2, NULL, 16);        // String to hex
+					prule->pagain = num;
 				}
 			}
 		}
@@ -201,9 +217,12 @@ public:
 			}
 			else if (index.column() == R2TABLE_IDX_NORM_PA)
 			{
-				qi_r2tune_editor* pedit = static_cast<qi_r2tune_editor*>(editor);
-				//prule->pagain = R2_REGDEF_GAIN;
-				prule->pagain = pedit->value();
+				qi_r2tune_pa_editor* pedit_pa = static_cast<qi_r2tune_pa_editor*>(editor);
+	
+				QByteArray qArr = pedit_pa->text().toLatin1();
+				const char* cStr2 = qArr.data();
+				int num = (int)strtol(cStr2, NULL, 16);       // String to hex
+				prule->pagain = num;
 			}
 		}
 		m_r2table->updateRule(&index);
@@ -248,6 +267,7 @@ qtvUITableR2Tune::~qtvUITableR2Tune()
 void qtvUITableR2Tune::setR2Tune(qtv_r2tune_mode mode, int32_t ruleidx, Pr2_tune_handle pr2tune)
 {
 	int32_t i = 0;
+	Pr2_tune_handle pr2_backup = pr2tune;
 	m_mode = mode;
 	clear();
 	resizeTable();
@@ -428,7 +448,7 @@ qtvUIStorageR2Tune::qtvUIStorageR2Tune(qtvUIMain* main, QWidget* parent) :
 	ui->cbpath->addItem("path_1");
 	ui->cbpath->setCurrentIndex(0);
 	ui->cbentune->setVisible(false);
-
+	ui->btnreset->setVisible(false);
 	connect(ui->cbentune, SIGNAL(stateChanged(int)), this, SLOT(recvEnCalibrationStateChanged(int)));
 	connect(ui->cbpath, SIGNAL(currentIndexChanged(int)), this, SLOT(recvPathSelectedChanged(int)));
 	connect(ui->btnreset, SIGNAL(clicked(bool)), this, SLOT(recvBtnResetClick(bool)));

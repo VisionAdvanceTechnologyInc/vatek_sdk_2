@@ -59,7 +59,6 @@ vatek_result mux_open_channel_rule(hmux_core hmux,const char* filename,hmux_chan
                     *hchannel = pmux;
                 }
             }
-            //if(!is_vatek_success(nres))muxrule_free(prule);
         }
         if(!is_vatek_success(nres))mux_reset(pmux);
     }
@@ -262,9 +261,9 @@ vatek_result muxprogram_set_epg(hmux_program hprog, Pmux_epg_param pepg)
 {
 	vatek_result nres = vatek_unsupport;
 	Ppsispec_program pprog = (Ppsispec_program)hprog;
-	Phandle_mux pmux = pprog->hpsi;
-	if (pmux->mode == mux_psi_specrule &&
-		pmux->rule->rule_runction & RULE_EN_EIT)
+	//Phandle_mux pmux = pprog->hpsi;
+	//if (pmux->mode == mux_psi_specrule &&
+	//	pmux->rule->rule_runction & RULE_EN_EIT)
 	{
 		pprog->pepg = pepg;
 		nres = vatek_success;

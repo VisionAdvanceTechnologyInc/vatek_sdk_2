@@ -38,11 +38,13 @@
 
     #define H1_OUT_FMT                          0x0201
         #define H1_OUT_FMT_422                      0x80
+		#define YCbCr_422_8bit						0x40
         #define H1_OUT_FMT_YCC                      0x20
         #define H1_OUT_FMT_CS709                    0x04
         #define H1_OUT_FMT_PR2                      0x01
     #define H1_VOUT_CFG                         0x0202
         #define H1_VOUT_CFG_16BITS                  0x80
+		#define H1_VOUT_bt656_Y_Cb_Y_Cr				0x40
         #define H1_VOUT_CFG_EMBEDDED                0x20
 		#define V_CLK_OUT_INV						0x02
         #define H1_VOUT_CFG_FRVS                    0x01
@@ -63,10 +65,10 @@
 
     #define H1_OUT_CNTL                         0x0300
         #define H1_OUT_CNTL_DIS_SPDIF               0x80
-        #define H1_OUT_CNTL_DIS_IIS                 0x40
+        #define H1_OUT_CNTL_DIS_IIS                 0x40 //in new version, 1=enable, 0=disable
         #define H1_OUT_CNTL_DIS_VOUT                0x10
 
-        #define H1_OUT_CNTL_DIS_ALL                 (H1_OUT_CNTL_DIS_SPDIF | H1_OUT_CNTL_DIS_IIS | H1_OUT_CNTL_DIS_VOUT)
+        #define H1_OUT_CNTL_DIS_ALL                 (H1_OUT_CNTL_DIS_SPDIF | H1_OUT_CNTL_DIS_VOUT)
 
     #define H1_AOUT_CFG                         0x0301
 

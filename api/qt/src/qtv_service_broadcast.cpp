@@ -151,6 +151,7 @@ vatek_result qi_service_broadcast::setParam(qtvSourceBroadcast* psource)
 	{
 		memcpy(&m_param.enc, &param->stream.encoder, sizeof(encoder_param));
 		memcpy(&m_param.mod, &m_output._param()->modulation, sizeof(modulator_param));
+		//memcpy(&m_param.mux.bitrate, &param->stream.mux.bitrate, sizeof(uint32_t));
 		nres = vatek_success;
 	}
 	return nres;

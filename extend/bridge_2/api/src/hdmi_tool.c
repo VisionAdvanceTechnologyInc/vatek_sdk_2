@@ -91,7 +91,6 @@ void hdmi_tool_get_timing(Phdmi_video_id pvid,Phdmi_video_timing ptiming)
     ptiming->vfp = pvid->vfp;
     ptiming->vbp = pvid->vbp;
     ptiming->vpw = pvid->vpw;
-    
 }
 
 void hdmi_tool_timing_printf(Phdmi_video_timing ptiming)

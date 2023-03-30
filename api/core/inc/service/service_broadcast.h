@@ -51,7 +51,7 @@ typedef struct _mux_param{
 
 static const mux_param default_mux_param =
 {
-	0x100,0x1FFF,0,0,0,0,
+	0x100,0x1FFF,19000000,0,0,0,
 };
 
 /**

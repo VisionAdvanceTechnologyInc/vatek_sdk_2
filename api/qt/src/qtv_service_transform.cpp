@@ -366,6 +366,7 @@ vatek_result transform_handle::pollingService()
 			uint8_t* pslice = NULL;
 			qtvSourceUSBStream* usbstream = qobject_cast<qtvSourceUSBStream*>(m_source);
 			nres = vatek_transform_get_packets(m_htr, &pktnums);
+
 			if (is_vatek_success(nres))
 			{
 				if (pktnums < CHIP_STREAM_SLICE_PACKET_NUMS)
@@ -390,7 +391,6 @@ vatek_result transform_handle::pollingService()
 						else break;
 						if (!is_vatek_success(nres))break;
 					}
-
 					if (is_vatek_success(nres))
 						nres = vatek_transform_commit_packets(m_htr);
 				}
@@ -444,7 +444,7 @@ vatek_result transform_handle::startTransform()
 			if (bcstatus == bcstatus_broadcast || bcstatus == bcstatus_wait_source || bcstatus == bcstatus_finish)
 			{
 				if (m_source->_source_mode() == qsource_usbstream)
-					nres = vatek_device_stream_start(m_hchip, pmod);
+					nres = vatek_device_stream_start(m_hchip, pmod , m_param->param.trbc.stream.usb.mode);
 			}
 			else nres = vatek_badstatus;
 		}

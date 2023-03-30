@@ -67,9 +67,6 @@ extern vatek_result muxplayload_set_epg_section(hvatek_chip hchip, Pmux_epg_sect
 extern vatek_result muxplayload_get_epg_section(hmux_core hmux, hvatek_chip hchip, Pmux_epg_section* psection, uint32_t* addr);
 extern int32_t muxplayload_get_epg_section_nums(Pmux_epg_param pepg);
 
-extern vatek_result muxplayload_set_epg_desc(hvatek_chip hchip, Pmux_epg_desc pdesc, uint32_t* addr);
-extern vatek_result muxplayload_get_epg_desc(hmux_core hmux, hvatek_chip hchip, Pmux_epg_desc* pdesc, uint32_t* addr);
-extern int32_t muxplayload_get_epg_desc_nums(Pmux_epg_param pepg);
 
 extern vatek_result muxplayload_wr_buf(hvatek_chip hchip, uint8_t* pbuf, int32_t len, uint32_t* pos);
 extern vatek_result muxplayload_rd_buf(hvatek_chip hchip, uint8_t* pbuf, int32_t len, uint32_t* pos);
@@ -540,9 +537,7 @@ vatek_result muxplayload_set_raw(hvatek_chip hchip, Ppsi_table_raw praw)
 			if (!is_vatek_success(nres))break;
 			praw = praw->next;
 		}
-		nres = _wrhal(pos, RAWPSI_EN_ENDTAG);
-		if (is_vatek_success(nres) && pos > HALRANGE_PLAYLOAD_END)
-			nres = vatek_memfail;
+
 	}
 	return nres;
 }
@@ -984,18 +979,17 @@ vatek_result muxplayload_set_epg(hvatek_chip hchip,Pmux_epg_param pepg,uint32_t*
 	uint32_t pos = *addr;
 	vatek_result nres = _wrhal(pos, LIC_EPG_EN_START);
 	if (is_vatek_success(nres))nres = _wrhal(pos, pepg->mode);
-	if (is_vatek_success(nres))nres = _wrhal(pos, pepg->epg_flags);
+	if (is_vatek_success(nres))nres = _wrhal(pos, 0);
 	if (is_vatek_success(nres))nres = _wrhal(pos, MUXTIME_DATA_TO_UINT(pepg->start_time));
 	if (is_vatek_success(nres))nres = _wrhal(pos, MUXTIME_TIME_TO_UINT(pepg->start_time));
 	if (is_vatek_success(nres))nres = _wrhal(pos, pepg->event_id);
-	if (is_vatek_success(nres))nres = _wrhal(pos, pepg->days);
-	if (is_vatek_success(nres))nres = _wrhal(pos, pepg->loop_ms);
+	if (is_vatek_success(nres))nres = _wrhal(pos, 0);
+	if (is_vatek_success(nres))nres = _wrhal(pos, 0);
 
 	if (is_vatek_success(nres))
 	{
 		nres = _wrhal(pos, muxplayload_get_epg_section_nums(pepg));
-		if (is_vatek_success(nres))nres = _wrhal(pos, muxplayload_get_epg_desc_nums(pepg));
-
+		if (is_vatek_success(nres))nres = _wrhal(pos, 0);
 		if (is_vatek_success(nres))
 		{
 			Pmux_epg_section psection = pepg->sections;
@@ -1007,16 +1001,6 @@ vatek_result muxplayload_set_epg(hvatek_chip hchip,Pmux_epg_param pepg,uint32_t*
 			}
 		}
 
-		if (is_vatek_success(nres))
-		{
-			Pmux_epg_desc pdesc = pepg->descriptors;
-			while (pdesc)
-			{
-				nres = muxplayload_set_epg_desc(hchip, pdesc, &pos);
-				if (!is_vatek_success(nres))break;
-				pdesc = pdesc->next;
-			}
-		}
 		if (is_vatek_success(nres))nres = _wrhal(pos, LIC_EPG_EN_END);
 	}
 
@@ -1040,7 +1024,7 @@ vatek_result muxplayload_get_epg(hmux_core hmux, hvatek_chip hchip, Pmux_epg_par
 			if (is_vatek_success(nres))
 			{
 				newepg->mode = (mux_epg_mode)val;
-				nres = _rdhal(pos, newepg->epg_flags);
+				nres = _rdhal(pos, val);
 				if (is_vatek_success(nres))
 				{
 					nres = _rdhal(pos, val);
@@ -1060,9 +1044,9 @@ vatek_result muxplayload_get_epg(hmux_core hmux, hvatek_chip hchip, Pmux_epg_par
 							nres = _rdhal(pos, val);
 							if (is_vatek_success(nres))
 							{
-								newepg->days = (uint8_t)val;
+								//newepg->days = (uint8_t)val;
 								nres = _rdhal(pos, val);
-								if (is_vatek_success(nres))newepg->loop_ms = val;
+								//if (is_vatek_success(nres))newepg->loop_ms = val;
 							}
 						}
 					}
@@ -1095,24 +1079,6 @@ vatek_result muxplayload_get_epg(hmux_core hmux, hvatek_chip hchip, Pmux_epg_par
 
 				if (is_vatek_success(nres))
 				{
-					Pmux_epg_desc newdesc = NULL;
-					Pmux_epg_desc lastdesc = NULL;
-					while (descnums)
-					{
-						nres = muxplayload_get_epg_desc(hmux, hchip, &newdesc, &pos);
-						if (is_vatek_success(nres))
-						{
-							if (!newepg->descriptors)newepg->descriptors = newdesc;
-							else lastdesc->next = newdesc;
-							lastdesc = newdesc;
-						}
-						else break;;
-						descnums--;
-					}
-				}
-
-				if (is_vatek_success(nres))
-				{
 					nres = _rdhal(pos, val);
 					if (is_vatek_success(nres))
 					{
@@ -1140,54 +1106,7 @@ int32_t muxplayload_get_epg_section_nums(Pmux_epg_param pepg)
 		psection = psection->next;
 	}
 	return nums;
-}
 
-int32_t muxplayload_get_epg_desc_nums(Pmux_epg_param pepg)
-{
-	Pmux_epg_desc pdesc = pepg->descriptors;
-	int32_t nums = 0;
-	while (pdesc)
-	{
-		pdesc = pdesc->next;
-		nums++;
-	}
-	return nums;
-}
-
-vatek_result muxplayload_set_epg_desc(hvatek_chip hchip, Pmux_epg_desc pdesc, uint32_t* addr)
-{
-	uint32_t pos = *addr;
-	vatek_result nres = _wrhal(pos, pdesc->tag);
-	if (is_vatek_success(nres))nres = _wrhal(pos, pdesc->len);
-	if (is_vatek_success(nres))nres = _wrbuf(pos, &pdesc->desc_buf[0], EPG_DESC_MAX_LEN);
-	if (is_vatek_success(nres))*addr = pos;
-	return nres;
-}
-
-vatek_result muxplayload_get_epg_desc(hmux_core hmux, hvatek_chip hchip, Pmux_epg_desc* pdesc, uint32_t* addr)
-{
-	uint32_t pos = *addr;
-	Pmux_epg_desc newdesc = (Pmux_epg_desc)mux_handle_malloc_buffer(hmux, sizeof(mux_epg_desc));
-	vatek_result nres = vatek_memfail;
-	if (newdesc)
-	{
-		uint32_t val = 0;
-		nres = _rdhal(pos, val);
-		if (is_vatek_success(nres))
-		{
-			newdesc->tag = val;
-			nres = _rdhal(pos, val);
-		}
-
-		if (is_vatek_success(nres))
-		{
-			newdesc->len = val;
-			nres = _rdbuf(pos, &newdesc->desc_buf[0], EPG_DESC_MAX_LEN);
-		}
-		if (is_vatek_success(nres))*pdesc = newdesc;
-	}
-	if (is_vatek_success(nres))*addr = pos;
-	return nres;
 }
 
 vatek_result muxplayload_set_epg_section(hvatek_chip hchip, Pmux_epg_section psection, uint32_t* addr)

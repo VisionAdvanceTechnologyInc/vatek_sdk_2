@@ -11,9 +11,12 @@ extern "C" {
     HAL_API vatek_result h1_open(hbridge_source* hsource);
     HAL_API vatek_result h1_config(hbridge_source hsource,Pbavsource_param param);
     HAL_API vatek_result h1_get_status(hbridge_source hsource,Pbridge_source pbsourcesttaus);
-    HAL_API vatek_result h1_set_output(hbridge_source hsource, int32_t isoutput, Pbridge_source psource);
-    HAL_API void h1_close(hbridge_source hsource);
+    HAL_API vatek_result h1_set_output(hbridge_source hsource, int32_t isoutput);
+    HAL_API vatek_result h1_get_audio_info(hbridge_source hsource,Pbridge_source psource);
+    HAL_API vatek_result h1_get_video_info(hbridge_source hsource,Pbridge_source psource);
 
+    HAL_API void h1_close(hbridge_source hsource);
+    HAL_API vatek_result h1_reset();
     //create by me
     vatek_result h1_enable();
     uint32_t h1_version();

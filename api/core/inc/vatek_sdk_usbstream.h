@@ -116,6 +116,7 @@ extern "C" {
 #endif
 
 	HAL_API vatek_result vatek_usbstream_open(hvatek_chip hchip, hvatek_usbstream* husstream);
+	HAL_API vatek_result vatek_usbstream_check(hvatek_usbstream husstream);
 	HAL_API Pbroadcast_info vatek_usbstream_get_info(hvatek_usbstream husstream);
 	HAL_API vatek_result vatek_usbstream_start(hvatek_usbstream husstream,Pusbstream_param puparam);
 	HAL_API usbstream_status vatek_usbstream_get_status(hvatek_usbstream husstream,Ptransform_info* ptrinfo);

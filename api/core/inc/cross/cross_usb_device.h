@@ -8,22 +8,22 @@ typedef void* husb_device;
 typedef void* husb_device_list;
 
 #define _usb_table_start	static const  usbdevice_id usb_device_ids[] = {
-#define _usb_broadcast(vid, pid)	{ usb_type_broadcast ,vid ,pid,},
-#define _usb_rescure(vid, pid)	{ usb_type_rescure	,vid ,pid,},
+#define _usb_broadcast(pid)	{ usb_type_broadcast	,USBDEV_VID	,pid,},
+#define _usb_rescure(pid)	{ usb_type_rescure		,USBDEV_VID	,pid,},
 #define _usb_table_end		{ usb_type_unknown,0,0, },};
 
 #define _usb_table 			((const Pusbdevice_id)&usb_device_ids[0])
 
 _usb_table_start
-	_usb_broadcast(USBDEV_VID, 0x2011)
-	_usb_broadcast(USBDEV_VID, 0x2021)
-	_usb_broadcast(USBDEV_VID, 0x1011)
-	_usb_broadcast(USBDEV_VID, 0x1031)
-	_usb_broadcast(USBDEV_VID, 0x2031)
-	_usb_rescure(USBDEV_VID, 0x1010)
-	_usb_rescure(USBDEV_VID, 0x1030)
-	_usb_rescure(USBDEV_VID, 0x2010)
-	_usb_rescure(USBDEV_VID, 0x2030)
+	_usb_broadcast(0x2011)
+	_usb_broadcast(0x2021)
+	_usb_broadcast(0x1011)
+	_usb_broadcast(0x1031)
+	_usb_broadcast(0x2031)
+	_usb_rescure(0x1010)
+	_usb_rescure(0x1030)
+	_usb_rescure(0x2010)
+	_usb_rescure(0x2030)
 _usb_table_end
 
 #define USBDEVICE_ID_NUMS		(sizeof(usb_device_ids)/sizeof(usbdevice_id))
@@ -43,6 +43,8 @@ extern "C" {
 	HAL_API const char* usb_api_ll_get_name(husb_device husb);
 
 	/* usb_device bulk transfer */
+	HAL_API void usb_api_ll_lock(husb_device husb);
+	HAL_API void usb_api_ll_unlock(husb_device husb);
 	HAL_API vatek_result usb_api_ll_set_dma(husb_device husb, int32_t isdma);
     HAL_API vatek_result usb_api_ll_write(husb_device husb, uint8_t* pbuf, int32_t len);
     HAL_API vatek_result usb_api_ll_read(husb_device husb, uint8_t* pbuf, int32_t len);

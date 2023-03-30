@@ -158,6 +158,7 @@ vatek_result vatek_usbstream_start(hvatek_usbstream husstream, Pusbstream_param 
 
 			if (is_vatek_success(nres))
 			{
+				pustream->broadcast.stream.usb.usb_flags = USB_EN_ASYNCBUFFER;
 				if (puparam->remux == ustream_remux_passthrough)
 				{
 					pustream->broadcast.stream.usb.mode = stream_passthrogh;
@@ -175,7 +176,8 @@ vatek_result vatek_usbstream_start(hvatek_usbstream husstream, Pusbstream_param 
 				nres = vatek_transform_start_broadcast(pustream->htransform,&pustream->broadcast, puparam->r2param);
 				if (is_vatek_success(nres))
 				{
-					nres = vatek_device_stream_start(pustream->hchip, pmod);
+					uint32_t stream_mode = pustream->broadcast.stream.usb.mode;
+					nres = vatek_device_stream_start(pustream->hchip, pmod, stream_mode);
 					if (!is_vatek_success(nres))vatek_transform_stop(pustream->htransform);
 				}
 
@@ -195,6 +197,17 @@ vatek_result vatek_usbstream_start(hvatek_usbstream husstream, Pusbstream_param 
 			if (!is_vatek_success(nres))vatek_usbstream_stop(husstream);
 		}
 	}
+	return nres;
+}
+
+vatek_result vatek_usbstream_check(hvatek_usbstream husstream) {
+	Phandle_usbstream pustream = (Phandle_usbstream)husstream;
+	vatek_result nres = vatek_badstatus;
+	if (pustream->status != usbstream_status_running) {
+		uint32_t nvalue = 0;
+		nres = vatek_chip_read_register(pustream->hchip, HALREG_SYS_ERRCODE, &nvalue);
+	}
+	else nres = vatek_success;
 	return nres;
 }
 
@@ -311,6 +324,7 @@ void usbstream_sync_handler(Pcross_thread_param param)
 		{
 			while (pustream->stream_packets >= USBSTREAM_SLICE_PACKET_NUMS)
 			{
+				VERR("pustream->stream_packets : %d\n", pustream->stream_packets);
 				uint8_t* pbuf = NULL;
 				nres = fpgetbuf(fpparam, &pbuf);
 				if (nres > vatek_success)
@@ -351,6 +365,8 @@ void usbstream_async_handler(Pcross_thread_param param)
 			int32_t numslice = 0;
 			while (pustream->stream_packets >= USBSTREAM_SLICE_PACKET_NUMS)
 			{
+				VERR("slice pustream->stream_packets : %d\n", pustream->stream_packets);
+
 				uint8_t* pbuf = usbstream_async_get_buffer(pasync);
 				if (pbuf)
 				{

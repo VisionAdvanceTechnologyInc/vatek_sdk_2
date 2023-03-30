@@ -160,6 +160,7 @@ int main(int argc, char *argv[])
 		int32_t is_stop = 0;
 		Ptransform_info pinfo = NULL;
 		uint32_t ntickms = cross_os_get_tick_ms();
+
 		while (!is_stop)
 		{
 			usbstream_status status = vatek_usbstream_get_status(hustream,&pinfo);

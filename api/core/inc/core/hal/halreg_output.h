@@ -55,6 +55,8 @@
 
 #define HALREG_MOD_BW_SB				0x684
 
+#define HALREG_MOD_POWERLEVEL           0x685
+    #define POWERLEVEL_ADJ_TAG          0xFAFB0000
 /* modulator _dvb-t param */
 #define HALREG_DVB_T_CONSTELLATION      0x690
     #define DVB_T_QPSK                  0x00000000

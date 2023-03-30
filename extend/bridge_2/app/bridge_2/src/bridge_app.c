@@ -15,7 +15,7 @@ static const char* bridge_logo[] =
 
 #define _BRIDGE_WAITCHIP_TIMEOUT		5000
 
-#define BRIDGE_VERSION					20221026
+#define BRIDGE_VERSION					20221201
 
 #define _pl_title(fmt,...)				printf(" [%08x] - "fmt"\r\n",hal_system_get_tick(),##__VA_ARGS__)
 #define _pl_uint32(t,v)					printf("%-11s - [%-16s] : 0x%08x\r\n","",#t,v)

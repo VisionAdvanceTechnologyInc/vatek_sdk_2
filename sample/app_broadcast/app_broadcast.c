@@ -80,7 +80,7 @@ static broadcast_param bc_param =
 		.bandwidth_symbolrate = 6,
 		.type = modulator_isdb_t,
 		.ifmode = ifmode_iqoffset,.iffreq_offset = 143,.dac_gain = 0,
-		.mod = {.isdb_t = {isdb_t_qam64,fft_8k,guard_interval_1_16,coderate_3_4,isdb_t_interleaved_mode2},},
+		.mod = {.isdb_t = {isdb_t_qam64, fft_8k, guard_interval_1_16, coderate_5_6, isdb_t_interleaved_mode3},},
 	},
 	.mux =
 	{
@@ -141,7 +141,7 @@ int main(int argc, char* argv[])
 		if (strcmp(argv[1], "async") == 0)auxmode = usbaux_async;
 
 		pauxstream = auxsource_test_open(argv[3], auxmode, auxbitrate);
-		if (!pauxstream)_disp_err("open aux test file fail : %s", argv[1]);
+		if (!pauxstream)_disp_err("open aux test file fail : %s", argv[3]);
 		else
 		{
 			_disp_l("enable aux stream - [%d:%d:%s]", auxmode, auxbitrate, argv[3]);
@@ -164,10 +164,10 @@ int main(int argc, char* argv[])
 			modulator_param_reset(modulator_isdb_t,&usbcmd.modulator);
 
 	*/
-	modulator_param_reset(modulator_isdb_t, &bc_param.mod);
-	bc_param.mod.ifmode = ifmode_iqoffset;
-	bc_param.mod.iffreq_offset = 143;
-	nres = modulator_param_get_bitrate(&bc_param.mod);
+	//modulator_param_reset(modulator_isdb_t, &bc_param.mod);
+	//bc_param.mod.ifmode = ifmode_iqoffset;
+	//bc_param.mod.iffreq_offset = 143;
+	//nres = modulator_param_get_bitrate(&bc_param.mod);
 #endif
 	/*
 		step 1 :
@@ -431,7 +431,6 @@ int main(int argc, char* argv[])
 		{
 			nres = vatek_broadcast_polling(hbc, &pbcinfo);
 
-
 			if (is_vatek_success(nres))
 			{
 				if (pbcinfo->status == bcstatus_wait_source)
@@ -449,8 +448,6 @@ int main(int argc, char* argv[])
 					{
 						ntickms = cross_os_get_tick_ms();
 						_disp_l("broadcast - [%d:%d:%d]", pbcinfo->status, pbcinfo->data_bitrate, pbcinfo->cur_bitrate);
-						//_disp_l("index - [%d]", index);
-
 					}
 				}
 				else
@@ -468,7 +465,7 @@ int main(int argc, char* argv[])
 		nres = vatek_broadcast_stop(hbc);
 		if (!is_vatek_success(nres))_disp_err("stop broadcast fail : %d", nres);
 	}
-
+	
 	/*
 		setp 5 :
 		before quit demo stop and free both device and source
@@ -602,6 +599,7 @@ vatek_result auxsource_test_get_packets(hvatek_aux haux, uint8_t* ppktbuf, int32
 	{
 		if (paux->pktvalid)
 		{
+			
 			nres = (vatek_result)fread(ptrbuf, TS_PACKET_LEN, 1, paux->file);
 			if (nres == 1)
 			{

@@ -47,9 +47,9 @@ _mux_string_start(mux_spec_arib)
 _mux_string_end
 
 _mux_string_start(mux_spec_abnt)
-	_mux_string(0, network_name, _MUX_STRING_TYPE_ASCII, 20)
-	_mux_string(1, ts_name, _MUX_STRING_TYPE_ASCII, 20)
-	_mux_string(2, service_name, _MUX_STRING_TYPE_ASCII, 20)
+	_mux_string(0, network_name, _MUX_STRING_TYPE_JIS_ENG, 20)
+	_mux_string(1, ts_name, _MUX_STRING_TYPE_JIS_ENG, 20)
+	_mux_string(2, service_name, _MUX_STRING_TYPE_JIS_ENG, 20)
 _mux_string_end
 
 /* _arib channel and program */

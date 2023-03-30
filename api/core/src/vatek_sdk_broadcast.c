@@ -117,6 +117,8 @@ vatek_result vatek_broadcast_start(hvatek_broadcast hbc, Pbroadcast_param pbcpar
 
 		if (is_vatek_success(nres))
 		{
+			if (pbcparam->enc.encoder_flags && ENC_EN_DISABLE_DEINTERLACED)
+				pbcparam->enc.viparam.vi_flags = pbcparam->enc.viparam.vi_flags | VI_FIELD_INVERSE;
 			nres = broadcast_param_set(pbc->hchip, pbcparam);
 			if (is_vatek_success(nres))
 				nres = chip_send_command(pbc->hchip, BC_START, HALREG_BROADCAST_CNTL, HALREG_SYS_ERRCODE);
@@ -149,7 +151,6 @@ vatek_result vatek_broadcast_stop(hvatek_broadcast hbc)
 		nres = rfmixer_stop(pbc->hchip, HALREG_BROADCAST_CNTL);
 	if (is_vatek_success(nres))
 		nres = chip_send_command(pbc->hchip, BC_STOP, HALREG_BROADCAST_CNTL, HALREG_SYS_ERRCODE);
-		//nres = chip_raise_command(pbc->hchip, HALREG_BROADCAST_CNTL, BC_STOP,0);
 	return nres;
 }
 
@@ -187,7 +188,7 @@ vatek_result vatek_broadcast_polling(hvatek_broadcast hbc, Pbroadcast_info* pinf
 						else
 						{
 							nres = vatek_chip_read_memory(pbc->hchip, HALREG_AUXDATA_PACKETNUMS, &pbc->auxpackets);
-							if(is_vatek_success(nres) && !pbc->auxpackets)cross_os_sleep(1);
+							if (is_vatek_success(nres) && !pbc->auxpackets)cross_os_sleep(1);
 						}
 					}
 					else if (pusbaux->mode == usbaux_async)

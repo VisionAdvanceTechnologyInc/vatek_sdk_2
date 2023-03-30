@@ -68,4 +68,8 @@
 #define HALREG_TRINFO_TICK_HI               0x62A
 #define HALREG_TRINFO_TICK_LOW              0x62B
 
+#define HALREG_TRINFO_ADJUST_WARN			0x62C
+#define HALREG_TRINFO_WARN_CNT				0x62D
+	#define HDR_ERR_CNT_MASK				0xF
+
 #endif
