@@ -80,7 +80,7 @@ static broadcast_param bc_param =
 		.bandwidth_symbolrate = 6,
 		.type = modulator_isdb_t,
 		.ifmode = ifmode_iqoffset,.iffreq_offset = 143,.dac_gain = 0,
-		.mod = {.isdb_t = {isdb_t_qam64, fft_8k, guard_interval_1_16, coderate_5_6, isdb_t_interleaved_mode3},},
+		.mod = {.isdb_t = {isdb_t_qam64, fft_8k, guard_interval_1_32, coderate_2_3, isdb_t_interleaved_mode3},},
 	},
 	.mux =
 	{

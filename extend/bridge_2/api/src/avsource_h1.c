@@ -113,21 +113,6 @@ vatek_result h1_get_status(hbridge_source hsource,Pbridge_source pbsourcesttaus)
             {
                 Phdmi_video_id ptime = hdmi_tool_get_video_id(vstatus);
                 h1_set_video_info(ptime,pbsourcesttaus,output,(vhdmi & baseclk));
-//                if(ptime == NULL)
-//                {
-//                	hal_system_sleep(500);
-//                	ptime = hdmi_tool_get_video_id(vstatus);
-//                	printf("lock again ptime value = 0x%08x\r\n",ptime);
-//                	if(ptime == NULL){
-//                		hal_system_sleep(500);
-//                		ptime = hdmi_tool_get_video_id(vstatus);
-//                		pbsourcesttaus->status = bstatus_invalid;
-//                		printf("pbsource status change value to invalid\r\n");
-//                		printf("status change time = 0x%08x\r\n",vatek_get_tick_ms());
-//                	}
-//                    _HAL_LOG(h1,"unknown video code : %d",vstatus);
-//                }
-//                else h1_set_video_info(ptime,pbsourcesttaus,output,(vhdmi & baseclk));
             }
             if(is_vatek_success(nres))
             	h1_get_audio_info(hsource, pbsourcesttaus);
@@ -178,6 +163,7 @@ vatek_result h1_set_output(hbridge_source hsource, int32_t isoutput)//, Pbridge_
 {
     vatek_result nres = vatek_success;
     Ph1_handle pdrv = (Ph1_handle)hsource;
+    uint32_t h1_ver = 0;
     if(isoutput)
     {
     	bridge_status status = bstatus_idle;
@@ -204,6 +190,7 @@ vatek_result h1_set_output(hbridge_source hsource, int32_t isoutput)//, Pbridge_
 						printf("lock again pvid value = 0x%08x\r\n",pvid);
 						nres = h1_write_output_timing(&vtime,pvid);
 						if(is_vatek_success(nres))nres = h1_write(H1_OUT_CNTL,H1_OUT_CNTL_DIS_ALL); // H1 Output initial
+						hal_system_sleep(100);
 						if(is_vatek_success(nres))nres = h1_write_output(pdrv->param,pvid->resolution);
 					}
 				}
@@ -211,7 +198,24 @@ vatek_result h1_set_output(hbridge_source hsource, int32_t isoutput)//, Pbridge_
     	}
     }
     else {
-    	h1_reset();
+		nres = hal_gpio_set(HAL_IO_CHIP_RESET,0);
+		if(is_vatek_success(nres))
+			nres = hal_gpio_set(HAL_IO_AV_RESET,0);
+		if(is_vatek_success(nres))
+			nres = hal_gpio_set(HAL_IO_HDMI_NIM_RESET,0);
+
+		if(is_vatek_success(nres))
+		{
+			hal_system_sleep(100);
+			nres = hal_gpio_set(HAL_IO_CHIP_RESET,1);
+			if(is_vatek_success(nres))
+				nres = hal_gpio_set(HAL_IO_AV_RESET,1);
+			if(is_vatek_success(nres))
+				nres = hal_gpio_set(HAL_IO_HDMI_NIM_RESET,1);
+
+			if(is_vatek_success(nres))
+				hal_system_sleep(3000);
+		}
     }
     return nres;
 }
@@ -230,6 +234,7 @@ vatek_result h1_write_output(h1_param output,video_resolution vresolution)
     uint32_t h1_ver = 0;
 
 	if(is_vatek_success(nres)){
+		hal_system_sleep(200); //wait to write
 		switch (output.scale){
 			case sscale_bypass:
 				flag = H1_HDMI_FLAG_BYPASS_MODE;
@@ -255,70 +260,52 @@ vatek_result h1_write_output(h1_param output,video_resolution vresolution)
 	    if(vifmt&H1_VIN_FMT_CS709) vout_fmt |= H1_OUT_FMT_CS709;
 	    if(vresolution == resolution_480i || vresolution == resolution_576i)
 	    	vout_fmt |= H1_OUT_FMT_PR2;
+		hal_system_sleep(200); //wait to write
 	    nres = h1_write(H1_OUT_FMT, vout_fmt);//vout_fmt
 	    nres = h1_read(H1_OUT_FMT,&reg_val);
 	    printf("h1_write_output function H1_OUT_FMT = 0x%08x\r\n",reg_val);
 	}
 
-	//h1_version();
+	hal_system_sleep(200); //wait to write
 	if(is_vatek_success(nres)){
 		h1_ver = h1_version();
-		if (h1_ver >= 0x1101){
+		if (h1_ver >= 0x110100){
 			if(is_vatek_success(nres))nres = h1_write(H1_OUT_CNTL, 0x40);
-			hal_system_sleep(100);
 			if(is_vatek_success(nres))nres = h1_read(H1_OUT_CNTL,&reg_val);
 			printf("h1_write_output function H1_OUT_CNTL(0x0300) = 0x%08x\r\n",reg_val);
-			if(is_vatek_success(nres))nres = h1_write(H1_AOUT_CFG, 0x13);
-	        hal_system_sleep(100); //wait to write
+	        hal_system_sleep(200); //wait to write
+			if(is_vatek_success(nres))nres = h1_write(H1_AOUT_CFG, 0x03);
 	        if(is_vatek_success(nres))nres = h1_read(H1_AOUT_CFG,&reg_val);
 	        printf("h1_write_output function H1_AOUT_CFG(0x0301) = 0x%08x\r\n",reg_val);
+	        hal_system_sleep(200);//wait to write
 	        if(is_vatek_success(nres))nres = h1_write(H1_INT_EN,0x00);
-//	        if(is_vatek_success(nres))nres = h1_write(H1_OUT_FMT, 0xA4);//vout_fmt, 0xA4
-//	        hal_system_sleep(100);//wait to write
-//	        if(is_vatek_success(nres))nres = h1_read(H1_OUT_FMT,&reg_val);
-//			printf("h1_write_output function H1_OUT_FMT(0x0201) = 0x%08x\r\n",reg_val);
-			if(is_vatek_success(nres))nres = h1_write(H1_VOUT_CFG, H1_VOUT_bt656_Y_Cb_Y_Cr | H1_VOUT_CFG_FRVS); //0x1= Frvs => Set 1 for reverse the output Field signal, otherwise.
-	        hal_system_sleep(100);//wait to write
+	        hal_system_sleep(200);//wait to write
+	        if(is_vatek_success(nres))nres = h1_write(H1_VOUT_CFG, H1_VOUT_bt656_Y_Cb_Y_Cr | H1_VOUT_CFG_FRVS); //0x1= Frvs => Set 1 for reverse the output Field signal, otherwise.
 	        if(is_vatek_success(nres))nres = h1_read(H1_VOUT_CFG,&reg_val);
 	        printf("h1_write_output function H1_VOUT_CFG(0x0202) = 0x%08x\r\n",reg_val);
+	        hal_system_sleep(200);//wait to write
 	        if(is_vatek_success(nres))nres = h1_write(H1_INT_CNTL, 0x02);
-	        hal_system_sleep(100);//wait to write
 	        if(is_vatek_success(nres))nres = h1_read(H1_INT_CNTL,&reg_val);
 	        printf("h1_write_output function H1_INT_CNTL(0x0103) = 0x%08x\r\n",reg_val);
 		}
 		else{
-	    	hal_system_sleep(100);
-	        nres = h1_write(H1_AOUT_CFG, 0x13);
-	        hal_system_sleep(100); //wait to write
+	        nres = h1_write(H1_AOUT_CFG, 0x03);
 	        nres = h1_read(H1_AOUT_CFG,&reg_val);
 	        printf("h1_write_output function H1_AOUT_CFG(0x0301) = 0x%08x\r\n",reg_val);
-
+	        hal_system_sleep(200);//wait to write
 	        nres = h1_write(H1_INT_EN,0x00);
-
-	        hal_system_sleep(100);
-//	        nres = h1_write(H1_OUT_FMT, 0xA4);//vout_fmt
-//	        hal_system_sleep(100);//wait to write
-//			nres = h1_read(H1_OUT_FMT,&reg_val);
-//			printf("h1_write_output function H1_OUT_FMT(0x0201) = 0x%08x\r\n",reg_val);
-
-	        hal_system_sleep(100);
+	        hal_system_sleep(200);//wait to write
 	        nres = h1_write(H1_VOUT_CFG, 0x42);
-	        hal_system_sleep(100);//wait to write
 	        nres = h1_read(H1_VOUT_CFG,&reg_val);
 	        printf("h1_write_output function H1_VOUT_CFG(0x0202) = 0x%08x\r\n",reg_val);
-
-	        hal_system_sleep(100);
+	        hal_system_sleep(200);//wait to write
 	        nres = h1_write(H1_INT_CNTL, 0x02);
-	        hal_system_sleep(100);//wait to write
 	        nres = h1_read(H1_INT_CNTL,&reg_val);
 	        printf("h1_write_output function H1_INT_CNTL(0x0103) = 0x%08x\r\n",reg_val);
-	        hal_system_sleep(100);
+	        hal_system_sleep(200);//wait to write
 	        nres = h1_write(H1_OUT_CNTL, 0x00);
-	        hal_system_sleep(100);
 	        nres = h1_read(H1_OUT_CNTL,&reg_val);
 	        printf("h1_write_output function H1_OUT_CNTL(0x0300) = 0x%08x\r\n",reg_val);
-
-
 		}
      }
     return nres;
@@ -401,20 +388,30 @@ void h1_set_video_info(Phdmi_video_id phdmiinfo,Pbridge_source psource,bsource_s
 
 vatek_result h1_check_link_on(bridge_status* bstatus)
 {
-    #define H1_HDMI_VALID  (H1_SYS_STATUS2_DE | H1_SYS_STATUS2_LINK)
-    uint8_t val = 0;
+    *bstatus = bstatus_hw_fail;
+    uint8_t val, hdcp = 0;
     vatek_result nres = h1_read(H1_SYS_STATUS2,&val);
-    *bstatus = bstatus_idle;
-    if(is_vatek_success(nres))
-    {
-        if(val & H1_SYS_STATUS2_HPD)
-        {
-            if((val & H1_HDMI_VALID) == H1_HDMI_VALID)
-            {
-                *bstatus = bstatus_active;
-                /* check is hdcp enable ?? bstatus_active_protect */
-            }else *bstatus = bstatus_invalid;
-        }
+
+    if(is_vatek_success(nres)){
+    	*bstatus = bstatus_idle;
+    	if(val & H1_SYS_STATUS2_HPD){
+    		if(val & H1_SYS_STATUS2_LINK){
+    			*bstatus = bstatus_invalid;
+    			if(val & H1_SYS_STATUS2_DE){
+    				*bstatus = bstatus_active;
+    				nres = h1_read(H1_SYS_STATUS1,&val);
+                    if(hdcp&H1_SYS_STATUS1_AUTH)
+                    {
+                    	printf("HDCP AUTH.\r\n");
+                        if(hdcp&H1_SYS_STATUS1_DECRYPT)
+                        {
+                        	printf("HDCP DECRYPT.\r\n");
+                        	*bstatus = bstatus_active_protect;
+                        }
+                    }
+    			}else printf("H1 linked on but invailed.\r\n");
+    		}else printf("H1 no link.\r\n");
+    	}
     }
     return nres;
 }
@@ -473,26 +470,13 @@ uint32_t h1_version(){
 	uint8_t ver_numa = 0;
 	uint32_t h1_allver = 0;
 
-	vatek_result nres = h1_read(H1_VER1, &ver_num);
-	if(nres == vatek_success)nres = h1_read(H1_VER2, &ver_numa);
-	if(nres == vatek_success)h1_allver = ver_num << 8 | ver_numa;
+	vatek_result nres = h1_read(H1_VER0, &ver_num);
+	if(nres == vatek_success)h1_allver = ver_num << 16;
+	if(nres == vatek_success)nres = h1_read(H1_VER1, &ver_num);
+	if(nres == vatek_success)h1_allver |= ver_num << 8;
+	if(nres == vatek_success)nres = h1_read(H1_VER2, &ver_num);
+	if(nres == vatek_success)h1_allver |= ver_num;
+
 	return h1_allver;
 }
 
-vatek_result h1_reset(void)
-{
-	vatek_result nres = nres = hal_gpio_set(HAL_IO_AV_RESET,0);
-    if(is_vatek_success(nres))
-        nres = hal_gpio_set(HAL_IO_HDMI_NIM_RESET,0);
-    if(is_vatek_success(nres))
-    {
-        hal_system_sleep(100);
-        nres = hal_gpio_set(HAL_IO_AV_RESET,1);
-        if(is_vatek_success(nres))
-            nres = hal_gpio_set(HAL_IO_HDMI_NIM_RESET,1);
-
-		if(is_vatek_success(nres))
-			hal_system_sleep(2000); //5000
-    }
-    return nres;
-}

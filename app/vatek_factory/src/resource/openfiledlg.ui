@@ -125,7 +125,7 @@
            </font>
           </property>
           <property name="text">
-           <string>Application : </string>
+           <string>Application_1 : </string>
           </property>
          </widget>
         </item>
@@ -163,7 +163,7 @@
       <item>
        <layout class="QHBoxLayout" name="box_rf">
         <item>
-         <widget class="QLabel" name="lb_rf">
+         <widget class="QLabel" name="lb_app2">
           <property name="minimumSize">
            <size>
             <width>100</width>
@@ -183,12 +183,12 @@
            </font>
           </property>
           <property name="text">
-           <string>RF Table :</string>
+           <string>Application_2 : </string>
           </property>
          </widget>
         </item>
         <item>
-         <widget class="QLineEdit" name="txt_rf">
+         <widget class="QLineEdit" name="txt_app2">
           <property name="font">
            <font>
             <family>Times New Roman</family>
@@ -201,7 +201,7 @@
          </widget>
         </item>
         <item>
-         <widget class="QPushButton" name="btn_rf">
+         <widget class="QPushButton" name="btn_app2">
           <property name="minimumSize">
            <size>
             <width>30</width>
@@ -265,10 +265,10 @@
  <tabstops>
   <tabstop>btn_loader</tabstop>
   <tabstop>btn_app</tabstop>
-  <tabstop>btn_rf</tabstop>
+  <tabstop>btn_app2</tabstop>
   <tabstop>txt_loader</tabstop>
   <tabstop>txt_app</tabstop>
-  <tabstop>txt_rf</tabstop>
+  <tabstop>txt_app2</tabstop>
  </tabstops>
  <resources/>
  <connections/>

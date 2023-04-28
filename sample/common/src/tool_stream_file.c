@@ -50,7 +50,9 @@ vatek_result stream_source_file_get(const char* file, Ptsstream_source psource)
 				psource->get = file_stream_get;
 				psource->check = file_stream_check;
 				psource->free = file_stream_free;
-				_disp_l("open file - [%s] - %d - %d", file, pfile->packet_len,pfile->file_size);
+				_disp_l("open file - [%s] - packet length:%d - packet size:%d", file, pfile->packet_len,pfile->file_size);
+				printf("\r\n");
+
 			}
 		}
 		if(!is_vatek_success(nres))

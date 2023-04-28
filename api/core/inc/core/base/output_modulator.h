@@ -566,6 +566,7 @@ extern "C" {
 
     HAL_API uint32_t modulator_param_get_bitrate(Pmodulator_param pmod);
     HAL_API vatek_result modulator_param_reset(modulator_type type, Pmodulator_param pmod);
+    HAL_API vatek_result modulator_param_reset_dvbt2(modulator_type type, Pmodulator_param pmod);
     HAL_API vatek_result modulator_param_set(hvatek_chip hchip,Pmodulator_param pmod);
     HAL_API vatek_result modulator_param_get(hvatek_chip hchip,Pmodulator_param pmod);
 

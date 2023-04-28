@@ -76,7 +76,7 @@
                </font>
               </property>
               <property name="text">
-               <string>Resolution：</string>
+               <string>Resolution:</string>
               </property>
              </widget>
             </item>
@@ -124,7 +124,7 @@
                </font>
               </property>
               <property name="text">
-               <string>Mode：</string>
+               <string>Mode:</string>
               </property>
              </widget>
             </item>
@@ -201,7 +201,7 @@
                </font>
               </property>
               <property name="text">
-               <string>Backgroud Color：</string>
+               <string>Backgroud Color:</string>
               </property>
              </widget>
             </item>

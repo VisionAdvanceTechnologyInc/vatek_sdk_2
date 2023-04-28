@@ -57,12 +57,12 @@ public:
 protected Q_SLOTS:
     void recvClickLoader(bool checked);
     void recvClickApp(bool checked);
-    void recvClickRF(bool checked);
+    void recvClickApp_2(bool checked);
     void recvClickOK(bool checked);
 
 protected:
     static QString m_pathdir;
-    static QString m_r2_path;
+    static QString m_app2_path;
 
     bool checkValid();
 

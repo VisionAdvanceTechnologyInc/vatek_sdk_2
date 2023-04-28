@@ -31,6 +31,7 @@
 
 #include <core/base/chip_define.h>
 #include <core/base/binary_rom.h>
+#include <service/service_base.h>
 #include <core/ui/ui_props_define.h>
 #include <core/hal/halservice_base.h>
 
@@ -120,5 +121,6 @@ _ui_struct_start(chip_config)
 	_prop_flag(chip_config,functions,"chip enable function",NULLHAL)
     _prop_u32(chip_config, status_led,"chip status led",NULLHAL)
 _ui_struct_end
+
 
 #endif

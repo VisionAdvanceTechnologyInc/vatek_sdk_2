@@ -5,7 +5,7 @@
 #include <string.h>
 #include <core/base/chip_define.h>
 #include <bridge/bridge_device.h>
-
+#include <vatek_sdk_usbstream.h>
 
 #define _disp_l(fmt,...)	printf("	"fmt"\r\n",##__VA_ARGS__)
 #define _disp_err(fmt,...)	printf("	error - "fmt"\r\n",##__VA_ARGS__)
@@ -18,7 +18,8 @@ extern "C" {
 	void printf_bridge_info(Pbdevice_info pbinfo);
 	void printf_bridge_avsource(const char* name, Pbridge_source psource);
 	void printf_app_end(void);
-
+	void printf_logo(void);
+	void printf_modulation_param(usbstream_param usbcmd);
 #ifdef __cplusplus
 }
 #endif

@@ -64,11 +64,14 @@
     #define H1_VOUT_V_WIDTH				        0x020e
 
     #define H1_OUT_CNTL                         0x0300
-        #define H1_OUT_CNTL_DIS_SPDIF               0x80
-        #define H1_OUT_CNTL_DIS_IIS                 0x40 //in new version, 1=enable, 0=disable
-        #define H1_OUT_CNTL_DIS_VOUT                0x10
+        #define H1_OUT_CNTL_AUD_SEL_SPDIF           0x80    /*!< use after fw_rev 1101 */
+        #define H1_OUT_CNTL_EN_AOUT                 0x40    /*!< use after fw_rev 1101 */
 
-        #define H1_OUT_CNTL_DIS_ALL                 (H1_OUT_CNTL_DIS_SPDIF | H1_OUT_CNTL_DIS_VOUT)
+        #define H1_OUT_CNTL_DIS_SPDIF               0x80    /*!< use before fw_rev 1101 */
+        #define H1_OUT_CNTL_DIS_IIS                 0x40    /*!< use before fw_rev 1101 */
+        #define H1_OUT_CNTL_DIS_VOUT                0x10
+        /*!< use after fw_rev 1101 */
+        #define H1_OUT_CNTL_DIS_ALL                 (H1_OUT_CNTL_DIS_SPDIF | H1_OUT_CNTL_DIS_IIS | H1_OUT_CNTL_DIS_VOUT)
 
     #define H1_AOUT_CFG                         0x0301
 
@@ -93,13 +96,44 @@
     #define H1_AVI_INFO                         0x0500
     #define H1_AUDIO_INFO                       0x0600
 
-	#define H1_VER1								0x0f00
-	#define H1_VER2								0x0f01
+	#define H1_VER0								0x0f00
+	#define H1_VER1								0x0f01
+	#define H1_VER2								0x0f02
 
 	typedef enum _h1_output_mode
 	{
 		h1_output_bypass = 0,
 		h1_output_i_to_p = 1,
 	}h1_output_mode;
+
+	#define IS_NEW_REV(x) (x >= 0x1101)
+
+    typedef struct _h1_reg
+    {
+        uint16_t addr;
+        uint8_t val;
+    }h1_reg, *Ph1_reg;
+
+    typedef uint32_t h1_revision;
+
+    /*!< use before fw_rev 1101 */
+    const h1_reg h1_init_cmd_0[] =
+    {
+        { H1_OUT_CNTL   , 0x00},        /** SPDIF, I2S, VOUT disable */
+        { H1_INT_EN     , 0x00},        /** INT disable */
+        { H1_INT_CNTL   , 0x02},        /** VSYNC low pulse */
+        { H1_AOUT_CFG   , 0x03},        /** Audio 512 sampling */
+        { H1_VOUT_CFG   , 0x42},        /** Vout Y/Cb/Y/Cr */
+    };
+
+    /*!< use after fw_rev 1101 */
+    const h1_reg h1_init_cmd_1[] =
+    {
+        { H1_OUT_CNTL   , 0x40},        /*!< Audio select I2S, then AOUT/VOUT disable */
+        { H1_INT_EN     , 0x00},        /** INT disable */
+        { H1_INT_CNTL   , 0x02},        /** VSYNC low pulse */
+        { H1_AOUT_CFG   , 0x03},        /** Audio 512 sampling */
+        { H1_VOUT_CFG   , 0x40},        /** Vout Y/Cb/Y/Cr, Field no inverse */
+    };
 
 #endif

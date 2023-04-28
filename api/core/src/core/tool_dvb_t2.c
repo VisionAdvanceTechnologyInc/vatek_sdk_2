@@ -163,9 +163,9 @@ const uint8_t t2_pp_support[CELL_FFT_NUMS-3][CELL_GI_NUMS] =
 /*1K*/      {PP0            ,PP4 | PP5              ,PP2 | PP3          ,PP1        ,PP0            ,PP0                ,PP0,                   },
 /*2K*/      {PP7 | PP4      ,PP4 | PP5              ,PP2 | PP3          ,PP1        ,PP0            ,PP0                ,PP0,                   },
 /*4K*/      {PP7 | PP4      ,PP4 | PP5              ,PP2 | PP3          ,PP1        ,PP0            ,PP0                ,PP0,                   },
-/*8K*/      {PP7 | PP4      ,PP4 | PP5 | PP8        ,PP2 | PP3 | PP8    ,PP1 | PP8  ,PP7            ,PP2 | PP3 | PP8    ,PP4 | PP5 | PP8        },
-/*16K*/     {PP7 | PP4      ,PP4 | PP5 | PP8 | PP2  ,PP2 | PP3 | PP8    ,PP1 | PP8  ,PP7            ,PP2 | PP3 | PP8    ,PP4 | PP5 | PP8 | PP2  },
-/*32K*/     {PP7 | PP4 | PP6,PP4 | PP8 | PP2        ,PP2 | PP8          ,PP0        ,PP7            ,PP2 | PP8          ,PP4 | PP8 | PP2        },
+/*8K*/      {PP7 | PP4      ,PP8 | PP4 | PP5        ,PP2 | PP3 | PP8    ,PP1 | PP8  ,PP7            ,PP2 | PP3 | PP8    ,PP4 | PP5 | PP8        },
+/*16K*/     {PP7 | PP4 | PP6,PP2 | PP8 | PP4 | PP5  ,PP2 | PP3 | PP8    ,PP1 | PP8  ,PP7            ,PP2 | PP3 | PP8    ,PP4 | PP5 | PP8 | PP2  },
+/*32K*/     {PP4 | PP6      ,PP2 | PP8 | PP4        ,PP2 | PP8          ,PP0        ,PP7            ,PP2 | PP8          ,PP4 | PP8 | PP2        },
 };
 
 

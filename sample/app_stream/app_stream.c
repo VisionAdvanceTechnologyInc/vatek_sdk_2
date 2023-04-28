@@ -1,4 +1,4 @@
-//----------------------------------------------------------------------------
+﻿//----------------------------------------------------------------------------
 //
 // Vision Advance Technology - Software Development Kit
 // Copyright (c) 2014-2022, Vision Advance Technology Inc.
@@ -38,15 +38,31 @@
 #include "../common/inc/tool_printf.h"
 #include "../common/inc/tool_tspacket.h"
 #include "../common/inc/tool_stream.h"
+#include <core/tools/tool_dvb_t2.h>
 
 #define TRANSFORM_RF_TEST		0
 #define TRANSFORM_NORMAL		1
+
+static const char* _app_logo[] = {
+"	    _     ___          _                              _				\r\n",
+"	   /_\\   / __| ___ _ _(_)___ ___  ___ __ _ _ __  _ __| |___		\r\n",
+"	  / _ \\  \\__ \\/ -_) '_| / -_|_-< (_-</ _` | '  \\| '_ \\ / -_)   \r\n",
+"	 /_/ \\_\\ |___/\\___|_| |_\\___/__/ /__/\\__,_|_|_|_| .__/_\\___|  \r\n",
+"	                                                |_|					\r\n",
+"	-----------------------------------------------------------------	\r\n",
+	"\r\n",
+"	Copyright (c) 2023, Vision Advance Technology Inc.（VATek）.	\r\n",
+	"\r\n",
+"	-----------------------------------------------------------------	\r\n",
+	"\r\n",
+	NULL,
+};
 
 static usbstream_param usbcmd =
 {
 	.mode = ustream_mode_sync,
 	.remux = ustream_remux_pcr,
-	.pcradjust = pcr_disable,
+	.pcradjust = pcr_adjust,
 	.r2param.freqkhz = 473000,							/* output _rf frequency */
 	.r2param.mode = r2_cntl_path_0,
 	.modulator =
@@ -69,7 +85,11 @@ int main(int argc, char *argv[])
 	hvatek_usbstream hustream = NULL;
 	tsstream_source streamsource = { 0, };
 	vatek_result nres = vatek_success;
-	
+	hmux_core hmux = NULL;
+	hmux_channel m_hchannel = NULL;
+
+	printf_logo(_app_logo);
+
 #if 0
 	/* 
 		the easiest way to changed modulation mode used modulator_param_reset.
@@ -117,7 +137,7 @@ int main(int argc, char *argv[])
 	}
 
 	/*
-		step 2 :
+		step 2:
 			- open usb_stream open
 			- config used usb_stream sync mode and start stream
 	*/
@@ -141,6 +161,8 @@ int main(int argc, char *argv[])
 
 			nres = vatek_usbstream_start(hustream, &usbcmd);
 
+			printf_modulation_param(usbcmd);
+
 			if (!is_vatek_success(nres))
 				_disp_err("start usb_stream fail : %d", nres);
 		}
@@ -156,11 +178,14 @@ int main(int argc, char *argv[])
 
 	if (is_vatek_success(nres))
 	{
-		_disp_l("usb_stream start. press any key to stop");
+		_disp_l("USB Stream Start.");
+		_disp_l("Press any key to stop.\r\n");
+		_disp_l("=====================================\r\n");
 		int32_t is_stop = 0;
 		Ptransform_info pinfo = NULL;
 		uint32_t ntickms = cross_os_get_tick_ms();
-
+		int count = 0;
+		int	error = 0;
 		while (!is_stop)
 		{
 			usbstream_status status = vatek_usbstream_get_status(hustream,&pinfo);
@@ -169,10 +194,16 @@ int main(int argc, char *argv[])
 				if (cross_os_get_tick_ms() - ntickms > 1000)
 				{
 					ntickms = cross_os_get_tick_ms();
-					_disp_l("usbstream - [%d:%d:%d]",
-						pinfo->info.status,
+					_disp_l("Data:[%d]  Current:[%d]",
 						pinfo->info.data_bitrate,
 						pinfo->info.cur_bitrate);
+					if (pinfo->info.data_bitrate == 0 | pinfo->info.cur_bitrate == 0) {
+						error++;
+					}
+					count++;
+					if (error >= 30) {
+						_disp_l("A3 Fail. Press any key to stop.\r\n");
+					}
 				}
 			}
 	
@@ -233,16 +264,14 @@ vatek_result parser_cmd_source(int32_t argc, char** argv, Ptsstream_source psour
 		else if (strcmp(argv[1], "j83b") == 0) modulator_param_reset(modulator_j83b, &usbcmd.modulator);
 		else if (strcmp(argv[1], "j83c") == 0) modulator_param_reset(modulator_j83c, &usbcmd.modulator);
 		else if (strcmp(argv[1], "dtmb") == 0) modulator_param_reset(modulator_dtmb, &usbcmd.modulator);
-		else if (strcmp(argv[1], "dvbt2") == 0) modulator_param_reset(modulator_dvb_t2, &usbcmd.modulator);
+		else if (strcmp(argv[1], "dvbt2") == 0) {
+			modulator_param_reset(modulator_dvb_t2, &usbcmd.modulator);
+		}
+		else if (strcmp(argv[1], "test") == 0) nres = stream_source_test_get(&usbcmd.modulator, psource);
 		else nres = vatek_unsupport;
 
 		if (argc >= 3) {
-			if (strcmp(argv[2], "test") == 0) {
-				if (strcmp(argv[3], "passthrough") == 0) pustream->remux = ustream_remux_passthrough;
-				else pustream->remux = ustream_remux_pcr;
-				nres = stream_source_test_get(&usbcmd.modulator, psource);
-			}
-			else if (strcmp(argv[2], "file") == 0)
+			if (strcmp(argv[2], "file") == 0)
 				nres = stream_source_file_get(argv[3], psource);
 			else if (strcmp(argv[2], "udp") == 0 || strcmp(argv[2], "rtp") == 0)
 				nres = stream_source_udp_get(argv[3], psource);
@@ -254,10 +283,11 @@ vatek_result parser_cmd_source(int32_t argc, char** argv, Ptsstream_source psour
 		}
 	}
 	
-	if(nres == vatek_unsupport)
+	
+	if(nres == vatek_unsupport || strcmp(argv[1], "--help") == 0 || argc == 1)
 	{
 		_disp_l("support command below : ");
-		_disp_l("	- app_stream [modulation] test [remux|passthrough] : test stream mode");
+		_disp_l("	- app_stream test: test stream mode in app_stream.c");
 		_disp_l("	- app_stream [modulation] file [*.ts|*.trp] [remux|passthrough]");
 		_disp_l("	- app_stream [modulation] udp  [ip address] [remux|passthrough]");
 		_disp_l("	- app_stream [modulation] rtp  [ip address] [remux|passthrough]");
@@ -265,3 +295,4 @@ vatek_result parser_cmd_source(int32_t argc, char** argv, Ptsstream_source psour
 
 	return nres;
 }
+

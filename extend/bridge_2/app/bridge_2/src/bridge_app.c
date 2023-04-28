@@ -15,7 +15,7 @@ static const char* bridge_logo[] =
 
 #define _BRIDGE_WAITCHIP_TIMEOUT		5000
 
-#define BRIDGE_VERSION					20221201
+#define BRIDGE_VERSION					20230413
 
 #define _pl_title(fmt,...)				printf(" [%08x] - "fmt"\r\n",hal_system_get_tick(),##__VA_ARGS__)
 #define _pl_uint32(t,v)					printf("%-11s - [%-16s] : 0x%08x\r\n","",#t,v)
@@ -142,7 +142,7 @@ void printf_bsource(hvatek_bridge hbridge)
 			Pbdevice_source pdevice = vatek_source_get_next(&bptr);
 			_pl_sub("bsource [%s: %08x]",pdevice->driver->name,pdevice->driver->id);
 			if (strcmp(pdevice->driver->name, "h1") == 0){
-				_pl_sub("h1_version [%08x]",h1_version());
+				_pl_sub("H1 Version [%08x]",h1_version());
 			}
 		}
 	}

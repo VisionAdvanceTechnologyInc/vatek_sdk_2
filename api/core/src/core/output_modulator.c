@@ -46,9 +46,27 @@ vatek_result modulator_param_reset(modulator_type type, Pmodulator_param pmod)
 		pmod->dac_gain = 0;
 		pmod->bandwidth_symbolrate = default_bw_sb[type];
 		pmod->type = type;
+		pofdm->checkparam;
 		memcpy(&pmod->mod.raw_byte, pofdm->defaultparam, pofdm->defaultsize);
 		nres = vatek_success;
 	}
+	return nres;
+}
+
+vatek_result modulator_param_reset_dvbt2(modulator_type type, Pmodulator_param pmod)
+{
+	vatek_result nres = vatek_success;
+
+	pmod->ifmode = ifmode_disable;
+	pmod->iffreq_offset = 0;
+		
+	pmod->dac_gain = 0;
+	pmod->bandwidth_symbolrate = default_bw_sb[type];
+	pmod->type = type;
+
+
+	memcpy(&pmod->mod.dvb_t2, &default_dvb_t2_param, sizeof(dvb_t2_param));
+	
 	return nres;
 }
 
