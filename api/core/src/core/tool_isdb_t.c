@@ -48,18 +48,19 @@ vatek_result tool_isdb_t_bts_frame_reset(Pmodulator_param pmod, Pisdb_t_bts_fram
 	vatek_result nres = tool_isdb_t_check_param(pmod);
 	Pisdb_t_param pisdb = &pmod->mod.isdb_t;
 	if (is_vatek_success(nres))
-	{	
+	{
 		int32_t cr_symbol = _crsymbol(pisdb);
 		int32_t cr_data = _crdata(pisdb);
 		int32_t i, j;
 		int32_t bufbts = 0;
 		int32_t bufout = 0;
+		int32_t bufmod = 0;
 		int32_t ptrpkts = 0;
 		int32_t ptroutpkt = 0;
 		int32_t ptrclk = 0;
 		int32_t qambits = isdb_t_qam_bits[pisdb->constellation];
 		int32_t symbolnums = ISDB_T_BTS_SYMBOLNUMS / _fftrate(pisdb);
-		memset(pbts, 0, sizeof(isdb_t_bts_frame));		
+		memset(pbts, 0, sizeof(isdb_t_bts_frame));
 		for (i = 0; i < symbolnums; i++)
 		{
 			for (j = 0; j < cr_symbol; j++)
@@ -67,16 +68,14 @@ vatek_result tool_isdb_t_bts_frame_reset(Pmodulator_param pmod, Pisdb_t_bts_fram
 				if (j < cr_data)bufbts += qambits;
 				ptrclk++;
 				if ((ptrclk % ISDB_T_BTS_BASECLK) == 0)
-				{	
-					bufbts *= CR_RATE[pisdb->coderate][0];
-					bufout += (bufbts / CR_RATE[pisdb->coderate][1]) * 2;
-					bufbts %= CR_RATE[pisdb->coderate][1];
-					//bufout += ((bufbts * CR_RATE[pisdb->coderate][0]) / CR_RATE[pisdb->coderate][1]) * 2;
-					//bufbts = 0;
+				{
+					bufout += (((bufbts * CR_RATE[pisdb->coderate][0]) + bufmod) / CR_RATE[pisdb->coderate][1]) * 2;
+					bufmod = ((bufbts * CR_RATE[pisdb->coderate][0]) + bufmod) % CR_RATE[pisdb->coderate][1];
+					bufbts = 0;
 
 					if (ptrpkts > 1)
 					{
-						if(bufout >= (ISDB_T_BTS_BASECLK * 8))
+						if (bufout >= (ISDB_T_BTS_BASECLK * 8))
 						{
 							bufout -= ISDB_T_BTS_BASECLK * 8;
 							pbts->tsp_maps[ptroutpkt] = ptrpkts + 1;
@@ -107,9 +106,7 @@ vatek_result tool_isdb_t_bts_frame_get_tick(Pisdb_t_bts_frame pbts, int32_t pktp
 {
 	uint32_t tick = pbts->tsp_maps[pktpos];
 	tick *= ISDB_T_BTS_BASECLK;
-	if (!pbts->frame_sb == 0) {
-		tick = (uint32_t)(((uint64_t)tick * pbts->ofdm.frametick) / pbts->frame_sb);
-	}
+	tick = (uint32_t)(((uint64_t)tick * pbts->ofdm.frametick) / pbts->frame_sb);
 	return (vatek_result)tick;
 }
 
@@ -120,7 +117,6 @@ vatek_result tool_isdb_t_check_param(Pmodulator_param pmod)
 	{
 		Pisdb_t_param pisdb = &pmod->mod.isdb_t;
 		if (is_base_coderate(pisdb->coderate) &&
-			is_constellation_isdb_t(pisdb->constellation) &&
 			is_base_guard_interval(pisdb->guardinterval) &&
 			is_base_fft(pisdb->fft) &&
 			is_isdb_t_ti_mode(pisdb->timeinterleaved))nres = vatek_success;

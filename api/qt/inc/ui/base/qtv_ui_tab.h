@@ -242,6 +242,7 @@ protected Q_SLOTS:
 	void recvUpdateTimeout();
 	void recvSaveClick(bool bclick);
 
+
 private:
 	Ui::qtvUITabCalibration* ui;
 };

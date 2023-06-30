@@ -47,6 +47,8 @@ typedef struct _calibration_param
 	int32_t clock;
 	calibration_dac dac;
 	r2_tune r2;
+	uint32_t r2_power;
+	int dac_power;
 }calibration_param;
 
 typedef calibration_param* Pcalibration_param;
@@ -58,7 +60,7 @@ extern "C" {
 	HAL_API vatek_result calibration_set(hvatek_chip hchip, Pcalibration_param pcalibration,int32_t isapply);
 	HAL_API vatek_result calibration_check(hvatek_chip hchip);
 	HAL_API vatek_result calibration_get(hvatek_chip hchip, Pcalibration_param pcalibration);
-
+	HAL_API vatek_result calibration_adjust_gain(hvatek_chip hchip, int8_t gain, Pcalibration_param m_calibration);
 #ifdef __cplusplus
 }
 #endif

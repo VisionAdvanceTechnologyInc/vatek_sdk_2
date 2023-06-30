@@ -4,6 +4,7 @@ project(libvatek_core)
 set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 set(CMAKE_C_STANDARD 99)
 set(CMAKE_C_STANDARD_REQUIRED ON)
+set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 
 set(core_INC_BRIDGE
     inc/bridge/bridge_base.h
@@ -303,43 +304,37 @@ if(MSVC)
                           RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin")
     
 elseif(UNIX AND NOT APPLE)
-    set(CMAKE_INSTALL_PREFIX "/usr/local/")
 
-    add_library(vatek_core SHARED ${sdk2_SOURCES} ${sdk2_HEADERS})
-    target_compile_definitions(vatek_core PRIVATE -D_VA2_DLL_)
-    target_link_libraries(vatek_core PRIVATE usb-1.0)
-    target_link_libraries(vatek_core PRIVATE ${CMAKE_DL_LIBS})
+	add_library(vatek_core SHARED ${sdk2_SOURCES} ${sdk2_HEADERS})
+	target_compile_definitions(vatek_core PRIVATE -D_VA2_DLL_)
+	target_link_libraries(vatek_core PRIVATE usb-1.0)
+	target_link_libraries(vatek_core PRIVATE ${CMAKE_DL_LIBS})   
+
+	set_target_properties(vatek_core PROPERTIES
+		          ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/lib"
+		          LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/lib"
+		          RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin")                	
+
+	set(ORIGINAL_STATIC_LIB_NAME vatek_core_static)
+	add_library(${ORIGINAL_STATIC_LIB_NAME} STATIC ${sdk2_SOURCES} ${sdk2_HEADERS})
+	set_target_properties(${ORIGINAL_STATIC_LIB_NAME} PROPERTIES OUTPUT_NAME vatek_core)
+
+	target_link_libraries(${ORIGINAL_STATIC_LIB_NAME} PRIVATE usb-1.0)
+	target_link_libraries(${ORIGINAL_STATIC_LIB_NAME} PRIVATE ${CMAKE_DL_LIBS})
+
+	set_target_properties(${ORIGINAL_STATIC_LIB_NAME} PROPERTIES
+			  ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/lib"
+		          LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/lib"
+		          RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin") 
     
-    set_target_properties(vatek_core PROPERTIES
-    			        PUBLIC_HEADER "${sdk2_HEADERS}"
-                        ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/lib/vatek"
-                        LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/lib/vatek"
-                        RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin")     
-        
-    if(${SDK2_EN_STATIC_ONLY})
-    	set(ORIGINAL_STATIC_LIB_NAME vatek_core_static)
-    	add_library(${ORIGINAL_STATIC_LIB_NAME} STATIC ${sdk2_SOURCES} ${sdk2_HEADERS})
+    	INSTALL(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/inc/." DESTINATION "${CMAKE_INSTALL_PREFIX}/include/vatek")
+    			                        
+	INSTALL(TARGETS vatek_core LIBRARY DESTINATION "${CMAKE_INSTALL_PREFIX}/lib")         
+		
+	INSTALL(TARGETS ${ORIGINAL_STATIC_LIB_NAME} ARCHIVE DESTINATION "${CMAKE_INSTALL_PREFIX}/lib")     
     
-    	target_link_libraries(${ORIGINAL_STATIC_LIB_NAME} PRIVATE usb-1.0)
-    	target_link_libraries(${ORIGINAL_STATIC_LIB_NAME} PRIVATE ${CMAKE_DL_LIBS})
-    	
-    	set_target_properties(${ORIGINAL_STATIC_LIB_NAME} PROPERTIES
-    	 		        OUTPUT_NAME "vatek_core"
-                        LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/lib/vatek"
-                        RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin")    
-                          
-                
-       INSTALL(TARGETS vatek_core
-       	       LIBRARY DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/vatek"
-       	       PUBLIC_HEADER DESTINATION "${CMAKE_INSTALL_PREFIX}/include/vatek")         
-                
-       INSTALL(TARGETS ${ORIGINAL_STATIC_LIB_NAME}
-       	       ARCHIVE DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/vatek")                	
-    endif()
-
-elseif(APPLE)
-    set(CMAKE_INSTALL_PREFIX "/usr/local/")
-
+    
+elseif(APPLE)    
     add_library(vatek_core SHARED ${sdk2_SOURCES} ${sdk2_HEADERS})
     target_compile_definitions(vatek_core PRIVATE -D_VA2_DLL_)
     target_link_libraries(vatek_core PRIVATE usb-1.0)
@@ -355,13 +350,29 @@ elseif(APPLE)
     endif()
 
     set_target_properties(vatek_core PROPERTIES
-    			        PUBLIC_HEADER "${sdk2_HEADERS}"
-                        ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/lib"
-                        LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/lib"
-                        RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin")
+                          ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/lib"
+                          LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/lib"
+                          RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin")
 
-      INSTALL(TARGETS vatek_core
-       	       LIBRARY DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/vatek"
-       	       PUBLIC_HEADER DESTINATION "${CMAKE_INSTALL_PREFIX}/include/vatek")         
+	set(ORIGINAL_STATIC_LIB_NAME vatek_core_static)
+	add_library(${ORIGINAL_STATIC_LIB_NAME} STATIC ${sdk2_SOURCES} ${sdk2_HEADERS})
+	set_target_properties(${ORIGINAL_STATIC_LIB_NAME} PROPERTIES OUTPUT_NAME vatek_core)
+
+	target_link_libraries(${ORIGINAL_STATIC_LIB_NAME} PRIVATE usb-1.0)
+	target_link_libraries(${ORIGINAL_STATIC_LIB_NAME} PRIVATE ${CMAKE_DL_LIBS})
+
+	set_target_properties(${ORIGINAL_STATIC_LIB_NAME} PROPERTIES
+			    ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/lib"
+		        LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/lib"
+		        RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin") 
+    
+    INSTALL(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/inc/." DESTINATION "${CMAKE_INSTALL_PREFIX}/include/vatek")
+    			                        
+    INSTALL(TARGETS vatek_core
+            LIBRARY DESTINATION "${CMAKE_INSTALL_PREFIX}/lib")
+ 
+	INSTALL(TARGETS ${ORIGINAL_STATIC_LIB_NAME} ARCHIVE DESTINATION "${CMAKE_INSTALL_PREFIX}/lib")     
+    
+
 
 endif()

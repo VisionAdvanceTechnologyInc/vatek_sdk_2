@@ -50,7 +50,9 @@ vatek_result stream_source_file_get(const char* file, Ptsstream_source psource)
 				psource->get = file_stream_get;
 				psource->check = file_stream_check;
 				psource->free = file_stream_free;
-				_disp_l("open file - [%s] - %d - %d", file, pfile->packet_len,pfile->file_size);
+				_disp_l("open file - [%s] - packet length:%d - packet size:%d", file, pfile->packet_len,pfile->file_size);
+				printf("\r\n");
+
 			}
 		}
 		if(!is_vatek_success(nres))
@@ -74,7 +76,12 @@ vatek_result file_stream_check(hstream_source hsource)
 	while (pos < CHIP_STREAM_SLICE_PACKET_NUMS)
 	{
 		nres = (vatek_result)fread(ptr, pfile->packet_len, 1, pfile->fhandle);
-		if (nres == 0)nres = vatek_badstatus;
+		if (nres == 0)
+		{
+			fseek(pfile->fhandle, 0, SEEK_SET);
+			nres = file_lock(pfile);
+			if (is_vatek_success(nres))continue;
+		}
 		else if (nres == 1)
 		{
 			if (ptr[0] == TS_PACKET_SYNC_TAG)
@@ -139,7 +146,6 @@ vatek_result file_lock(Phandle_file pfile)
 					nres = (vatek_result)fseek(pfile->fhandle, (int32_t)pos, SEEK_SET);
 					break;
 				}
-
 			}
 		}
 

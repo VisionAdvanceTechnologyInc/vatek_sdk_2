@@ -44,6 +44,8 @@ extern "C" {
 	HAL_API vatek_result vatek_transform_start_capture(hvatek_transform htr, Ptransform_capture pcapture);
 	HAL_API vatek_result vatek_transform_start_broadcast(hvatek_transform htr, Ptransform_broadcast pbc, r2_param r2param);
 
+	HAL_API vatek_result vatek_transform_capture(hvatek_chip hchip, Ppsitable_parm* raw_table, Ptransform_capture pcapture);
+
 	HAL_API vatek_result vatek_transform_polling(hvatek_transform htr, Ptransform_info* pinfo);
 	HAL_API Ptransform_info vatek_transform_get_info(hvatek_transform htr);
 
@@ -55,6 +57,8 @@ extern "C" {
 	HAL_API vatek_result vatek_transform_enum_get_context(hvatek_transform htr, hmux_channel* hchannel);
 
 	HAL_API void vatek_transform_close(hvatek_transform htr);
+
+	HAL_API vatek_result vatek_usbstream_replace_pcr(hvatek_transform htr, uint16_t pcr_pid, int latency);
 
 #ifdef __cplusplus
 }

@@ -38,6 +38,24 @@
     - FEC Block - 16200, 64800
 */
 
+#define DVB_T2_SUPERFRAME_NUMS          2
+#define DVB_T2_PLP_NUMS                 1
+#define DVB_T2_AUX_NUMS                 0
+
+/* dvb_t2 implement with fixed l1 fixed len (1 _plp, no aux and _fef)*/
+#define L1_POST_CONFIG_LEN              (35 + 35 + (89 * DVB_T2_PLP_NUMS) + 32 + (DVB_T2_AUX_NUMS * 32)) 
+#define L1_POST_DYNAMIC_LEN             (71 + (48 * DVB_T2_PLP_NUMS) + 8 + (DVB_T2_AUX_NUMS*48))
+#define L1_POST_EXTENSION_LEN           0
+#define L1_POST_INFO_SIZE               (L1_POST_CONFIG_LEN + L1_POST_DYNAMIC_LEN + L1_POST_EXTENSION_LEN)
+
+/* L1 */
+#define KBCH_1_2                        7032
+#define KSIG_POST                       (L1_POST_INFO_SIZE + 32) /* L1_POST_INFO_SIZE + 32 (crc32)*/
+#define NBCH_PARITY                     168
+
+#define N_punc_temp		                ((6 * (KBCH_1_2 - KSIG_POST)) / 5)
+#define N_post_temp		                (KSIG_POST + NBCH_PARITY + 9000 - N_punc_temp)
+
 #define _UNSUPPORT						0
 #define CELL_FFT_NUMS					9		/* 1,2,4,8_N,16_N,32_N,8_E,16_E,32_E*/
 #define CELL_PP_NUMS					8
@@ -145,9 +163,9 @@ const uint8_t t2_pp_support[CELL_FFT_NUMS-3][CELL_GI_NUMS] =
 /*1K*/      {PP0            ,PP4 | PP5              ,PP2 | PP3          ,PP1        ,PP0            ,PP0                ,PP0,                   },
 /*2K*/      {PP7 | PP4      ,PP4 | PP5              ,PP2 | PP3          ,PP1        ,PP0            ,PP0                ,PP0,                   },
 /*4K*/      {PP7 | PP4      ,PP4 | PP5              ,PP2 | PP3          ,PP1        ,PP0            ,PP0                ,PP0,                   },
-/*8K*/      {PP7 | PP4      ,PP4 | PP5 | PP8        ,PP2 | PP3 | PP8    ,PP1 | PP8  ,PP7            ,PP2 | PP3 | PP8    ,PP4 | PP5 | PP8        },
-/*16K*/     {PP7 | PP4      ,PP4 | PP5 | PP8 | PP2  ,PP2 | PP3 | PP8    ,PP1 | PP8  ,PP7            ,PP2 | PP3 | PP8    ,PP4 | PP5 | PP8 | PP2  },
-/*32K*/     {PP7 | PP4 | PP6,PP4 | PP8 | PP2        ,PP2 | PP8          ,PP0        ,PP7            ,PP2 | PP8          ,PP4 | PP8 | PP2        },
+/*8K*/      {PP7 | PP4      ,PP8 | PP4 | PP5        ,PP2 | PP3 | PP8    ,PP1 | PP8  ,PP7            ,PP2 | PP3 | PP8    ,PP4 | PP5 | PP8        },
+/*16K*/     {PP7 | PP4 | PP6,PP2 | PP8 | PP4 | PP5  ,PP2 | PP3 | PP8    ,PP1 | PP8  ,PP7            ,PP2 | PP3 | PP8    ,PP4 | PP5 | PP8 | PP2  },
+/*32K*/     {PP4 | PP6      ,PP2 | PP8 | PP4        ,PP2 | PP8          ,PP0        ,PP7            ,PP2 | PP8          ,PP4 | PP8 | PP2        },
 };
 
 

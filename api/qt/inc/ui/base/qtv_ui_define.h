@@ -37,16 +37,17 @@
 _ui_enum_start(qtv_filter_mode)
 	_val(qfilter_disable, disable)
 	_val(qfilter_enum, enum)
-	//_val(qfilter_customer, "customer")
+	//_val(qfilter_customer, customer)
+	_val(capture, capture)
 _ui_enum_end
 
 _ui_struct_start(qtv_source_param)
 	_prop_enum(qtv_source_param, stream_source, source, "source - select current stream source", NULLHAL)
-	//_prop_enum(qtv_source_param, qtv_filter_mode, filter, "source - transform pid filter", NULLHAL)
+	_prop_enum(qtv_source_param, qtv_filter_mode, filter, "source - transform pid filter", NULLHAL)
 _ui_struct_end
 
 _ui_struct_start(qtv_source_param_filter_only)
-	//_prop_enum(qtv_source_param, qtv_filter_mode, filter, "source - transform pid filter", NULLHAL)
+	_prop_enum(qtv_source_param, qtv_filter_mode, filter, "source - transform pid filter", NULLHAL)
 _ui_struct_end
 
 _ui_enum_start(qtv_property_pathmode)
@@ -59,7 +60,7 @@ _ui_enum_end
 
 _ui_struct_start(qtv_usbstream_param)
 	_prop_enum(qtv_usbstream_param, qtv_property_pathmode,mode,"usbstream - source mode(path)",NULLHAL)
-	//_prop_enum(qtv_usbstream_param, qtv_filter_mode, filter,"usbstream - filter mode",NULLHAL)
+	_prop_enum(qtv_usbstream_param, qtv_filter_mode, filter,"usbstream - filter mode",NULLHAL)
 	_prop_path(qtv_usbstream_param, url,"usbstream - source [url | path]", _UIPROP_STRBUF_LEN_MAX)
 _ui_struct_end
 

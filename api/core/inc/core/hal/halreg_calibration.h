@@ -44,4 +44,9 @@
 #define HALREG_CALIBRATION_R2_0_IMAGE	0x1282
 #define HALREG_CALIBRATION_R2_0_PHASE	0x1283
 
+#define HALREG_EXT_R2_GAIN               0x1290
+	#define EXT_R2_GAIN_EN_TAG           0x45585400
+	#define EXT_R2_GAIN_MASK             0x0000000F
+	#define EXT_R2_GAIN_EN_READ          0x45585800
+
 #endif

@@ -145,11 +145,16 @@ qtvUIWizardBroadcast::qtvUIWizardBroadcast(qtvUIMainWizardBroadcast* main, qtvSe
 	pushPage(BCWIZARD_ID_SOURCEVALID);
 	pushPage(BCWIZARD_ID_CONTEXT);
 	pushPage(BCWIZARD_ID_MODULATION);
+	pushPage(BCWIZARD_ID_ENCODER);
+
+	setStartId(BCWIZARD_ID_LOCALE);
+#if 1
 	if (m_bcmain->_service()->_mode() == qservice_transfrom)
-		setStartId(BCWIZARD_ID_SOURCE);
+		setStartId(BCWIZARD_ID_LOCALE);
 	else {
 		setStartId(BCWIZARD_ID_LOCALE);
 	}
+#endif
 }
 
 qtvUIWizardBroadcast::~qtvUIWizardBroadcast()

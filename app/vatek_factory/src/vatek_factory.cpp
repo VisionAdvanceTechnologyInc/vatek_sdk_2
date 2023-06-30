@@ -51,13 +51,13 @@ vatek_factory::vatek_factory(QWidget *parent)
     ui->setupUi(this);
     ui->lisections->attachStacked(ui->stpages);
 
-    QScreen* screen = QGuiApplication::primaryScreen();     //螢幕大小
+    QScreen* screen = QGuiApplication::primaryScreen();    
     QRect mm = screen->availableGeometry();
     int screen_width = mm.width();
     int screen_height = mm.height();
     qDebug() << screen_width << screen_height;
 
-    HDC hd = GetDC(NULL);                                           // 獲取DPI
+    HDC hd = GetDC(NULL);                                         
     int horDPI = GetDeviceCaps(hd, LOGPIXELSX);
     int verticalDPI = GetDeviceCaps(hd, LOGPIXELSY);
     double objectRate = horDPI / 96.0;
@@ -215,7 +215,7 @@ void vatek_factory::recvBuildImage()
             szfilename = QFileDialog::getSaveFileName(this, "Build Image", szfilename, "v2Image (*.v2img)");
             if (!szfilename.isEmpty())
             {
-                std::string szimg = szfilename.toStdString();
+                std::string szimg = szfilename.toLocal8Bit();
                 nres = vatek_storage_save(m_hstorage, szimg.c_str());
             }
             else return;

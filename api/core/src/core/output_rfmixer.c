@@ -128,16 +128,15 @@ vatek_result rfmixer_r2_get_param(hvatek_chip hchip,Pr2_param pr2)
         if(is_vatek_success(nres))
             nres = readhal(HALREG_RF_COM_FREQ,&pr2->freqkhz);
         
-        if(is_vatek_success(nres) && pr2->mode == r2_cntl_param)
+
+        nres = readhal(HALREG_R2_FLAGS,&pr2->r2_flags);
+        if (is_vatek_success(nres))
         {
-            nres = readhal(HALREG_R2_FLAGS,&pr2->r2_flags);
+            nres = ui_props_read_hal(hchip, _ui_struct(r2_tune_rule), (uint8_t*)&pr2->rule);
             if (is_vatek_success(nres))
-            {
-                nres = ui_props_read_hal(hchip, _ui_struct(r2_tune_rule), (uint8_t*)&pr2->rule);
-                if (is_vatek_success(nres))
-                    nres = ui_props_read_hal(hchip, _ui_struct(r2_tune), (uint8_t*)&pr2->rule.tune);
-            }    
-        }
+                nres = ui_props_read_hal(hchip, _ui_struct(r2_tune), (uint8_t*)&pr2->rule.tune);
+        }    
+
     }
     return nres;
 }
@@ -164,6 +163,11 @@ vatek_result rfmixer_r2_set_param(hvatek_chip hchip,Pr2_param pr2)
         }
     }
     return nres;
+}
+
+vatek_result rfmixer_r2_adjust_pagain(hvatek_chip hchip, int8_t gain) {
+    uint32_t nvalue = EXT_R2_GAIN_EN_TAG | (EXT_R2_GAIN_MASK & gain);
+    return writehal(HALREG_EXT_R2_GAIN, nvalue);
 }
 
 vatek_result rfmixer_r2_start(hvatek_chip hchip,uint32_t cntl,Pr2_param pr2param)

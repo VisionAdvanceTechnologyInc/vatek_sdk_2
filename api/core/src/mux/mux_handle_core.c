@@ -188,8 +188,6 @@ int32_t mux_check_idle(Phandle_mux pmux)
 
 void mux_reset(Phandle_mux pmux)
 {
-	//if(pmux->rule)
-	//	muxrule_free(pmux->rule);
 	th_mempool_reset(pmux->mempool);
 	pmux->rule = NULL;
 	pmux->_h.handle = NULL;

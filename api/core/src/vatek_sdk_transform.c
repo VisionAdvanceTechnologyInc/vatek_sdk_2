@@ -144,6 +144,27 @@ vatek_result vatek_transform_start_capture(hvatek_transform htr, Ptransform_capt
 	return nres;
 }
 
+vatek_result vatek_transform_capture(hvatek_chip hchip, Ppsitable_parm* raw_table, Ptransform_capture pcapture) {
+	vatek_result nres = vatek_badstatus;
+
+	if (hchip == NULL || raw_table == NULL || pcapture == NULL)
+		return vatek_badparam;
+
+	//nres = transform_capture_reset(ic_module_a3, stream_source_usb, pcapture);
+	
+	nres = vatek_capture_create(hchip, pcapture);
+
+	if (is_vatek_success(nres))
+		nres = vatek_capture_gettable(hchip, pcapture);
+	else
+		nres = vatek_format;
+
+	//if ((nres = vatek_capture_destroy(hchip)) != vatek_success)
+		//return nres;
+
+	return nres;
+}
+
 vatek_result vatek_transform_start_broadcast(hvatek_transform htr, Ptransform_broadcast pbc, r2_param r2param)
 {
 	Phandle_transform phtr = (Phandle_transform)htr;
@@ -180,9 +201,12 @@ vatek_result vatek_transform_start_broadcast(hvatek_transform htr, Ptransform_br
 vatek_result vatek_transform_polling(hvatek_transform htr, Ptransform_info* pinfo)
 {
 	Phandle_transform phtr = (Phandle_transform)htr;
+	uint32_t val = 0;
+
 	vatek_result nres = vatek_badstatus;
 	if (phtr->info.mode != trmode_null)
 	{
+
 		nres = transform_check_status(phtr->hchip, chip_status_running);
 		if (!is_vatek_success(nres))nres = broadcast_info_get(phtr->hchip, &phtr->info.info);
 		else
@@ -263,6 +287,7 @@ vatek_result vatek_transform_get_packets(hvatek_transform htr,uint32_t* pktnums)
 	{
 		uint32_t val = 0;
 		nres = vatek_chip_read_memory(phtr->hchip,HALREG_TRINFO_PACKETNUMS, &val);
+
 		if (is_vatek_success(nres))*pktnums = val;
 	}
 	return nres;
@@ -296,4 +321,13 @@ vatek_result transform_check_status(hvatek_chip hchip,chip_status status)
 	if(!is_chip_status_valid(pinfo->status))nres = vatek_hwfail;
 	else if(pinfo->status != status)nres = vatek_badstatus;
 	return nres;	
+}
+
+vatek_result vatek_usbstream_replace_pcr(hvatek_transform htr, uint16_t pcr_pid, int latency)
+{
+	Phandle_transform phtr = (Phandle_transform)htr;
+	vatek_result nres = vatek_chip_write_memory(phtr->hchip, HALREG_RETAGv2_PCR, pcr_pid);
+		if (is_vatek_success(nres))
+			vatek_chip_write_memory(phtr->hchip, HALREG_RETAGv2_PCR_LATENCY, latency);
+	return nres;
 }

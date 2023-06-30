@@ -44,7 +44,7 @@ typedef enum _bsource_id
 #define BSOURCE_EP9555E_BIT			BBRIDGE_DRI_TO_BIT(bsource_ep9555e)
 #define BSOURCE_EP9351_BIT			BBRIDGE_DRI_TO_BIT(bsource_ep9351)
 #define BSOURCE_ADV718X_BIT			BBRIDGE_DRI_TO_BIT(bsource_adv718x)
-#define BSOURCE_SA1804A_BIT			BBRIDGE_DRI_TO_BIT(bsource_h1)
+#define BSOURCE_H1_BIT				BBRIDGE_DRI_TO_BIT(bsource_h1)
 
 /* bridge source command define */
 
@@ -99,6 +99,7 @@ typedef enum _bsource_scale				/* output timing changed (ep9555e and sx1084a )*/
 {
 	sscale_bypass = 0,
 	sscale_i_2_p,						/* interleave scale to progress ex. 1080i -> 1080p	*/
+	sscale_p_2_i,
 	sscale_fixed_480p,					/* used scale would enabled i_2_p also				*/
 	sscale_fixed_576p,
 	sscale_fixed_720p,
@@ -124,6 +125,7 @@ static const ep9555e_param def_ep9555e_param = { sscale_i_2_p ,sbaseclk_1001, };
 typedef struct _h1_param
 {
 	bsource_scale scale;
+	bsource_baseclk baseclk;
 }h1_param,*Ph1_param;
 
 static const h1_param def_h1_param = { sscale_bypass, };

@@ -103,7 +103,7 @@ vatek_result vatek_usbstream_open(hvatek_chip hchip, hvatek_usbstream* husstream
 			if (pustream)
 			{
 				memset(pustream, 0, sizeof(handle_usbstream));
-				transform_broadcast_reset(pinfo->chip_module,stream_source_usb,&pustream->broadcast);
+				transform_broadcast_reset(pinfo->chip_module, stream_source_usb,&pustream->broadcast);
 				pustream->hchip = hchip;
 				pustream->htransform = htr;
 				if(pinfo->peripheral_en & PERIPHERAL_FINTEKR2)
@@ -158,9 +158,15 @@ vatek_result vatek_usbstream_start(hvatek_usbstream husstream, Pusbstream_param 
 
 			if (is_vatek_success(nres))
 			{
-				if (puparam->remux == ustream_remux_passthrough)
+				pustream->broadcast.stream.usb.usb_flags = USB_EN_ASYNCBUFFER;
+				if (puparam->remux == ustream_passthrough)
 				{
 					pustream->broadcast.stream.usb.mode = stream_passthrogh;
+					pustream->broadcast.stream.usb.pcrmode = pcr_disable;
+				}
+				else if (puparam->remux == ustream_smooth)
+				{
+					pustream->broadcast.stream.usb.mode = stream_smooth;
 					pustream->broadcast.stream.usb.pcrmode = pcr_disable;
 				}
 				else
@@ -172,10 +178,19 @@ vatek_result vatek_usbstream_start(hvatek_usbstream husstream, Pusbstream_param 
 
 			if (is_vatek_success(nres))
 			{
+				// remux mode & pcr_retagv2 can replace PCR
+				if (pustream->broadcast.stream.usb.mode == stream_remux && pustream_new->pcradjust == pcr_retagv2) {
+					vatek_usbstream_replace_pcr(pustream->htransform, puparam->pcr_pid, puparam->latency);
+				}
+			}
+
+			if (is_vatek_success(nres))
+			{
 				nres = vatek_transform_start_broadcast(pustream->htransform,&pustream->broadcast, puparam->r2param);
 				if (is_vatek_success(nres))
 				{
-					nres = vatek_device_stream_start(pustream->hchip, pmod);
+					uint32_t stream_mode = pustream->broadcast.stream.usb.mode;
+					nres = vatek_device_stream_start(pustream->hchip, pmod, stream_mode);
 					if (!is_vatek_success(nres))vatek_transform_stop(pustream->htransform);
 				}
 
@@ -195,6 +210,17 @@ vatek_result vatek_usbstream_start(hvatek_usbstream husstream, Pusbstream_param 
 			if (!is_vatek_success(nres))vatek_usbstream_stop(husstream);
 		}
 	}
+	return nres;
+}
+
+vatek_result vatek_usbstream_check(hvatek_usbstream husstream) {
+	Phandle_usbstream pustream = (Phandle_usbstream)husstream;
+	vatek_result nres = vatek_badstatus;
+	if (pustream->status != usbstream_status_running) {
+		uint32_t nvalue = 0;
+		nres = vatek_chip_read_register(pustream->hchip, HALREG_SYS_ERRCODE, &nvalue);
+	}
+	else nres = vatek_success;
 	return nres;
 }
 
@@ -300,29 +326,50 @@ void usbstream_sync_handler(Pcross_thread_param param)
 	vatek_result nres = vatek_success;
 	fpsync_get_buffer fpgetbuf = pustream->sync.getbuffer;
 	void* fpparam = pustream->sync.param;
+	int buffer_init = 0;
 	pustream->stream_packets = 0;
 	pustream->stream_tick = cross_os_get_tick_ms();
-
 	while (pustream->status == usbstream_status_running)
 	{
+		uint32_t run_time = cross_os_get_tick_ms();
+		int packet_num = 0;
+		int packet_pos = 0;
+		int count = 0;
+		
 		nres = usbstream_update_stream(pustream);
 		if (nres == vatek_success)continue;
 		if (is_vatek_success(nres))
 		{
+			packet_num = pustream->stream_packets;
+			if (pustream->stream_packets == 0) {
+				buffer_init++;
+			}
+			else 
+				buffer_init = 0;
+
+			//if (buffer_init >= 10) {
+			//	printf("A3 buffer get 0 over\n");
+			//}
 			while (pustream->stream_packets >= USBSTREAM_SLICE_PACKET_NUMS)
 			{
 				uint8_t* pbuf = NULL;
 				nres = fpgetbuf(fpparam, &pbuf);
-				if (nres > vatek_success)
+				if (nres > vatek_success) {
 					nres = vatek_device_stream_write(pustream->hchip, pbuf, CHIP_STREAM_SLICE_LEN);
+					packet_pos++;					
+				}
 				else if (nres == vatek_success)break;
-
 				if (is_vatek_success(nres))pustream->stream_packets -= USBSTREAM_SLICE_PACKET_NUMS;
 				else VWAR("write device stream fail : %d", nres);
 				if (!is_vatek_success(nres))break;
 			}
-
-			if (is_vatek_success(nres))nres = usbstream_commit_stream(pustream);
+			
+			if (is_vatek_success(nres)) nres = usbstream_commit_stream(pustream);
+			run_time = run_time - cross_os_get_tick_ms();
+			if (abs(run_time) >= 100) {
+				printf("A3 running over 100ms\n");
+			}
+			//printf("[%d] packet_num: %d ; packet_pos: %d ; buffer_init : %d ; count: %d\n", abs(run_time), packet_num, packet_pos, buffer_init, count);
 		}
 		if (!is_vatek_success(nres))break;
 	}
@@ -351,6 +398,8 @@ void usbstream_async_handler(Pcross_thread_param param)
 			int32_t numslice = 0;
 			while (pustream->stream_packets >= USBSTREAM_SLICE_PACKET_NUMS)
 			{
+				VERR("slice pustream->stream_packets : %d\n", pustream->stream_packets);
+
 				uint8_t* pbuf = usbstream_async_get_buffer(pasync);
 				if (pbuf)
 				{
@@ -440,6 +489,7 @@ vatek_result usbstream_commit_stream(Phandle_usbstream pustream)
 	if (pustream->stream_packets < USBSTREAM_SLICE_PACKET_NUMS)
 	{
 		nres = vatek_transform_commit_packets(pustream->htransform);
+
 		if (is_vatek_success(nres))
 		{
 			if (cross_os_get_tick_ms() - pustream->stream_tick > 1000)
@@ -570,4 +620,20 @@ void usbstream_async_free(Phandle_async pasync)
 		cross_os_free_mutex(pasync->async_lock);
 	th_circlebuf_free(pasync->async_buffer);
 	free(pasync);
+}
+
+vatek_result vatek_usbstream_filter(hvatek_usbstream husstream)
+{
+	Phandle_usbstream pustream = (Phandle_usbstream)husstream;
+	vatek_result nres = vatek_badstatus;
+	if (pustream->status == usbstream_status_idle)
+	{
+		pustream->broadcast.filters.filter_nums = 2;
+		pustream->broadcast.filters.filters[0].orange_pid = 0x101;
+		pustream->broadcast.filters.filters[0].replace_pid = PID_FILTER_NOT_REPLACE;
+		pustream->broadcast.filters.filters[1].orange_pid = 0x102;
+		pustream->broadcast.filters.filters[1].replace_pid = PID_FILTER_NOT_REPLACE;
+		nres = vatek_success;
+	}
+	return nres;
 }

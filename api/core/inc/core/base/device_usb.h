@@ -32,6 +32,7 @@
 #include <core/vatek_base.h>
 
 #define USBDEV_VID								0x2C42
+#define USBDEV_VID_U							0x17a7
 #define USBDEV_VID_OLD							0x1934
 
 #define USB_DEVICE_MAX_PACKET_LEN 				512

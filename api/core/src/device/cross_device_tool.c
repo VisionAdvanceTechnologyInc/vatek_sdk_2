@@ -78,6 +78,7 @@ vatek_result cross_devices_create(Pcross_device* pcross)
 			{
 				husb_device husb = NULL;
 				nres = usb_api_ll_list_get_device(m_cdevices.usbdevices, i, &husb);
+				VERR("index : %d\n", i);
 				if (is_vatek_success(nres))
 				{
 					nres = cross_usb_device_open(husb, &newcross);

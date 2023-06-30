@@ -34,7 +34,6 @@
 #include <core/base/output_modulator.h>
 #include <core/base/calibration_define.h>
 #include <core/base/device_usb.h>
-
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -62,9 +61,10 @@ extern "C" {
 	HAL_API vatek_result vatek_device_calibration_load(hvatek_chip hchip, Pcalibration_param pcalibration);
 	HAL_API vatek_result vatek_device_calibration_apply(hvatek_chip hchip, Pcalibration_param pcalibration);
 	HAL_API vatek_result vatek_device_calibration_save(hvatek_chip hchip, Pcalibration_param pcalibration);
+	HAL_API vatek_result vatek_device_r2_apply(hvatek_chip hchip, int r2_power);
 
 	/* used with transform service for usb stream */
-	HAL_API vatek_result vatek_device_stream_start(hvatek_chip hchip,Pmodulator_param pmod);
+	HAL_API vatek_result vatek_device_stream_start(hvatek_chip hchip, Pmodulator_param pmod, uint32_t stream_mode);
 	HAL_API vatek_result vatek_device_stream_write(hvatek_chip hchip,uint8_t* pbuf,int32_t size);
 	HAL_API vatek_result vatek_device_stream_stop(hvatek_chip hchip);
 

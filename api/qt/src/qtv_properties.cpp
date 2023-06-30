@@ -93,7 +93,11 @@ void qi_output_properties::resetProperties()
 	modulator_type type = m_param.modulation.type;
 	memset(&m_param, 0, sizeof(qtv_output_param));
 	modulator_param_reset(type, &m_param.modulation);
-	m_param.r2param.freqkhz = 473000;
+	if (type == modulator_dtmb) 
+		m_param.r2param.freqkhz = 474000;
+	else 
+		m_param.r2param.freqkhz = 473000;
+
 	m_param.r2param.mode = r2_cntl_path_0;
 }
 
@@ -179,15 +183,12 @@ void qi_source_properties::resetProperties()
 void qi_source_properties::refreshProperties()
 {
 	clearProperties();
-	if (m_mode == qproperties_normal)
-		insertProperties(_ui_struct(qtv_source_param), (uint8_t*)&m_param);
-	if (m_mode == qproperties_source_filter)
-		insertProperties(_ui_struct(qtv_source_param_filter_only), (uint8_t*)&m_param);
 	
 	insertProperties(stream_source_get_ui_props(m_param.source), (uint8_t*)&m_param.stream);
 	if (m_param.source == stream_source_encoder)
 	{
 		Pencoder_param penc = &m_param.stream.encoder;
+
 		if (m_mode != qproperties_bridge)
 		{
 			if(penc->mode == encoder_source_vi_0)
@@ -197,6 +198,11 @@ void qi_source_properties::refreshProperties()
 		}
 		insertProperties(_ui_struct(quality_param), (uint8_t*)&penc->quality);
 	}
+
+	if (m_mode == qproperties_normal)
+		insertProperties(_ui_struct(qtv_source_param), (uint8_t*)&m_param);
+	if (m_mode == qproperties_source_filter)
+		insertProperties(_ui_struct(qtv_source_param_filter_only), (uint8_t*)&m_param);
 }
 
 void qi_source_properties::insertProperty(const Pui_prop_item uiprop, uint8_t* raw)

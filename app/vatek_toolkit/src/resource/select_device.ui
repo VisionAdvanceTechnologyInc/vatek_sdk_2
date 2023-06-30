@@ -72,19 +72,6 @@
          </widget>
         </item>
         <item>
-         <widget class="QLineEdit" name="txt_loader">
-          <property name="font">
-           <font>
-            <family>Times New Roman</family>
-            <pointsize>12</pointsize>
-           </font>
-          </property>
-          <property name="readOnly">
-           <bool>true</bool>
-          </property>
-         </widget>
-        </item>
-        <item>
          <widget class="QPushButton" name="btn_loader">
           <property name="maximumSize">
            <size>
@@ -130,19 +117,6 @@
          </widget>
         </item>
         <item>
-         <widget class="QLineEdit" name="txt_app">
-          <property name="font">
-           <font>
-            <family>Times New Roman</family>
-            <pointsize>12</pointsize>
-           </font>
-          </property>
-          <property name="readOnly">
-           <bool>true</bool>
-          </property>
-         </widget>
-        </item>
-        <item>
          <widget class="QPushButton" name="btn_app">
           <property name="maximumSize">
            <size>
@@ -184,19 +158,6 @@
           </property>
           <property name="text">
            <string>Application_2 : </string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QLineEdit" name="txt_app2">
-          <property name="font">
-           <font>
-            <family>Times New Roman</family>
-            <pointsize>12</pointsize>
-           </font>
-          </property>
-          <property name="readOnly">
-           <bool>true</bool>
           </property>
          </widget>
         </item>
@@ -266,9 +227,6 @@
   <tabstop>btn_loader</tabstop>
   <tabstop>btn_app</tabstop>
   <tabstop>btn_app2</tabstop>
-  <tabstop>txt_loader</tabstop>
-  <tabstop>txt_app</tabstop>
-  <tabstop>txt_app2</tabstop>
  </tabstops>
  <resources/>
  <connections/>

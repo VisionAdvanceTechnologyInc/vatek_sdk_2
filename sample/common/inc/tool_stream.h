@@ -4,6 +4,10 @@
 
 #include <core/base/output_modulator.h>
 
+#define TS_PACKET_LEN										188
+#define TSSLICE_BUFFER_LEN			CHIP_STREAM_SLICE_LEN
+#define TSSLICE_PACKET_NUM			(TSSLICE_BUFFER_LEN/TS_PACKET_LEN)
+
 typedef void* hstream_source;
 typedef vatek_result(*fpstream_source_start)(hstream_source hsource);
 typedef vatek_result(*fpstream_source_check)(hstream_source hsource);
@@ -20,6 +24,8 @@ typedef struct _tsstream_source
 	fpstream_source_stop stop;
 	fpstream_source_free free;
 }tsstream_source,*Ptsstream_source;
+
+
 
 #ifdef __cplusplus
 extern "C" {

@@ -7,7 +7,7 @@ set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(SDK2_DIR "../../" CACHE STRING "default vatek_sdk_2 folder")
 set(SDK2_EN_STATIC_ONLY ON)
-set(OBS_DIR "../../output/obs-studio" CACHE STRING "default obs-studio folder")
+set(OBS_DIR "D:/obs-studio-29.1.2" CACHE STRING "default obs-studio folder")
 
 if(NOT EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/${SDK2_DIR}/)
     message(FATAL_ERROR "vatek_sdk_2 not found please set SDK2_DIR before config")
@@ -15,39 +15,33 @@ endif()
 
 get_filename_component(OBS_DIR "${OBS_DIR}" REALPATH BASE_DIR "${CMAKE_SOURCE_DIR}")
 
-if(CMAKE_SIZEOF_VOID_P EQUAL 8)
-	set(QTDIR ${OBS_DIR}/deps/qt_5.15.2/msvc2019_64 CACHE STRING "")
-	set(DepsPath ${OBS_DIR}/deps/2019/win64 CACHE STRING "")
-	set(obsPath ${OBS_DIR}/obs-studio-27.1.1 CACHE STRING "")
-	set(LibObs_DIR ${OBS_DIR}/obs-studio-27.1.1/build64/libobs CACHE STRING "")
-	set(OBS_FRONTEND_LIB ${OBS_DIR}/obs-studio-27.1.1/build64/UI/obs-frontend-api/Debug/obs-frontend-api.lib CACHE STRING "")
-else()
-	set(QTDIR ${OBS_DIR}/deps/qt_5.15.2/msvc2019 CACHE STRING "")
-	set(DepsPath ${OBS_DIR}/deps/2019/win32 CACHE STRING "")
-	set(obsPath ${OBS_DIR}/obs-studio-27.1.1 CACHE STRING "")
-	set(LibObs_DIR ${OBS_DIR}/obs-studio-27.1.1/build32/libobs CACHE STRING "")
-	set(OBS_FRONTEND_LIB ${OBS_DIR}/obs-studio-27.1.1/build32/UI/obs-frontend-api/Debug/obs-frontend-api.lib CACHE STRING "")
-endif()
+
+set(QTDIR ${OBS_DIR}/obs-build-dependencies/windows-deps-2023-04-12-x64/lib CACHE STRING "")
+set(DepsPath ${OBS_DIR}/obs-build-dependencies/windows-deps-2023-04-12-x64/include CACHE STRING "")
+set(obsPath ${OBS_DIR}/obs-studio CACHE STRING "")
+set(LibObs_DIR ${OBS_DIR}/obs-studio/build64/libobs CACHE STRING "")
+set(OBS_FRONTEND_LIB ${OBS_DIR}/obs-studio/build64/UI/obs-frontend-api/RelWithDebInfo/obs-frontend-api.lib CACHE STRING "")
+set(w32-pthreads_DIR ${OBS_DIR}/obs-studio/build64/deps/w32-pthreads CACHE STRING "")
 
 #overwrite vatek_sdk_2 config
 option(SDK2_EN_APP "" OFF)
 option(SDK2_EN_SAMPLE "" OFF)
-set(SDK2_QTDIR ${QTDIR} CACHE STRING "default QT_DIR")
+option(SDK2_EN_QT "" OFF)
+
+
 add_subdirectory(${SDK2_DIR} vatek_sdk_2.out)
 #end-section 
 
 if (WIN32 OR APPLE)
-    include(external/FindLibObs.cmake)
+    include(cmake/ObsPluginHelpers.cmake)
 endif()
 
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
 
-find_package(LibObs REQUIRED)
-find_package(Qt5 COMPONENTS Widgets Core Gui REQUIRED)
 
-find_package(FFmpeg COMPONENTS avcodec avfilter avdevice avutil swscale avformat swresample REQUIRED)
-include_directories(${FFMPEG_INCLUDE_DIRS})
+find_package(LibObs REQUIRED PATH LibObs_DIR)
+find_package(Qt5 COMPONENTS Widgets Core Gui REQUIRED)
 
 set(PLUGIN_SOURCES
     source/src/obs_vatek.cpp
@@ -96,6 +90,9 @@ target_include_directories(${CMAKE_PROJECT_NAME} PRIVATE
     "${SDK2_DIR}/api/core/inc"
     "${SDK2_DIR}/api/qt/inc"
 	"${LIBOBS_INCLUDE_DIR}/../UI/obs-frontend-api"
+    "${obsPath}/libobs"
+    "${obsPath}/UI/obs-frontend-api"
+    "${DepsPath}"
     ${Qt5Gui_INCLUDES}
 	${Qt5Core_INCLUDES}
 	${Qt5Widgets_INCLUDES})
@@ -108,10 +105,12 @@ if(MSVC)
 
     if(CMAKE_SIZEOF_VOID_P EQUAL 8)
         target_link_directories(${CMAKE_PROJECT_NAME} PRIVATE "${SDK2_DIR}/build/deps/win/libusb/1.0.24/VS2019/MS64/static")
+        target_link_directories(${CMAKE_PROJECT_NAME} PRIVATE "${SDK2_DIR}/bin/lib/Debug")
     else()
 		target_link_options(${CMAKE_PROJECT_NAME} PRIVATE /SAFESEH:NO)
         target_link_directories(${CMAKE_PROJECT_NAME} PRIVATE "${SDK2_DIR}/build/deps/win/libusb/1.0.24/VS2019/MS32/static")
-    endif()
+        target_link_directories(${CMAKE_PROJECT_NAME} PRIVATE "${SDK2_DIR}/bin/lib/Debug")
+        endif()
     set_target_properties(${CMAKE_PROJECT_NAME} PROPERTIES LINK_FLAGS /SUBSYSTEM:WINDOWS)
     target_compile_options(${CMAKE_PROJECT_NAME} PRIVATE /MP PRIVATE /d2FH4-)
     target_compile_options(${CMAKE_PROJECT_NAME} PRIVATE /wd26495 PRIVATE /wd26812 PRIVATE /wd26498)
@@ -119,9 +118,10 @@ if(MSVC)
 endif()
 
 target_link_libraries(${CMAKE_PROJECT_NAME}
-	libobs
+	"${obsPath}/build64/libobs/RelWithDebInfo/obs.lib"
+    "${QTDIR}/avcodec.lib"
+    "${QTDIR}/avutil.lib"
     "${OBS_FRONTEND_LIB}"
-    "${FFMPEG_LIBRARIES}"
     libvatek_core_static
     libvatek_qt_static
     Qt5::Gui

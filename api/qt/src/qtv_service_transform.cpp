@@ -241,6 +241,10 @@ vatek_result qi_service_transform::stop()
 				m_enumcontext = new qi_muxchannel(hchannel);
 			}
 		}
+		else if (m_param.mode == trmode_capture) {
+			//Ppsitable_parm table = NULL;
+			//nres = vatek_capture_gettable(m_htr, &table);
+		}
 		resetParam();
 		changedStatus(qstatus_idle);
 		nres = vatek_success;
@@ -268,7 +272,7 @@ vatek_result qi_service_transform::setParamSource(qtvSourceBase* source)
 		else nres = vatek_unsupport;
 		if (is_vatek_success(nres))penum->source = psource->source;
 	}
-	else if (m_param.mode == trmode_enum)
+	else if (m_param.mode == trmode_capture)
 	{
 		Ptransform_capture pcapture = &m_param.param.trcapture;
 		nres = vatek_success;
@@ -366,6 +370,7 @@ vatek_result transform_handle::pollingService()
 			uint8_t* pslice = NULL;
 			qtvSourceUSBStream* usbstream = qobject_cast<qtvSourceUSBStream*>(m_source);
 			nres = vatek_transform_get_packets(m_htr, &pktnums);
+
 			if (is_vatek_success(nres))
 			{
 				if (pktnums < CHIP_STREAM_SLICE_PACKET_NUMS)
@@ -390,7 +395,6 @@ vatek_result transform_handle::pollingService()
 						else break;
 						if (!is_vatek_success(nres))break;
 					}
-
 					if (is_vatek_success(nres))
 						nres = vatek_transform_commit_packets(m_htr);
 				}
@@ -434,6 +438,11 @@ vatek_result transform_handle::startTransform()
 		nres = vatek_transform_start_broadcast(m_htr, &m_param->param.trbc, m_param->r2param);
 		pmod = &m_param->param.trbc.modulator;
 	}
+	else if (m_param->mode == trmode_capture)
+	{
+		//nres = vatek_capture_create(m_htr, &m_param->param.trcapture);
+		//pmod = &m_mod;
+	}
 
 	if (is_vatek_success(nres))
 	{
@@ -444,7 +453,7 @@ vatek_result transform_handle::startTransform()
 			if (bcstatus == bcstatus_broadcast || bcstatus == bcstatus_wait_source || bcstatus == bcstatus_finish)
 			{
 				if (m_source->_source_mode() == qsource_usbstream)
-					nres = vatek_device_stream_start(m_hchip, pmod);
+					nres = vatek_device_stream_start(m_hchip, pmod , m_param->param.trbc.stream.usb.mode);
 			}
 			else nres = vatek_badstatus;
 		}

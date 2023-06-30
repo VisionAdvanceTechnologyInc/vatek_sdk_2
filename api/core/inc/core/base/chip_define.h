@@ -94,10 +94,11 @@ const static uint32_t chip_status_tags[] =
  * Core Service Mode
  */
 typedef enum _hal_service_mode{
-	service_unknown = 0,
-	service_rescue = SERVICE_TAG_RESCUE,			/*!< service rescure */
-	service_broadcast = SERVICE_TAG_BROADCAST,		/*!< service broadcast (b-serial) */
-	service_transform = SERVICE_TAG_TRANSFORM,		/*!< service transform (a-serial) */
+	service_unknown   = 0,
+	service_rescue	  = SERVICE_TAG_RESCUE,			/*!< service rescure */
+	service_broadcast = SERVICE_TAG_BROADCAST,		/*!< service broadcast (B-serial) */
+	service_transform = SERVICE_TAG_TRANSFORM,		/*!< service transform (A-serial) */
+	service_encoder   = SERVICE_TAG_ENCODER,		/*!< service transform (V-serial) */
 }hal_service_mode;
 
 /**

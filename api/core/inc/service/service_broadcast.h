@@ -51,7 +51,7 @@ typedef struct _mux_param{
 
 static const mux_param default_mux_param =
 {
-	0x100,0x1FFF,0,0,0,0,
+	0x100,0x1FFF,19000000,0,0,0,
 };
 
 /**
@@ -62,9 +62,22 @@ typedef struct _broadcast_param{
 	encoder_param enc;				/*!< encoder parameters */
     modulator_param mod;			/*!< output DTV modulation parameters */
     mux_param mux;					/*!< MPEG-TS stream multiplexer parameters */
+	r2_param r2param;
 }broadcast_param;
 
 typedef broadcast_param* Pbroadcast_param;
+
+
+/**
+ * @ingroup encoder_api
+ * @brief encoder parameters used to start
+ */
+typedef struct _vencoder_param {
+	encoder_param enc;				/*!< encoder parameters */
+	mux_param mux;					/*!< MPEG-TS stream multiplexer parameters */
+}vencoder_param;
+
+typedef vencoder_param* Pvencoder_param;
 
 #ifdef __cplusplus
 extern "C" {
@@ -99,6 +112,16 @@ extern "C" {
 	 * @return >= 0 mean success, other error  
 	 */
 	HAL_API vatek_result broadcast_param_get(hvatek_chip hchip,Pbroadcast_param pbc);
+
+	/**
+ * @ingroup Vencoder_api
+ * @brief write encoder parameters to device (HAL_REGISTER).
+ *
+ * @param[in] hchip device handle
+ * @param[in] pbc broadcast parameters
+ * @return >= 0 mean success, or error code.
+ */
+	HAL_API vatek_result vencoder_param_set(hvatek_chip hchip, Pbroadcast_param pbc);
 
 #ifdef __cplusplus
 }

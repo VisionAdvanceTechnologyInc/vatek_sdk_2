@@ -33,6 +33,8 @@
 #include <core/qtv_service.h>
 #include <vatek_sdk_device.h>
 #include <cross/cross_os_api.h>
+#include <core/base/calibration_define.h>
+#include <core/base/output_rfmixer.h>
 #include "qinternal_properties.h"
 
 class qi_bridge : public qtvBridge

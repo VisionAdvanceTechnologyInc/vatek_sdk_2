@@ -326,8 +326,14 @@ extern "C" {
 	{
 		if(pclk0->_90KHz > pclk1->_90KHz)
 		{
-			uint32_t ntick = (uint32_t)(((uint64_t)0x1FFFFFFFF) - pclk0->_90KHz) * 300;
+			uint32_t ntick = (uint32_t)((((uint64_t)0x1FFFFFFFFL) - pclk0->_90KHz) + pclk1->_90KHz);
+			ntick *= 300;
+			ntick += (300 - pclk0->_27MHz) + pclk1->_27MHz;
+			return ntick;
+			#if 0
+			uint32_t ntick = (uint32_t)(((uint64_t)0x1FFFFFFFFL) - pclk0->_90KHz) * 300;
 			return ntick - (300 - pclk0->_27MHz) + pclk1->_27MHz;
+			#endif
 		}else
 		{
 			uint32_t ntick = (uint32_t)(pclk1->_90KHz - pclk0->_90KHz) * 300;
@@ -354,7 +360,7 @@ extern "C" {
 
 	static inline uint32_t mux_clock_get_ms(Pmux_clock_tick pclk)
 	{
-		return pclk->_90KHz / 90;
+		return (uint32_t)(pclk->_90KHz / 90);
 	}
 
 	static inline void mux_time_append_ns(Pmux_time_tick ptime, uint32_t ns)

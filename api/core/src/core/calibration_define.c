@@ -52,6 +52,31 @@ vatek_result calibration_set(hvatek_chip hchip, Pcalibration_param pcalibration,
 	return nres;
 }
 
+vatek_result calibration_adjust_gain(hvatek_chip hchip, int8_t gain, Pcalibration_param m_calibration) {
+	calibration_param calibration;
+	memset(&calibration, 0, sizeof(Pcalibration_param));
+	calibration.clock = m_calibration->clock;
+
+
+	calibration.r2.ioffset = m_calibration->r2.ioffset;
+	calibration.r2.qoffset = m_calibration->r2.qoffset;
+	calibration.r2.imgoffset = m_calibration->r2.imgoffset;
+	calibration.r2.phaseoffset = m_calibration->r2.phaseoffset;
+
+	calibration.dac.ioffect = m_calibration->dac.ioffect;
+	calibration.dac.qoffect = m_calibration->dac.qoffect;
+
+	if ((m_calibration->dac.qgain == 0) && (m_calibration->dac.igain == 0)) {
+		calibration.dac.igain = gain;
+		calibration.dac.qgain = gain;
+	}
+	else {
+		calibration.dac.igain = m_calibration->dac.igain;
+		calibration.dac.qgain = m_calibration->dac.qgain;
+	}
+	return calibration_set(hchip, &calibration, 1);
+}
+
 vatek_result calibration_check(hvatek_chip hchip)
 {
 	uint32_t val = 0;
@@ -71,6 +96,7 @@ vatek_result calibration_get(hvatek_chip hchip, Pcalibration_param pcalibration)
 	{
 		uint32_t val = 0;
 		nres = vatek_chip_read_memory(hchip, HALREG_CALIBRATION_CLOCK, &val);
+
 		if (is_vatek_success(nres))
 		{
 			pcalibration->clock = (int32_t)val;
@@ -82,6 +108,10 @@ vatek_result calibration_get(hvatek_chip hchip, Pcalibration_param pcalibration)
 				pcalibration->dac.igain = _calibration_dac_igain(val);
 				pcalibration->dac.qgain = _calibration_dac_qgain(val);
 				nres = ui_props_read_hal(hchip, _ui_struct(r2_tune_calibration0), (uint8_t*)&pcalibration->r2);
+				
+				// read PA_gain (write PA_GAIN TAG) 
+				nres = vatek_chip_write_memory(hchip, HALREG_EXT_R2_GAIN, EXT_R2_GAIN_EN_READ);
+
 			}
 		}
 	}

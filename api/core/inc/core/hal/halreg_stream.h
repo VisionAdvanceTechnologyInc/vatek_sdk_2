@@ -40,14 +40,19 @@
 #define PCR_MODE_DISABLE				0x00000000
 #define PCR_MODE_ADJUST					0x00000001
 #define PCR_MODE_RETAG					0x00000002
+#define PCR_MODE_RETAGV2				0x00000003
 
 /* stream usb param									*/
 /*--------------------------------------------------*/
 #define HALREG_USB_INPUT_MODE			0x640
 #define HALREG_USB_STREAM_FLAGS			0x641
+	#define USB_EN_ASYNCBUFFER			0x00000001
 #define HALREG_USB_PCR_MODE				0x642
 
 #define HALREG_USB_ADJUST_TICK			0x643
+
+#define HALREG_RETAGv2_PCR				0x644
+#define HALREG_RETAGv2_PCR_LATENCY		0x645
 
 /* stream ts param									*/
 /*--------------------------------------------------*/
@@ -108,10 +113,11 @@
 	#define ENC_EN_DISABLE_DEINTERLACED		0x00000001
 	#define ENC_EN_PROGRESSIVE_2_I			0x00000004
 	#define ENC_EN_DISABLE_ADTS_CRC			0x00000008
+	#define ENC_EN_DROP_FRAME				0x00000010
 	#define ENC_DIS_LATENCY_Q				0x00000100
 	#define ENC_EN_SW_I2S					0x00000200
 	#define ENC_EN_SW_CLK					0x00001000
-
+	#define ENC_EN_Q_COST					0x10000000
 	//#define ENC_EN_H264_FULLRUN			0x00000040
 
 #define HALREG_ENCODER_PMTPID			0x2002
@@ -185,7 +191,7 @@
 
 #define HALREG_VI_0_FLAGS				0x660				/* defined in hal_common_define.h */
 	#define VI_FWFUN_MAP_MASK           0xFFFF0000	
-	#define VI_HWREG_MAP_MASK           0x0000FFFF	/* map width vi_0 register */
+	#define VI_HWREG_MAP_MASK           0x0000FFFF			/* map width vi_0 register */
 	#define VI_BUSWIDTH_16              0x00000010
 	#define VI_SEPARATED_SYNC           0x00000040
 	#define VI_CLK_INVERSE              0x00000200
@@ -194,8 +200,8 @@
 	#define VI_FIELDID_SIGNAL           0x01000000
 	#define VI_EXT_HALF_FPS             0x10000000
 	#define VI_FIELD_INVERSE			0x20000000
-	//#define VI_DISABLE_ERRCHK           0x40000000
-	//#define VI_PCRCLK_ENC               0x80000000
+	#define VI_DISABLE_ERRCHK           0x40000000
+	#define VI_PCRCLK_ENC               0x80000000
 
 #define HALREG_VI_0_PIXELCLOCK			0x661
 #define HALREG_VI_0_OFFSET_X			0x662

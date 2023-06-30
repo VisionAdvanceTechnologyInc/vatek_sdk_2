@@ -59,10 +59,13 @@ typedef enum _usbstream_mode{
 typedef enum _usbstream_remux
 {
 	ustream_remux_pcr,
-	ustream_remux_passthrough,
+	ustream_passthrough,
+	ustream_smooth,
 }usbstream_remux;
 
 typedef vatek_result(*fpsync_get_buffer)(void* param, uint8_t** slicebuf);
+typedef vatek_result(*fpasync_get_buffer)(void* param, uint8_t** slicebuf);
+
 
 typedef struct _usbstream_sync{
 	void* param;
@@ -91,6 +94,8 @@ typedef struct _usbstream_async
 	uasync_mode mode;
 	uint32_t bitrate;			/* config source bitrate	[0: mean auto]*/
 	uint32_t prepare_ms;		/* config prepare time ms	[0: mean auto]*/
+	fpasync_get_buffer getbuffer;
+	void* param;
 }usbstream_async;
 
 typedef usbstream_async* Pusbstream_async;
@@ -99,7 +104,8 @@ typedef struct _usbstream_param{
 	usbstream_mode mode;
 	usbstream_remux remux;
 	pcr_adjust_mode pcradjust;
-	//uint32_t freq_khz;
+	uint16_t pcr_pid;			/*!< create new pcr pid */
+	int latency;				/*!< pcr latency (ms) */
 	r2_param r2param;
 	modulator_param modulator;
 	union
@@ -116,6 +122,7 @@ extern "C" {
 #endif
 
 	HAL_API vatek_result vatek_usbstream_open(hvatek_chip hchip, hvatek_usbstream* husstream);
+	HAL_API vatek_result vatek_usbstream_check(hvatek_usbstream husstream);
 	HAL_API Pbroadcast_info vatek_usbstream_get_info(hvatek_usbstream husstream);
 	HAL_API vatek_result vatek_usbstream_start(hvatek_usbstream husstream,Pusbstream_param puparam);
 	HAL_API usbstream_status vatek_usbstream_get_status(hvatek_usbstream husstream,Ptransform_info* ptrinfo);
@@ -126,6 +133,8 @@ extern "C" {
 	
 	HAL_API vatek_result vatek_usbstream_stop(hvatek_usbstream husstream);
 	HAL_API void vatek_usbstream_close(hvatek_usbstream husstream);
+
+	HAL_API vatek_result vatek_usbstream_filter(hvatek_usbstream husstream);
 
 #ifdef __cplusplus
 }

@@ -57,35 +57,15 @@ vatek_result muxepg_create(Pth_mempool pmem, mux_epg_mode mode, Pmux_epg_param* 
 		if (mode == epg_mode_arib_1)
 			pnewepg->sections->next = malloc_epg_section(rawbuf, &len);
 
-		pnewepg->days = 8;
-		pnewepg->epg_flags = 0;
+		//pnewepg->days = 8;
+		//pnewepg->epg_flags = 0;
 		pnewepg->event_id = 0x2000;
-		pnewepg->loop_ms = 30000;
+		//pnewepg->loop_ms = 30000;
 		pnewepg->mode = mode;
 
 		*pepg = pnewepg;
 		nres = vatek_success;
-	}
-	return nres;
-}
 
-vatek_result muxepg_create_desc(Pth_mempool pmem, Pmux_epg_param pepg, Pmux_epg_desc* pdesc)
-{
-	Pmux_epg_desc pnewdesc = (Pmux_epg_desc)th_mempool_malloc(pmem, sizeof(mux_epg_desc));
-	vatek_result nres = vatek_memfail;
-	
-	if (pnewdesc)
-	{
-		if (pepg->descriptors == NULL)pepg->descriptors = pnewdesc;
-		else
-		{
-			Pmux_epg_desc plast = pepg->descriptors;
-			while (plast->next)plast = plast->next;
-			plast->next = pnewdesc;
-
-			nres = vatek_success;
-			*pdesc = pnewdesc;
-		}
 	}
 	return nres;
 }
@@ -93,8 +73,8 @@ vatek_result muxepg_create_desc(Pth_mempool pmem, Pmux_epg_param pepg, Pmux_epg_
 vatek_result muxepg_check(Pmux_epg_param pepg)
 {
 	vatek_result nres = vatek_badparam;
-	if (pepg->start_time.year != 0 || pepg->start_time.month != 0 || pepg->days != 0)
-	{
+	if (pepg->start_time.year != 0 || pepg->start_time.month != 0)
+ 	{
 		nres = vatek_success;
 		if (pepg->start_time.year < 1900 || pepg->start_time.year > 3000)nres = vatek_badparam;
 		else if (pepg->start_time.month < 1 || pepg->start_time.month > 12)nres = vatek_badparam;

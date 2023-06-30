@@ -25,9 +25,14 @@
 // ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF
 // THE POSSIBILITY OF SUCH DAMAGE.
 //
-
+#include <service/service_base.h>
 #include <service/service_transform.h>
 #include <core/ui/ui_props/ui_props_stream.h>
+#include <core/hal/halreg_playload.h>
+
+#include <cross/cross_os_api.h>
+
+static uint32_t mux_tables_pos = 0;
 
 extern vatek_result transform_source_reset(vatek_ic_module icmodule, stream_source source, Ptransform_source psource);
 extern vatek_result transform_source_set(hvatek_chip hchip,stream_source source, Ptransform_source psource);
@@ -113,6 +118,77 @@ vatek_result transform_capture_set(hvatek_chip hchip,Ptransform_capture pcapture
     return nres;
 }
 
+vatek_result vatek_capture_create(hvatek_chip hchip, Ptransform_capture pcapture)
+{
+    vatek_result nres = vatek_unknown;
+    uint32_t errcode;
+    broadcast_status status = bcstatus_fail_unknown;
+    uint32_t timeout = 0;
+    uint32_t timeout_max = 200; //10 sec
+
+    if (hchip == NULL)
+        return vatek_hwfail;
+
+    if ((nres = vatek_hms_issystemidle(hchip)) < vatek_success)
+        return nres;
+
+    if ((nres = vatek_chip_write_memory(hchip, HALREG_TRANSFORM_MODE, TRANSFORM_CAPTURE)) < vatek_success)
+        return nres;
+
+    if ((nres = vatek_chip_write_memory(hchip, 0x640, STREAM_MODE_REMUX)) < vatek_success)
+        return nres;
+
+    if ((nres = writehal(HALREG_TRANSFORM_INPUT, stream_source_usb)) < vatek_success)
+        return nres;
+
+    if ((nres = writehal(HALREG_TRCAPTURE_PID, pcapture->pid)) < vatek_success)
+        return nres;
+
+    if ((nres = writehal(HALREG_TRCAPTURE_TABLEID, pcapture->table_id)) < vatek_success)
+        return nres;
+
+    if ((nres = writehal(HALREG_TRCAPTURE_TIMEOUT, 10000)) < vatek_success)
+        return nres;
+
+    if ((nres = writehal(HALREG_TRCAPTURE_SECTION_NUM, pcapture->section_num)) < vatek_success)
+        return nres;
+
+    if ((nres = writehal(HALREG_TRCAPTURE_PACKET_NUMS, 16)) < vatek_success)
+        return nres;
+
+    if ((nres = capture_ctrl(hchip, BC_START, &errcode)) < vatek_success)
+    {
+        VERR("BC_START fail, errcode = 0x%lX", errcode);
+        return nres;
+    }
+
+    //while (timeout < timeout_max)
+    //{
+    //    cross_os_sleep(100);
+    //    if ((nres = capture_getstatus(hchip, &status)) < vatek_success)
+    //    {
+    //        VERR("capture_getstatus fail");
+    //        return nres;
+    //    }
+
+    //    if (status == bcstatus_finish)
+    //    {
+    //        break;
+    //    }
+    //    //else if (status >= bcstatus_fail_unknown)
+    //    //{
+    //    //    VERR("capture start fail : %d", status);
+    //    //    return vatek_hwfail;
+    //    //}
+    //    timeout++;
+    //}
+
+    if (timeout >= timeout_max)
+        return vatek_timeout;
+
+    return nres;
+}
+
 vatek_result transform_capture_get(hvatek_chip hchip,Ptransform_capture pcapture)
 {
     uint32_t val = 0;
@@ -149,6 +225,75 @@ vatek_result transform_capture_get(hvatek_chip hchip,Ptransform_capture pcapture
     }
     return nres;
 }
+
+vatek_result vatek_capture_gettable(hvatek_chip hchip, Ppsitable_parm* raw)
+{
+    vatek_result nres = vatek_success;
+    uint32_t val = 0;
+    uint32_t addr = HALRANGE_PLAYLOAD_START;
+    uint32_t offset = 0;
+
+    Ppsitable_parm raw_psi = malloc(sizeof(psitable_parm)); 
+    if (raw_psi == NULL) return vatek_memfail;
+
+    if ((nres = readhal(addr++, &val)) >= vatek_success)
+    {
+        if (val != RAWPSI_EN_TAG) return vatek_format;
+    }
+    else return nres;
+
+    if ((nres = readhal(addr++, &val)) >= vatek_success)
+    {
+        raw_psi->interval_ms = val;
+        if ((nres = readhal(addr++, &val)) != vatek_success) return nres;
+        raw_psi->tspacket_num = val;
+    }
+    else return nres;
+
+    raw_psi->tspackets = (uint8_t*)realloc(raw_psi->tspackets, 188 * 16);
+    if (raw_psi->tspackets == NULL)
+        return vatek_memfail;
+
+    while (nres == vatek_success)
+    {
+        if ((nres = readhal(addr++, &val)) != vatek_success)
+            return nres;
+
+        if (val == RAWPSI_EN_ENDTAG)
+        {
+            val = offset / 188;      // cal & replace tspacket_num.
+            raw_psi->tspacket_num = val;
+            *raw = raw_psi;
+            return nres;
+        }
+        else if (val == RAWPSI_EN_TAG)
+        {
+            // skip unnecessary interval_ms & tspacket_num val.
+            addr++;
+            addr++;
+        }
+        else
+        {
+            raw_psi->tspackets[offset] = val >> 24;
+            raw_psi->tspackets[offset + 1] = val >> 16;
+            raw_psi->tspackets[offset + 2] = val >> 8;
+            raw_psi->tspackets[offset + 3] = val;
+            offset += 4;
+        }
+    }
+    return nres;
+}
+
+//static void* raw_malloc(void* ptr, uint32_t size)
+//{
+//    void* ret = NULL;
+//    if (ptr == NULL)
+//        ret = malloc(size);
+//    else
+//        ret = realloc(ptr, size);
+//
+//    return ret;
+//}
 
 vatek_result transform_broadcast_reset(vatek_ic_module icchip, stream_source source, Ptransform_broadcast pbc)
 {
@@ -310,4 +455,148 @@ stream_mode transform_source_get_stream_mode(stream_source source, Ptransform_so
         mode = pusb->mode;
     }
     return mode;
+}
+
+static vatek_result capture_ctrl(hvatek_chip hchip, uint32_t cmd, uint32_t* errcode)
+{
+    vatek_result nres = vatek_unknown;
+    uint32_t timeout = 0;
+
+    if ((nres = writehal(HALREG_TRANSFORM_CNTL, cmd)) == vatek_success)
+    {
+        while (timeout < 50) //5 sec
+        {
+            cross_os_sleep(100);
+            if ((nres = readhal(HALREG_TRANSFORM_CNTL, errcode)) != vatek_success)
+                return nres;
+            if (*errcode == 0)
+                break;
+            timeout++;
+        }
+
+        if (timeout >= 50)
+            nres = vatek_timeout;
+        else
+        {
+            if ((nres = readhal(HALREG_SYS_ERRCODE, errcode)) != vatek_success)
+                return nres;
+
+            if (*errcode != HALREG_ERR_SUCCESS)
+                nres = vatek_hwfail;
+        }
+    }
+
+    return nres;
+}
+
+static vatek_result capture_getstatus(hvatek_chip hchip, broadcast_status* status)
+{
+    vatek_result nres = vatek_unknown;
+    uint32_t value = 0;
+
+    if (hchip == NULL || status == NULL)
+        return vatek_badparam;
+
+    *status = bcstatus_fail_unknown;
+    if ((nres = readhal(HALREG_BCINFO_STATUS, &value)) < vatek_success)
+        return nres;
+
+    switch (value)
+    {
+    case BCSTATUS_IDLE:
+        *status = bcstatus_idle;
+        break;
+
+    case BCSTATUS_WAIT_SOURCE:
+        *status = bcstatus_wait_source;
+        break;
+
+    case BCSTATUS_BROADCAST:
+        *status = bcstatus_broadcast;
+        break;
+
+    case BCSTATUS_FINISH:
+        *status = bcstatus_finish;
+        break;
+
+    case BCSTATUS_FAIL_SOURCE:
+        *status = bcstatus_fail_source;
+        break;
+
+    case BCSTATUS_FAIL_TIMEOUT:
+        *status = bcstatus_fail_timeout;
+        break;
+
+    case BCSTATUS_FAIL_CODECDROP:
+        *status = bcstatus_fail_drop;
+        break;
+
+    case BCSTATUS_FAIL_BUFFER:
+        *status = bcstatus_fail_buffer;
+        break;
+
+    case BCSTATUS_FAIL_MUXER:
+        *status = bcstatus_fail_muxer;
+        break;
+
+    case BCSTATUS_FAIL_ENCODE:
+        *status = bcstatus_fail_encode;
+        break;
+
+    case BCSTATUS_FAIL_MEDIA:
+        *status = bcstatus_fail_media;
+        break;
+
+    case BCSTATUS_FAIL_DEMUX:
+        *status = bcstatus_fail_demux;
+        break;
+
+    default:
+    case BCSTATUS_FAIL_UNKNOWN:
+        *status = bcstatus_fail_unknown;
+        break;
+    }
+
+    return nres;
+}
+
+vatek_result psitable_register_put(hvatek_chip hchip, Ppsitable_parm ptable)
+{
+    vatek_result nres = vatek_unknown;
+    uint32_t poslen = 0;
+    uint8_t* pbuf = NULL;
+
+    if (hchip == NULL || ptable == NULL)
+        return vatek_unsupport;
+
+    if (ptable->tspacket_num == 0)
+        return vatek_unsupport;
+
+    poslen = (PSI_TSPACKET_WLEN * ptable->tspacket_num) + 3;
+
+    if ((mux_tables_pos + poslen) >= HALRANGE_PLAYLOAD_END)
+        return vatek_bufoverflow;
+
+    if ((nres = vatek_chip_write_memory(hchip, mux_tables_pos++, 0xFF070600)) != vatek_success)
+        return nres;
+
+    if ((nres = vatek_chip_write_memory(hchip, mux_tables_pos++, ptable->interval_ms)) != vatek_success)
+        return nres;
+
+    if ((nres = vatek_chip_write_memory(hchip, mux_tables_pos++, ptable->tspacket_num)) != vatek_success)
+        return nres;
+
+    pbuf = ptable->tspackets;
+    poslen = ptable->tspacket_num;
+
+    while (poslen)
+    {
+        if ((nres = vatek_chip_write_buffer(hchip, mux_tables_pos, pbuf, PSI_TSPACKET_LEN)) != vatek_success)
+            return vatek_success;
+        mux_tables_pos += PSI_TSPACKET_WLEN;
+        pbuf += PSI_TSPACKET_LEN;
+        poslen--;
+    }
+
+    return nres;
 }

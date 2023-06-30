@@ -117,6 +117,9 @@ extern "C" {
 	 */
 	HAL_API vatek_result broadcast_status_set(hvatek_chip hchip, broadcast_status status);
 
+	HAL_API vatek_result vatek_hms_issystemidle(hvatek_chip hchip);
+
+
 #ifdef __cplusplus
 }
 #endif

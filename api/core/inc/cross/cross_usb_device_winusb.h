@@ -121,6 +121,8 @@ extern "C" {
 	HAL_API const char* usb_api_ll_get_name(husb_device husb);
 
 	/* usb_device bulk transfer */
+	HAL_API void usb_api_ll_lock(husb_device husb);
+	HAL_API void usb_api_ll_unlock(husb_device husb);
 	HAL_API vatek_result usb_api_ll_set_dma(husb_device husb, int32_t isdma);
 	HAL_API vatek_result usb_api_ll_write(husb_device husb, uint8_t* pbuf, int32_t len);
 	HAL_API vatek_result usb_api_ll_read(husb_device husb, uint8_t* pbuf, int32_t len);

@@ -441,7 +441,7 @@ typedef enum _t2_fft_mode{
     t2_fft_4k = T2_FFT_4K,              /*!< 4k (4096) */
     t2_fft_8k = T2_FFT_8K,              /*!< 8k (8192) */
     t2_fft_16k = T2_FFT_16K,            /*!< 16k (16384) */
-    t2_fft_32k = T2_FFT_32K,
+    //t2_fft_32k = T2_FFT_32K,          /* not support  */
 }t2_fft_mode;
 
 #define is_t2_version(a)                ((int32_t)a == t2_ver_111 || (int32_t)a == t2_ver_121 || (int32_t)a == t2_ver_131 || (int32_t)a == t2_ver_131_lite)
@@ -566,6 +566,7 @@ extern "C" {
 
     HAL_API uint32_t modulator_param_get_bitrate(Pmodulator_param pmod);
     HAL_API vatek_result modulator_param_reset(modulator_type type, Pmodulator_param pmod);
+    HAL_API vatek_result modulator_param_reset_dvbt2(modulator_type type, Pmodulator_param pmod);
     HAL_API vatek_result modulator_param_set(hvatek_chip hchip,Pmodulator_param pmod);
     HAL_API vatek_result modulator_param_get(hvatek_chip hchip,Pmodulator_param pmod);
 

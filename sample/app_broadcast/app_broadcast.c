@@ -45,10 +45,26 @@
 #define BROADCAST_EN_AUX		0
 #define BROADCAST_EN_BML		0
 #define BROADCAST_EN_COLORBAR	1
-#define BROADCAST_EN_BRIDGE		0
+#define BROADCAST_EN_BRIDGE		1
 
 #define BROADCAST_RF_TEST		0
 #define BROADCAST_NORMAL		1
+
+static const char* _app_logo[] = {
+		"\r\n",
+"	 ___   ___          _                              _				\r\n",
+"	| _ ) / __| ___ _ _(_)___ ___  ___ __ _ _ __  _ __| |___			\r\n",
+"	| _ \\ \\__ \\/ -_) '_| / -_|_-< (_-</ _` | '  \\| '_ \\ / -_)		\r\n",
+"	|___/ |___/\\___|_| |_\\___/__/ /__/\\__,_|_|_|_| .__/_\\___|		\r\n",
+"						     |_|										\r\n",
+"	-----------------------------------------------------------------	\r\n",
+	"\r\n",
+"	Copyright (c) 2023, Vision Advance Technology Inc.(VATek).			\r\n",
+	"\r\n",
+"	-----------------------------------------------------------------	\r\n",
+	"\r\n",
+	NULL,
+};
 
 /* broadcast parameters*/
 static broadcast_param bc_param =
@@ -78,15 +94,20 @@ static broadcast_param bc_param =
 	.mod =
 	{
 		.bandwidth_symbolrate = 6,
-		.type = modulator_isdb_t,
-		.ifmode = ifmode_iqoffset,.iffreq_offset = 143,.dac_gain = 0,
-		.mod = {.isdb_t = {isdb_t_qam64,fft_8k,guard_interval_1_16,coderate_3_4,isdb_t_interleaved_mode2},},
+		.type = modulator_atsc,
+		.ifmode = ifmode_disable,.iffreq_offset = 0,.dac_gain = 0,
+		.mod = {.atsc = {_8vsb},},
 	},
 	.mux =
 	{
 		.pcr_pid = 0x100,
 		.padding_pid = 0x1FFF,
 		.bitrate = 0,0,0,0,
+	},
+	.r2param =
+	{
+		.freqkhz = 473000,
+		.mode = r2_cntl_path_0,
 	},
 };
 
@@ -128,6 +149,8 @@ int main(int argc, char* argv[])
 	Pchip_info pinfo = NULL;
 	hmux_core hmux = NULL;
 	Pbroadcast_auxstream pauxstream = NULL;
+	
+	printf_logo(_app_logo);
 
 #if BROADCAST_EN_AUX
 
@@ -141,7 +164,7 @@ int main(int argc, char* argv[])
 		if (strcmp(argv[1], "async") == 0)auxmode = usbaux_async;
 
 		pauxstream = auxsource_test_open(argv[3], auxmode, auxbitrate);
-		if (!pauxstream)_disp_err("open aux test file fail : %s", argv[1]);
+		if (!pauxstream)_disp_err("open aux test file fail : %s", argv[3]);
 		else
 		{
 			_disp_l("enable aux stream - [%d:%d:%s]", auxmode, auxbitrate, argv[3]);
@@ -164,10 +187,10 @@ int main(int argc, char* argv[])
 			modulator_param_reset(modulator_isdb_t,&usbcmd.modulator);
 
 	*/
-	modulator_param_reset(modulator_isdb_t, &bc_param.mod);
-	bc_param.mod.ifmode = ifmode_iqoffset;
-	bc_param.mod.iffreq_offset = 143;
-	nres = modulator_param_get_bitrate(&bc_param.mod);
+	//modulator_param_reset(modulator_isdb_t, &bc_param.mod);
+	//bc_param.mod.ifmode = ifmode_iqoffset;
+	//bc_param.mod.iffreq_offset = 143;
+	//nres = modulator_param_get_bitrate(&bc_param.mod);
 #endif
 	/*
 		step 1 :
@@ -176,7 +199,7 @@ int main(int argc, char* argv[])
 
 	if (is_vatek_success(nres))
 	{
-		nres = vatek_device_list_enum(DEVICE_BUS_USB, service_broadcast, &hdevlist);
+		nres = vatek_device_list_enum(DEVICE_BUS_ALL, service_broadcast, &hdevlist);
 		if (is_vatek_success(nres))
 		{
 			if (nres == 0)
@@ -211,10 +234,18 @@ int main(int argc, char* argv[])
 	*/
 #if BROADCAST_RF_TEST
 	//vatek_device_start_sine(hchip, 473000);
-	vatek_device_start_test(hchip, (Pmodulator_param)&bc_param.mod, 900000);
+	//vatek_device_start_test(hchip, (Pmodulator_param)&bc_param.mod, 900000);
 
-	nres = writehal(HALREG_CALIBRATION_R2_0_Q, 0);
-	writehal(HALREG_CALIBRATION_CNTL, CALIBRATION_APPLY | CALIBRATION_EN_TAG);
+	r2_param r2param;
+	nres = rfmixer_r2_get_param(hchip, &r2param);
+	if (is_vatek_success(nres)) {
+		r2param.mode = r2_cntl_path_1;          // switch j83b qam inversion used r2_cntl_path_1
+		r2param.freqkhz = 473000;
+		nres = rfmixer_r2_set_param(hchip, &r2param);
+		nres = rfmixer_r2_start(hchip, 0x600, &r2param);
+	}
+
+
 
 #endif
 
@@ -234,7 +265,7 @@ int main(int argc, char* argv[])
 			else if (nres == vatek_success)nres = vatek_nodevice;
 		}
 
-		_disp_l("connect to bridge device .... [%d]", nres);
+		_disp_l("connect to bridge device .... [%d]\r\n", nres);
 
 		if (is_vatek_success(nres))
 		{
@@ -397,12 +428,22 @@ int main(int argc, char* argv[])
 		- start broadcast
 	*/
 
+	r2_param r2param;
+	nres = rfmixer_r2_get_param(hchip, &r2param);
+	if (is_vatek_success(nres)) {
+		r2param.mode = r2_cntl_path_0;          // switch j83b qam inversion used r2_cntl_path_1
+		r2param.freqkhz = 473000;
+	}
+
 	if (is_vatek_success(nres))
 	{
-		nres = vatek_broadcast_start(hbc, &bc_param, pauxstream, 473000);
+		nres = vatek_broadcast_start(hbc, &bc_param, pauxstream, r2param);
 		if (!is_vatek_success(nres))_disp_err("start broadcast fail : %d", nres);
 	}
 
+	printf_encoder_param(bc_param.enc);
+	printf_modulation_param(bc_param.mod, bc_param.r2param);
+	
 	if (is_vatek_success(nres))
 	{
 		int32_t is_stop = 0;
@@ -410,12 +451,11 @@ int main(int argc, char* argv[])
 		uint8_t* pktbuf = NULL;
 		Pbroadcast_info pbcinfo = NULL;
 		uint32_t ntickms = cross_os_get_tick_ms();
-		_disp_l("broadcast start. press any key to stop");
+		_disp_l("broadcast start. press any key to stop\r\n");
 
 		while (!is_stop)
 		{
 			nres = vatek_broadcast_polling(hbc, &pbcinfo);
-
 
 			if (is_vatek_success(nres))
 			{
@@ -433,9 +473,7 @@ int main(int argc, char* argv[])
 					if (cross_os_get_tick_ms() - ntickms > 1000)
 					{
 						ntickms = cross_os_get_tick_ms();
-						_disp_l("broadcast - [%d:%d:%d]", pbcinfo->status, pbcinfo->data_bitrate, pbcinfo->cur_bitrate);
-						//_disp_l("index - [%d]", index);
-
+						_disp_l("%s : [%d]        %s : [%d]", "Data", pbcinfo->data_bitrate, "Current", pbcinfo->cur_bitrate);
 					}
 				}
 				else
@@ -453,7 +491,7 @@ int main(int argc, char* argv[])
 		nres = vatek_broadcast_stop(hbc);
 		if (!is_vatek_success(nres))_disp_err("stop broadcast fail : %d", nres);
 	}
-
+	
 	/*
 		setp 5 :
 		before quit demo stop and free both device and source
@@ -468,8 +506,6 @@ int main(int argc, char* argv[])
 		vatek_device_close_reboot(hchip);
 	}
 	if (hmux)mux_handle_free(hmux);
-	if (hbc)vatek_broadcast_close(hbc);
-	if (hchip) vatek_device_close(hchip);
 	if (hdevlist)vatek_device_list_free(hdevlist);
 #endif
 	printf_app_end();
@@ -587,6 +623,7 @@ vatek_result auxsource_test_get_packets(hvatek_aux haux, uint8_t* ppktbuf, int32
 	{
 		if (paux->pktvalid)
 		{
+			
 			nres = (vatek_result)fread(ptrbuf, TS_PACKET_LEN, 1, paux->file);
 			if (nres == 1)
 			{

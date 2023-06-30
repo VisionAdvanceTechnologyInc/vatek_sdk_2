@@ -51,9 +51,9 @@ As the Encmoder with both HDMI and USB 2.0 inputs, it provides outstanding solut
 
 ### Download
 
-- On Windows：(Windows 10) provides [binary](https://www.vatek.com.tw/static/files/VATek-Win64-3.00.exe) and [open source](https://github.com/VisionAdvanceTechnologyInc/vatek_sdk_2/archive/refs/tags/v3.00.zip).
-- On Linux： (Ubuntu) provides [open source](https://github.com/VisionAdvanceTechnologyInc/vatek_sdk_2/archive/refs/tags/v3.00.tar.gz). 
-- On macOS： [use the Homebrew packager] update later.
+- On Windows：(Windows 10) provides [binary](https://www.vatek.com.tw/static/files/VATek-Win64-3.06.exe) and [open source](https://github.com/VisionAdvanceTechnologyInc/vatek_sdk_2/archive/refs/tags/v3.06.zip).
+- On Linux： (Ubuntu) provides [binary](https://www.vatek.com.tw/static/files/VATek-Linux-x86_64-3.06.tgz) and [open source](https://github.com/VisionAdvanceTechnologyInc/vatek_sdk_2/archive/refs/tags/v3.06.tar.gz). 
+- On macOS： [Homebrew packager] Use `brew install libvatek`.
 
 ### License
 

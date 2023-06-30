@@ -155,6 +155,14 @@ _ui_enum_start(mux_content_type)
 	_val(mux_content_movie, movie)
 	_val(mux_content_drama, drama)
 	_val(mux_content_music, music)
+	_val(mux_content_tabloidshow, tabloidshow)
+	_val(mux_content_varietyshow, varietyshow)
+	_val(mux_content_animation, animation)
+	_val(mux_content_documentary, documentary)
+	_val(mux_content_performance, performance)
+	_val(mux_content_education, education)
+	_val(mux_content_welfare, welfare)
+	_val(mux_content_others, others)
 _ui_enum_end
 
 _ui_enum_start(mux_parental_rating)
@@ -172,6 +180,7 @@ _ui_enum_start(mux_epg_mode)
 	_val(epg_mode_dvb, epg_dvb)
 	_val(epg_mode_arib_0, arib_0)
 	_val(epg_mode_arib_1, arib_1)
+	_val(epg_mode_simple, simple)
 _ui_enum_end
 
 _ui_struct_start(mux_epg_section)
@@ -184,10 +193,7 @@ _ui_struct_end
 
 _ui_struct_start(mux_epg_param)
 	_prop_enum(mux_epg_param, mux_epg_mode, mode, "epg - mode", EMPTY_HAL)
-	_prop_flag(mux_epg_param, epg_flags, "epg - functions", EMPTY_HAL)
-	_prop_u8(mux_epg_param, days, "epg - schedule days", EMPTY_HAL)
 	_prop_h16(mux_epg_param, event_id, "epg - base event id", EMPTY_HAL)
-	_prop_u32(mux_epg_param, loop_ms, "epg - loop time ms", EMPTY_HAL)
 _ui_struct_end
 
 #endif

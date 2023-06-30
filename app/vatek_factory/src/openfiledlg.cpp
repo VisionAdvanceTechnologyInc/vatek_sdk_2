@@ -37,7 +37,7 @@
 #include "ui/base/qtv_ui_storage.h"
 
 QString openfiledlg::m_pathdir;
-QString openfiledlg::m_r2_path;
+QString openfiledlg::m_app2_path;
 
 openfiledlg::openfiledlg(QWidget *parent) :
     QDialog(parent),
@@ -48,23 +48,18 @@ openfiledlg::openfiledlg(QWidget *parent) :
 
     connect(ui->btn_loader, SIGNAL(clicked(bool)), this, SLOT(recvClickLoader(bool)));
     connect(ui->btn_app, SIGNAL(clicked(bool)), this, SLOT(recvClickApp(bool)));
-    connect(ui->btn_rf, SIGNAL(clicked(bool)), this, SLOT(recvClickRF(bool)));
+    connect(ui->btn_app2, SIGNAL(clicked(bool)), this, SLOT(recvClickApp_2(bool)));
     connect(ui->btn_ok, SIGNAL(clicked(bool)), this, SLOT(recvClickOK(bool)));
-
-    ui->btn_rf->setVisible(0);
-    ui->txt_rf->setVisible(0);
-    ui->lb_rf->setVisible(0);
 
     ui->btn_ok->setEnabled(checkValid());
     if(m_pathdir.isEmpty())
         m_pathdir = QDir::currentPath();
 }
+
 openfiledlg::~openfiledlg()
 {
     delete ui;
 }
-
-
 
 void openfiledlg::recvClickLoader(bool checked)
 {
@@ -79,7 +74,7 @@ void openfiledlg::recvClickLoader(bool checked)
 
 void openfiledlg::recvClickApp(bool checked)
 {
-	QString fileName = QFileDialog::getOpenFileName(this, "Open App", m_pathdir, "App Files (*.v2app)");
+	QString fileName = QFileDialog::getOpenFileName(this, "Open App_1", m_pathdir, "App Files (*.v2app)");
     if (!fileName.isEmpty())
     {
         setDefaultDir(fileName);
@@ -88,13 +83,13 @@ void openfiledlg::recvClickApp(bool checked)
 	ui->btn_ok->setEnabled(checkValid());
 }
 
-void openfiledlg::recvClickRF(bool checked)
+void openfiledlg::recvClickApp_2(bool checked)
 {
-	QString fileName = QFileDialog::getOpenFileName(this, "Open RF Table", m_pathdir, "RF Table Files (*.r2tune)");
+	QString fileName = QFileDialog::getOpenFileName(this, "Open App_2", m_pathdir, "App Files (*.v2app)");
     if (!fileName.isEmpty())
     {
         setDefaultDir(fileName);
-        ui->txt_rf->setText(fileName);
+        ui->txt_app2->setText(fileName);
     }
 	ui->btn_ok->setEnabled(checkValid());
 
@@ -106,8 +101,8 @@ void openfiledlg::recvClickOK(bool checked)
     if (QFileInfo::exists(ui->txt_app->text()) &&
         QFileInfo::exists(ui->txt_loader->text()))accept(); /* &&
         QFileInfo::exists(ui->txt_rf->text()))accept();*/
-    m_r2_path = ui->txt_rf->text();
-    qDebug() << "My Value is " << m_r2_path;
+    m_app2_path = ui->txt_app2->text();
+    qDebug() << "My Value is " << m_app2_path;
 
     //qtvUIStorageR2Tune::recvOpenFile_new(m_r2_path);
 }
@@ -135,12 +130,12 @@ QString openfiledlg::getLoaderFile()
 
 QString openfiledlg::getRFTableFile()
 {
-    return ui->txt_rf->text();
+    return ui->txt_app2->text();
 }
 
 QString& openfiledlg::getRFTableFile_tonew()
 {
-    return m_r2_path;
+    return m_app2_path;
 }
 
 QString& openfiledlg::getDefaultDir()

@@ -159,7 +159,7 @@ extern "C" {
 
 	HAL_API vatek_result rfmixer_r2_start(hvatek_chip hchip,uint32_t cntl,Pr2_param pr2param);
 	HAL_API vatek_result rfmixer_r2_stop(hvatek_chip hchip,uint32_t cntl);
-
+	HAL_API vatek_result rfmixer_r2_adjust_pagain(hvatek_chip hchip, int8_t gain);
 
 	HAL_API uint16_t rfmixer_r2_int2tune(int32_t val, int32_t idx);
 	HAL_API int32_t rfmixer_r2_tune2int(uint16_t val, int32_t idx);

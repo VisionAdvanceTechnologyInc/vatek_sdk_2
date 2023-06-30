@@ -131,7 +131,11 @@ vatek_result usbdevice_stream_stop(hcross_device hdev)
 
 vatek_result usbdevice_stream_write(hcross_device hdev, uint8_t* pbuf, int32_t len)
 {
-	return usb_api_ll_write((husb_device)hdev, pbuf, len);
+	vatek_result nres = vatek_success;
+	usb_api_ll_lock((husb_device)hdev);
+	nres = usb_api_ll_write((husb_device)hdev, pbuf, len);
+	usb_api_ll_unlock((husb_device)hdev);
+	return nres;
 }
 
 vatek_result usbdevice_stream_read(hcross_device hdev, uint8_t* pbuf, int32_t len)
@@ -145,6 +149,7 @@ vatek_result usbdevice_read_register(hcross_device hdev, int32_t addr, uint32_t*
 	husb_device husb = (husb_device)hdev;
 	uint32_t buf[2];
 
+	usb_api_ll_lock(husb);
 	nres = usb_api_ll_command(husb, VATCMD_CLASSV2_SETADDR, addr, NULL);
 	if (is_vatek_success(nres))
 	{
@@ -156,6 +161,7 @@ vatek_result usbdevice_read_register(hcross_device hdev, int32_t addr, uint32_t*
 			if (buf[0] != addr)nres = vatek_badparam;
 		}
 	}
+	usb_api_ll_unlock(husb);
 	return nres;
 }
 
@@ -163,11 +169,13 @@ vatek_result usbdevice_write_register(hcross_device hdev, int32_t addr, uint32_t
 {
 	vatek_result nres = vatek_success;
 	husb_device husb = (husb_device)hdev;
+	usb_api_ll_lock(husb);
 	nres = usb_api_ll_command(husb, VATCMD_CLASSV2_SETADDR, addr, NULL);
 	if (is_vatek_success(nres))
 	{
 		nres = usb_api_ll_command(husb, VATCMD_CLASSV2_WRREG, val, NULL);
 	}
+	usb_api_ll_unlock(husb);
 	return nres;
 }
 
@@ -176,6 +184,7 @@ vatek_result usbdevice_read_memory(hcross_device hdev, int32_t addr, uint32_t* v
 	vatek_result nres = vatek_success;
 	husb_device husb = (husb_device)hdev;
 	uint32_t buf[2];
+	usb_api_ll_lock(husb);
 
 	nres = usb_api_ll_command(husb, VATCMD_CLASSV2_SETADDR, addr, NULL);
 	if (is_vatek_success(nres))
@@ -188,6 +197,7 @@ vatek_result usbdevice_read_memory(hcross_device hdev, int32_t addr, uint32_t* v
 			if (buf[0] != addr)nres = vatek_badparam;
 		}
 	}
+	usb_api_ll_unlock(husb);
 	return nres;
 }
 
@@ -195,12 +205,13 @@ vatek_result usbdevice_write_memory(hcross_device hdev, int32_t addr, uint32_t v
 {
 	vatek_result nres = vatek_success;
 	husb_device husb = (husb_device)hdev;
-
+	usb_api_ll_lock(husb);
 	nres = usb_api_ll_command(husb, VATCMD_CLASSV2_SETADDR, addr, NULL);
 	if (is_vatek_success(nres))
 	{
 		nres = usb_api_ll_command(husb, VATCMD_CLASSV2_WRMEM, val, NULL);
 	}
+	usb_api_ll_unlock(husb);
 	return nres;
 }
 
@@ -223,6 +234,7 @@ vatek_result usbdevice_sendcmd(hcross_device hdev, int32_t cmd, int32_t addr, ui
 	if (usbcmd == VATCMD_CLASSV2_WRREG ||
 		usbcmd == VATCMD_CLASSV2_WRMEM)iswrite = 1;
 
+	usb_api_ll_lock(husb);
 	nres = usb_api_ll_command(husb, VATCMD_CLASSV2_SETADDR, addr, NULL);
 	if (is_vatek_success(nres))
 	{
@@ -250,6 +262,7 @@ vatek_result usbdevice_sendcmd(hcross_device hdev, int32_t cmd, int32_t addr, ui
 			addr++;
 		}
 	}
+	usb_api_ll_unlock(husb);
 	return nres;
 }
 

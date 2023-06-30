@@ -51,6 +51,10 @@ qtvUITabCalibration::qtvUITabCalibration(qtvUIMain* main, QWidget* parent) :
     m_splist.append(ui->sb_qoffect_1);
     m_splist.append(ui->sb_image_1);
     m_splist.append(ui->sb_phase_1);
+    m_splist.append(ui->sb_dac);
+    m_splist.append(ui->sb_r2);
+    ui->sb_dac->setRange(-60 , 60);
+    ui->sb_r2->setRange(0, 15);
 
     for (i = 0; i < m_splist.size(); i++)
         connect(m_splist[i], SIGNAL(valueChanged(int)), this, SLOT(recvSpinValueChanged(int)));
@@ -80,6 +84,7 @@ qtvUITabCalibration::~qtvUITabCalibration()
 		disconnect(m_splist[i], SIGNAL(valueChanged(int)), this, SLOT(recvSpinValueChanged(int)));
     disconnect(&m_timerupdate, SIGNAL(timeout()), this, SLOT(recvUpdateTimeout()));
     disconnect(ui->btn_save, SIGNAL(clicked(bool)), this, SLOT(recvSaveClick(bool)));
+
     m_splist.clear();
     delete ui;
 }
@@ -104,6 +109,7 @@ void qtvUITabCalibration::resetCalibration()
 	vatek_result nres = m_handle->calibrationGet(&m_calibration);
 	if (!is_vatek_success(nres))memset(&m_calibration, 0, sizeof(calibration_param));
 
+
 	ui->sb_clock->setValue(m_calibration.clock);
 	ui->sb_ioffect_0->setValue(m_calibration.dac.ioffect);
 	ui->sb_qoffect_0->setValue(m_calibration.dac.qoffect);
@@ -113,6 +119,7 @@ void qtvUITabCalibration::resetCalibration()
 	ui->sb_qoffect_1->setValue(rfmixer_r2_tune2int(m_calibration.r2.qoffset, R2_RANGE_Q));
 	ui->sb_image_1->setValue(rfmixer_r2_tune2int(m_calibration.r2.imgoffset, R2_RANGE_IMG));
 	ui->sb_phase_1->setValue(rfmixer_r2_tune2int(m_calibration.r2.phaseoffset, R2_RANGE_PHASE));
+    ui->sb_r2->setValue(m_calibration.r2_power);
 
     if (!is_vatek_success(nres))QMessageBox::warning(this, "calibration", "get calibration param fail");
 }
@@ -131,7 +138,8 @@ void qtvUITabCalibration::applyCalibration()
     m_calibration.r2.qoffset = rfmixer_r2_int2tune(ui->sb_qoffect_1->value(), R2_RANGE_Q);
     m_calibration.r2.imgoffset = rfmixer_r2_int2tune(ui->sb_image_1->value(), R2_RANGE_IMG);
     m_calibration.r2.phaseoffset = rfmixer_r2_int2tune(ui->sb_phase_1->value(), R2_RANGE_PHASE);
-
+    m_calibration.r2_power = ui->sb_r2->value();
+    m_calibration.dac_power = ui->sb_dac->value();
     nres = m_handle->calibrationSet(&m_calibration);
     if(!is_vatek_success(nres))
         QMessageBox::warning(this, "calibration", "apply calibration param fail");
