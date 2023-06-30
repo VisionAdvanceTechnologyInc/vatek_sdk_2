@@ -47,7 +47,6 @@ if(${SDK2_EN_SAMPLE})
 	add_subdirectory(sample/app_romtool)
 	add_subdirectory(sample/app_broadcast)
 	add_subdirectory(sample/app_bridge)
-    add_subdirectory(sample/app_encoder)
 endif()
 
 if(${SDK2_EN_QT})
