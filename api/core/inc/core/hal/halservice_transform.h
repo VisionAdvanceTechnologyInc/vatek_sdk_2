@@ -1,7 +1,7 @@
 //----------------------------------------------------------------------------
 //
 // Vision Advance Technology - Software Development Kit
-// Copyright (c) 2014-2022, Vision Advance Technology Inc.
+// Copyright (c) 2014-2023, Vision Advance Technology Inc.
 // All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -56,6 +56,7 @@
 #define HALREG_TRCAPTURE_TIMEOUT			0x609
 #define HALREG_TRCAPTURE_SECTION_NUM		0x60A
 #define HALREG_TRCAPTURE_PACKET_NUMS		0x60B
+#define HALREG_TRCAPTURE_TABLEID            0x60E
 
 #define HALREG_TRENUM_TIMEOUT				0x608
 #define HALREG_TRADJUST_TICK                0x60C

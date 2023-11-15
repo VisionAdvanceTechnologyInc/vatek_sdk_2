@@ -1,7 +1,7 @@
 //----------------------------------------------------------------------------
 //
 // Vision Advance Technology - Software Development Kit
-// Copyright (c) 2014-2022, Vision Advance Technology Inc.
+// Copyright (c) 2014-2023, Vision Advance Technology Inc.
 // All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -60,7 +60,7 @@
 #define CHIP_STREAM_SLICE_LEN			24064
 #define CHIP_STREAM_SLICE_PACKET_NUMS   (CHIP_STREAM_SLICE_LEN / CHIP_TS_PACKET_LEN)
 
-#define VATEK_VERSION 30900
+#define VATEK_VERSION 31000
 
 typedef void* hvatek_devices;
 typedef void* hvatek_chip;

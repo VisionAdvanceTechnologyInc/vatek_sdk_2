@@ -6,6 +6,7 @@
 
 extern vatek_result file_stream_start(hstream_source hsource);
 extern vatek_result file_stream_check(hstream_source hsource);
+extern uint32_t* file_stream_buffer_size(hstream_source hsource);
 extern uint8_t* file_stream_get(hstream_source hsource);
 extern vatek_result file_stream_stop(hstream_source hsource);
 extern void file_stream_free(hstream_source hsource);
@@ -50,9 +51,9 @@ vatek_result stream_source_file_get(const char* file, Ptsstream_source psource)
 				psource->get = file_stream_get;
 				psource->check = file_stream_check;
 				psource->free = file_stream_free;
+				psource->get_size = file_stream_buffer_size;
 				_disp_l("open file - [%s] - packet length:%d - packet size:%d", file, pfile->packet_len,pfile->file_size);
 				printf("\r\n");
-
 			}
 		}
 		if(!is_vatek_success(nres))
@@ -172,4 +173,10 @@ vatek_result file_check_sync(FILE* hfile, int32_t pos, int32_t offset)
 	}
 
 	return nres;
+}
+
+uint32_t* file_stream_buffer_size(hstream_source hsource)
+{
+	Phandle_file pfile = (Phandle_file)hsource;
+	return pfile->file_size;
 }

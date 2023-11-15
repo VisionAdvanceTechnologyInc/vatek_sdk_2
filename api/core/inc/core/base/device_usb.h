@@ -1,7 +1,7 @@
 //----------------------------------------------------------------------------
 //
 // Vision Advance Technology - Software Development Kit
-// Copyright (c) 2014-2022, Vision Advance Technology Inc.
+// Copyright (c) 2014-2023, Vision Advance Technology Inc.
 // All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -32,6 +32,7 @@
 #include <core/vatek_base.h>
 
 #define USBDEV_VID								0x2C42
+#define USBDEV_VID_U							0x17A7
 #define USBDEV_VID_OLD							0x1934
 
 #define USB_DEVICE_MAX_PACKET_LEN 				512

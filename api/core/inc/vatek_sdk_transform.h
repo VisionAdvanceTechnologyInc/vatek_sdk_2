@@ -1,7 +1,7 @@
 //----------------------------------------------------------------------------
 //
 // Vision Advance Technology - Software Development Kit
-// Copyright (c) 2014-2022, Vision Advance Technology Inc.
+// Copyright (c) 2014-2023, Vision Advance Technology Inc.
 // All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -49,12 +49,15 @@ extern "C" {
 
 	HAL_API vatek_result vatek_transform_get_packets(hvatek_transform htr, uint32_t* pktnums);
 	HAL_API vatek_result vatek_transform_commit_packets(hvatek_transform htr);
+	HAL_API vatek_result vatek_transform_adjust_pcr(hvatek_transform htr, uint32_t adjust_tick);
 
 	HAL_API vatek_result vatek_transform_stop(hvatek_transform htr);
 
 	HAL_API vatek_result vatek_transform_enum_get_context(hvatek_transform htr, hmux_channel* hchannel);
 
 	HAL_API void vatek_transform_close(hvatek_transform htr);
+
+	HAL_API vatek_result vatek_usbstream_replace_pcr(hvatek_transform htr, uint16_t pcr_pid, int latency);
 
 #ifdef __cplusplus
 }

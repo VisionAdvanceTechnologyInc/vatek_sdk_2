@@ -1,7 +1,7 @@
 //----------------------------------------------------------------------------
 //
 // Vision Advance Technology - Software Development Kit
-// Copyright (c) 2014-2022, Vision Advance Technology Inc.
+// Copyright (c) 2014-2023, Vision Advance Technology Inc.
 // All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -103,7 +103,7 @@ vatek_result vatek_usbstream_open(hvatek_chip hchip, hvatek_usbstream* husstream
 			if (pustream)
 			{
 				memset(pustream, 0, sizeof(handle_usbstream));
-				transform_broadcast_reset(pinfo->chip_module,stream_source_usb,&pustream->broadcast);
+				transform_broadcast_reset(pinfo->chip_module, stream_source_usb,&pustream->broadcast);
 				pustream->hchip = hchip;
 				pustream->htransform = htr;
 				if(pinfo->peripheral_en & PERIPHERAL_FINTEKR2)
@@ -164,10 +164,23 @@ vatek_result vatek_usbstream_start(hvatek_usbstream husstream, Pusbstream_param 
 					pustream->broadcast.stream.usb.mode = stream_passthrogh;
 					pustream->broadcast.stream.usb.pcrmode = pcr_disable;
 				}
+				else if (puparam->remux == ustream_smooth)
+				{
+					pustream->broadcast.stream.usb.mode = stream_smooth;
+					pustream->broadcast.stream.usb.pcrmode = pcr_disable;
+				}
 				else
 				{
 					pustream->broadcast.stream.usb.mode = stream_remux;
 					pustream->broadcast.stream.usb.pcrmode = pustream_new->pcradjust;
+				}
+			}
+
+			if (is_vatek_success(nres))
+			{
+				// remux mode & pcr_retagv2 can replace PCR
+				if (pustream->broadcast.stream.usb.mode == stream_remux && pustream_new->pcradjust == pcr_retagv2) {
+					vatek_usbstream_replace_pcr(pustream->htransform, puparam->pcr_pid, puparam->latency);
 				}
 			}
 
@@ -311,32 +324,37 @@ void usbstream_sync_handler(Pcross_thread_param param)
 {
 	Phandle_usbstream pustream = (Phandle_usbstream)param->userparam;
 	vatek_result nres = vatek_success;
+
+	uint8_t* pbuf = NULL;
+
 	fpsync_get_buffer fpgetbuf = pustream->sync.getbuffer;
+
 	void* fpparam = pustream->sync.param;
 	pustream->stream_packets = 0;
 	pustream->stream_tick = cross_os_get_tick_ms();
 
 	while (pustream->status == usbstream_status_running)
-	{
+	{	
 		nres = usbstream_update_stream(pustream);
 		if (nres == vatek_success)continue;
 		if (is_vatek_success(nres))
-		{
+		{							
 			while (pustream->stream_packets >= USBSTREAM_SLICE_PACKET_NUMS)
 			{
-				VERR("pustream->stream_packets : %d\n", pustream->stream_packets);
-				uint8_t* pbuf = NULL;
-				nres = fpgetbuf(fpparam, &pbuf);
-				if (nres > vatek_success)
-					nres = vatek_device_stream_write(pustream->hchip, pbuf, CHIP_STREAM_SLICE_LEN);
+				// Call Host that data to be written to A3.
+				if (is_vatek_success(nres)) nres = fpgetbuf(fpparam, &pbuf);
+				if (nres > vatek_success) {
+					nres = vatek_device_stream_write(pustream->hchip, pbuf, CHIP_STREAM_SLICE_LEN);				
+				}
 				else if (nres == vatek_success)break;
 
 				if (is_vatek_success(nres))pustream->stream_packets -= USBSTREAM_SLICE_PACKET_NUMS;
-				else VWAR("write device stream fail : %d", nres);
-				if (!is_vatek_success(nres))break;
+				else {
+					printf("write device stream fail : %d", nres);
+					break;
+				}
 			}
-
-			if (is_vatek_success(nres))nres = usbstream_commit_stream(pustream);
+			if (is_vatek_success(nres)) nres = usbstream_commit_stream(pustream);
 		}
 		if (!is_vatek_success(nres))break;
 	}
@@ -453,8 +471,23 @@ vatek_result usbstream_update_stream(Phandle_usbstream pustream)
 vatek_result usbstream_commit_stream(Phandle_usbstream pustream)
 {
 	vatek_result nres = vatek_success;
-	if (pustream->stream_packets < USBSTREAM_SLICE_PACKET_NUMS)
-	{
+	if (pustream->async) {
+		if (pustream->stream_packets < USBSTREAM_SLICE_PACKET_NUMS)
+		{
+			nres = vatek_transform_commit_packets(pustream->htransform);
+			if (is_vatek_success(nres))
+			{
+				if (cross_os_get_tick_ms() - pustream->stream_tick > 1000)
+				{
+					nres = vatek_transform_polling(pustream->htransform, &pustream->info);
+					pustream->stream_tick = cross_os_get_tick_ms();
+				}
+				cross_os_sleep(1);
+			}
+			pustream->stream_packets = 0;
+		}
+	}
+	else {
 		nres = vatek_transform_commit_packets(pustream->htransform);
 		if (is_vatek_success(nres))
 		{
@@ -467,6 +500,77 @@ vatek_result usbstream_commit_stream(Phandle_usbstream pustream)
 		}
 		pustream->stream_packets = 0;
 	}
+
+	return nres;
+}
+
+vatek_result usbstream_adjust_stream(hvatek_usbstream husstream, uint32_t buffer)
+{
+	Phandle_usbstream pustream = (Phandle_usbstream)husstream;
+	vatek_result nres = vatek_success;
+
+	static int times = 0;
+	static int sum_buffer = 0; //totol buffer
+	static int ptr_buffer = 0; //Record Buffer
+	static int adjust_value = 0;
+	if (is_vatek_success(nres))
+	{
+		sum_buffer = sum_buffer + (int) buffer;
+		times++;
+
+		if (times >= pustream->sync.tick_adjust.times)  // 10s
+		{
+			sum_buffer = sum_buffer / pustream->sync.tick_adjust.times;
+
+			if (ptr_buffer) {
+				adjust_value = ptr_buffer - sum_buffer + adjust_value;
+				printf("sum_buffer : %d ; ptr_buffer : %d ; adjust_value : %d\n", sum_buffer, ptr_buffer, adjust_value);
+
+				// input low				
+				if (adjust_value >= pustream->sync.tick_adjust.up_lock_valus[0] && adjust_value < pustream->sync.tick_adjust.up_lock_valus[1]) {
+					printf("A3 fast(1) : %d\n", adjust_value);
+					vatek_transform_adjust_pcr(pustream->htransform, pustream->sync.tick_adjust.up_adjust_value[0]);
+				}
+				else if (adjust_value >= pustream->sync.tick_adjust.up_lock_valus[1] && adjust_value < pustream->sync.tick_adjust.up_lock_valus[2]) {
+					printf("A3 fast(2) : %d\n", adjust_value);
+					vatek_transform_adjust_pcr(pustream->htransform, pustream->sync.tick_adjust.up_adjust_value[1]);
+				}
+				else if (adjust_value >= pustream->sync.tick_adjust.up_lock_valus[2] && adjust_value < pustream->sync.tick_adjust.up_lock_valus[3]) {
+					printf("A3 fast(3) : %d\n", adjust_value);
+					vatek_transform_adjust_pcr(pustream->htransform, pustream->sync.tick_adjust.up_adjust_value[2]);
+				}
+				else if (adjust_value >= pustream->sync.tick_adjust.up_lock_valus[3]) {
+					printf("A3 fast(4) : %d\n", adjust_value);
+					vatek_transform_adjust_pcr(pustream->htransform, pustream->sync.tick_adjust.up_adjust_value[3]);
+				}
+
+				// input high
+				if (adjust_value < pustream->sync.tick_adjust.lo_lock_valus[0] && adjust_value >= pustream->sync.tick_adjust.lo_lock_valus[1]) {
+					printf("A3 slow(1) : %d\n", adjust_value);
+					vatek_transform_adjust_pcr(pustream->htransform, pustream->sync.tick_adjust.lo_adjust_value[0]);
+				}
+				else if (adjust_value < pustream->sync.tick_adjust.lo_lock_valus[1] && adjust_value >= pustream->sync.tick_adjust.lo_lock_valus[2]) {
+					printf("A3 slow(2) : %d\n", adjust_value);
+					vatek_transform_adjust_pcr(pustream->htransform, pustream->sync.tick_adjust.lo_adjust_value[0]);
+				}
+				else if (adjust_value < pustream->sync.tick_adjust.lo_lock_valus[2] && adjust_value >= pustream->sync.tick_adjust.lo_lock_valus[3]) {
+					printf("A3 slow(3) : %d\n", adjust_value);
+					vatek_transform_adjust_pcr(pustream->htransform, pustream->sync.tick_adjust.lo_adjust_value[0]);
+				}
+				else if (adjust_value < pustream->sync.tick_adjust.lo_lock_valus[3]) {
+					printf("A3 slow(4) : %d\n", adjust_value);
+					vatek_transform_adjust_pcr(pustream->htransform, pustream->sync.tick_adjust.lo_adjust_value[0]);
+				}
+				ptr_buffer = sum_buffer;
+			}
+			else 
+				ptr_buffer = sum_buffer;
+			
+			times = 0;
+			sum_buffer = 0;
+		}
+	}
+
 	return nres;
 }
 
@@ -586,4 +690,20 @@ void usbstream_async_free(Phandle_async pasync)
 		cross_os_free_mutex(pasync->async_lock);
 	th_circlebuf_free(pasync->async_buffer);
 	free(pasync);
+}
+
+vatek_result vatek_usbstream_filter(hvatek_usbstream husstream)
+{
+	Phandle_usbstream pustream = (Phandle_usbstream)husstream;
+	vatek_result nres = vatek_badstatus;
+	if (pustream->status == usbstream_status_idle)
+	{
+		pustream->broadcast.filters.filter_nums = 2;
+		pustream->broadcast.filters.filters[0].orange_pid = 0x101;
+		pustream->broadcast.filters.filters[0].replace_pid = PID_FILTER_NOT_REPLACE;
+		pustream->broadcast.filters.filters[1].orange_pid = 0x102;
+		pustream->broadcast.filters.filters[1].replace_pid = PID_FILTER_NOT_REPLACE;
+		nres = vatek_success;
+	}
+	return nres;
 }

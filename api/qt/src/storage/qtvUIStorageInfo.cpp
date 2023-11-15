@@ -1,7 +1,7 @@
 //----------------------------------------------------------------------------
 //
 // Vision Advance Technology - Software Development Kit
-// Copyright (c) 2014-2022, Vision Advance Technology Inc.
+// Copyright (c) 2014-2023, Vision Advance Technology Inc.
 // All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -145,6 +145,8 @@ void qtvUIStorageInfo::insertItem(int32_t pos, const Psinfo_item sitem,uint8_t* 
 		const char* szarch = "chip_unknown";
 		if (arch == chip_arch_ax)szarch = "chip_arch_ax";
 		else if (arch == chip_arch_bx)szarch = "chip_arch_bx";
+		else if (arch == chip_arch_vx)szarch = "chip_arch_vx";
+		else if (arch == chip_arch_audio)szarch = "chip_arch_audio";
 		else if(arch == chip_arch_a3)szarch = "chip_arch_a3";
 		newitem = new QTableWidgetItem(szarch);
 	}
@@ -154,6 +156,8 @@ void qtvUIStorageInfo::insertItem(int32_t pos, const Psinfo_item sitem,uint8_t* 
 		const char* szservice = "unknown";
 		if (service == service_broadcast)szservice = "broadcast";
 		else if (service == service_transform)szservice = "transform";
+		else if (service == service_encoder)szservice = "encoder";
+		else if (service == service_audio)szservice = "audio";
 		else if (service == service_rescue)szservice = "rescue";
 		newitem = new QTableWidgetItem(szservice);
 	}

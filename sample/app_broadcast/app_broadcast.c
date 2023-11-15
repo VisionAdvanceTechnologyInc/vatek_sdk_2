@@ -1,7 +1,7 @@
 //----------------------------------------------------------------------------
 //
 // Vision Advance Technology - Software Development Kit
-// Copyright (c) 2014-2022, Vision Advance Technology Inc.
+// Copyright (c) 2014-2023, Vision Advance Technology Inc.
 // All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -78,15 +78,20 @@ static broadcast_param bc_param =
 	.mod =
 	{
 		.bandwidth_symbolrate = 6,
-		.type = modulator_isdb_t,
-		.ifmode = ifmode_iqoffset,.iffreq_offset = 143,.dac_gain = 0,
-		.mod = {.isdb_t = {isdb_t_qam64, fft_8k, guard_interval_1_32, coderate_2_3, isdb_t_interleaved_mode3},},
+		.type = modulator_atsc,
+		.ifmode = ifmode_disable,.iffreq_offset = 0,.dac_gain = 0,
+		.mod = {.atsc = {_8vsb},},
 	},
 	.mux =
 	{
 		.pcr_pid = 0x100,
 		.padding_pid = 0x1FFF,
 		.bitrate = 0,0,0,0,
+	},
+	.r2param =
+	{
+		.freqkhz = 473000,
+		.mode = r2_cntl_path_0,
 	},
 };
 
@@ -128,7 +133,7 @@ int main(int argc, char* argv[])
 	Pchip_info pinfo = NULL;
 	hmux_core hmux = NULL;
 	Pbroadcast_auxstream pauxstream = NULL;
-
+	
 #if BROADCAST_EN_AUX
 
 	uint32_t auxbitrate = 4000000;
@@ -176,7 +181,7 @@ int main(int argc, char* argv[])
 
 	if (is_vatek_success(nres))
 	{
-		nres = vatek_device_list_enum(DEVICE_BUS_USB, service_broadcast, &hdevlist);
+		nres = vatek_device_list_enum(DEVICE_BUS_ALL, service_broadcast, &hdevlist);
 		if (is_vatek_success(nres))
 		{
 			if (nres == 0)
@@ -242,7 +247,7 @@ int main(int argc, char* argv[])
 			else if (nres == vatek_success)nres = vatek_nodevice;
 		}
 
-		_disp_l("connect to bridge device .... [%d]", nres);
+		_disp_l("connect to bridge device .... [%d]\r\n", nres);
 
 		if (is_vatek_success(nres))
 		{
@@ -418,6 +423,9 @@ int main(int argc, char* argv[])
 		if (!is_vatek_success(nres))_disp_err("start broadcast fail : %d", nres);
 	}
 
+	printf_encoder_param(bc_param.enc);
+	printf_modulation_param(bc_param.mod, bc_param.r2param);
+	
 	if (is_vatek_success(nres))
 	{
 		int32_t is_stop = 0;
@@ -425,7 +433,7 @@ int main(int argc, char* argv[])
 		uint8_t* pktbuf = NULL;
 		Pbroadcast_info pbcinfo = NULL;
 		uint32_t ntickms = cross_os_get_tick_ms();
-		_disp_l("broadcast start. press any key to stop");
+		_disp_l("broadcast start. press any key to stop\r\n");
 
 		while (!is_stop)
 		{
@@ -447,7 +455,7 @@ int main(int argc, char* argv[])
 					if (cross_os_get_tick_ms() - ntickms > 1000)
 					{
 						ntickms = cross_os_get_tick_ms();
-						_disp_l("broadcast - [%d:%d:%d]", pbcinfo->status, pbcinfo->data_bitrate, pbcinfo->cur_bitrate);
+						_disp_l("%s : [%d]        %s : [%d]", "Data", pbcinfo->data_bitrate, "Current", pbcinfo->cur_bitrate);
 					}
 				}
 				else
@@ -480,8 +488,6 @@ int main(int argc, char* argv[])
 		vatek_device_close_reboot(hchip);
 	}
 	if (hmux)mux_handle_free(hmux);
-	if (hbc)vatek_broadcast_close(hbc);
-	if (hchip) vatek_device_close(hchip);
 	if (hdevlist)vatek_device_list_free(hdevlist);
 #endif
 	printf_app_end();

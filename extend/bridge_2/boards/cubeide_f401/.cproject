@@ -54,11 +54,11 @@
 									<listOptionValue builtIn="false" value="../Middlewares/ST/STM32_USB_Device_Library/Class/CustomHID/Inc"/>
 									<listOptionValue builtIn="false" value="../Drivers/CMSIS/Device/ST/STM32F4xx/Include"/>
 									<listOptionValue builtIn="false" value="../Drivers/CMSIS/Include"/>
-									<listOptionValue builtIn="false" value="&quot;D:\SDK\Code\libUSB_ver\20230315_Github_ver\vatek_sdk_2\extend\bridge_2\boards\stm32\core\inc&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;D:\SDK\Code\libUSB_ver\20230315_Github_ver\vatek_sdk_2\extend\bridge_2\app\bridge_2\inc&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;D:\SDK\Code\libUSB_ver\20230315_Github_ver\vatek_sdk_2\extend\bridge_2\api\inc&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;D:\SDK\Code\libUSB_ver\20230315_Github_ver\vatek_sdk_2\api\core\inc&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;D:\SDK\Code\libUSB_ver\20230315_Github_ver\vatek_sdk_2\extend\bridge_2\boards\cubeide_f401\Core\Inc&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;D:\Richie Documents\GitHub\20230413_vatek_sdk_2_develop\vatek_sdk_2_develop\extend\bridge_2\boards\stm32\core\inc&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;D:\Richie Documents\GitHub\20230413_vatek_sdk_2_develop\vatek_sdk_2_develop\extend\bridge_2\app\bridge_2\inc&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;D:\Richie Documents\GitHub\20230413_vatek_sdk_2_develop\vatek_sdk_2_develop\extend\bridge_2\api\inc&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;D:\Richie Documents\GitHub\20230413_vatek_sdk_2_develop\vatek_sdk_2_develop\api\core\inc&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;D:\Richie Documents\GitHub\20230413_vatek_sdk_2_develop\vatek_sdk_2_develop\extend\bridge_2\boards\cubeide_f401\Core\Inc&quot;"/>
 								</option>
 								<option id="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.compiler.option.warnings.all.2030691873" name="Enable all warnings about questionable constructions (-Wall)" superClass="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.compiler.option.warnings.all" useByScannerDiscovery="false" value="false" valueType="boolean"/>
 								<inputType id="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.compiler.input.c.1838663404" superClass="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.compiler.input.c"/>

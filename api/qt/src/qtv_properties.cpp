@@ -1,7 +1,7 @@
 //----------------------------------------------------------------------------
 //
 // Vision Advance Technology - Software Development Kit
-// Copyright (c) 2014-2022, Vision Advance Technology Inc.
+// Copyright (c) 2014-2023, Vision Advance Technology Inc.
 // All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -93,8 +93,10 @@ void qi_output_properties::resetProperties()
 	modulator_type type = m_param.modulation.type;
 	memset(&m_param, 0, sizeof(qtv_output_param));
 	modulator_param_reset(type, &m_param.modulation);
-	if (type == modulator_dtmb) 
+	if (type == modulator_dtmb)
 		m_param.r2param.freqkhz = 474000;
+	else if (type == modulator_j83b)
+		m_param.r2param.freqkhz = 471000;
 	else 
 		m_param.r2param.freqkhz = 473000;
 

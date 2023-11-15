@@ -18,6 +18,8 @@ typedef struct _usb_handle
 	int32_t epsize;
 	int32_t bulksize;
 	uint8_t* none_dmabuf;
+	uint16_t vid;
+	uint16_t pid;
 }usb_handle, *Pusb_handle;
 
 extern Pusbdevice_id usb_ll_list_get_id(uint16_t vid, uint16_t pid);
@@ -41,7 +43,10 @@ vatek_result usb_api_ll_enum_by_id(uint16_t vid, uint16_t pid, husb_device_list*
 vatek_result usb_api_ll_enum_common(fpenum_check fpcheck, husb_device_list* hlist, uint32_t checkparam)
 {
 	libusb_device** usbdevs;
+	libusb_context* ctx = NULL;
+	int level = 1;
 	vatek_result nres = libusb_tool_init();
+	libusb_set_debug(ctx, level);
 	if (is_vatek_success(nres))
 	{
 		size_t cnt = libusb_get_device_list(NULL, &usbdevs);
@@ -62,18 +67,27 @@ vatek_result usb_api_ll_enum_common(fpenum_check fpcheck, husb_device_list* hlis
 					usbdevice_type devtype = usb_type_unknown;
 					if (fpcheck(&desc,&devtype,checkparam))
 					{
+						VERR("PID : 0x%08x ; VID :0x%08x\n", desc.idVendor, desc.idProduct);
 						hcross_mutex hlock = NULL;
-						struct libusb_device_handle* pdevhandle;
+						libusb_device_handle* pdevhandle = NULL;
+						
 						nres = (vatek_result)libusb_open(udevice, &pdevhandle);
+						
 						if (is_vatek_success(nres))nres = cross_os_create_mutex(&hlock);
+						else {
+
+						}
 						if (is_vatek_success(nres))
 						{
 							Pusb_handle newdevice = (Pusb_handle)malloc(sizeof(usb_handle));
 							if (newdevice != NULL)
 							{
+
 								const char* name = VATEK_USB_DEVICE_TAG;
 								if (devtype == usb_type_rescure)name = VATEK_USB_RESCUE_TAG;
 								memset(newdevice, 0, sizeof(usb_handle));
+								newdevice->pid = desc.idProduct;
+								newdevice->vid = desc.idVendor;
 								newdevice->husb = pdevhandle;
 								newdevice->lock = hlock;
 								newdevice->is_dma = 0;
@@ -82,7 +96,7 @@ vatek_result usb_api_ll_enum_common(fpenum_check fpcheck, husb_device_list* hlis
 								sprintf(&newdevice->name[0], ".//%d-%d//%s", libusb_get_bus_number(*usbdevs), libusb_get_port_number(*usbdevs), name);
 
 								if (pnext == NULL)proot = newdevice;
-								else pnext->next = newdevice;
+								else proot->next = newdevice;
 								pnext = newdevice;
 								enumnums++;
 							}
@@ -90,7 +104,6 @@ vatek_result usb_api_ll_enum_common(fpenum_check fpcheck, husb_device_list* hlis
 							if (!is_vatek_success(nres))cross_os_free_mutex(hlock);
 						}
 					}
-					if (!is_vatek_success(nres))break;
 				}
 			}
 			libusb_free_device_list(usbdevs, 1);
@@ -138,6 +151,7 @@ vatek_result usb_api_ll_list_get_device(husb_device_list hlist, int32_t idx, hus
 			*husb = pusbs;
 			return vatek_success;
 		}
+		nums++;
 		pusbs = pusbs->next;
 	}
 	return vatek_badparam;
@@ -254,7 +268,7 @@ vatek_result usb_api_ll_write(husb_device husb, uint8_t* pbuf, int32_t len)
 	{
 		libusb_device_handle* hdevice = (libusb_device_handle*)pusb->husb;
 		int32_t rlen = 0;
-		if (!pusb->is_dma)
+		if (!pusb->is_dma)  // none_dma
 		{
 			usb_ll_convert_bufffer(pbuf, pusb->none_dmabuf,len);
 			pbuf = pusb->none_dmabuf;

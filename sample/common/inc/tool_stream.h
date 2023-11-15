@@ -12,6 +12,7 @@ typedef void* hstream_source;
 typedef vatek_result(*fpstream_source_start)(hstream_source hsource);
 typedef vatek_result(*fpstream_source_check)(hstream_source hsource);
 typedef uint8_t*(*fpstream_source_get)(hstream_source hsource);
+typedef uint32_t* (*fpstream_source_size)(hstream_source hsource);
 typedef vatek_result(*fpstream_source_stop)(hstream_source hsource);
 typedef void(*fpstream_source_free)(hstream_source hsource);
 
@@ -20,10 +21,13 @@ typedef struct _tsstream_source
 	hstream_source hsource;
 	fpstream_source_start start;
 	fpstream_source_check check;
+	fpstream_source_size get_size;
 	fpstream_source_get get;
 	fpstream_source_stop stop;
 	fpstream_source_free free;
 }tsstream_source,*Ptsstream_source;
+
+
 
 #ifdef __cplusplus
 extern "C" {

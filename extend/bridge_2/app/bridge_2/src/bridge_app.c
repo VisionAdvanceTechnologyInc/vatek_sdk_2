@@ -15,32 +15,33 @@ static const char* bridge_logo[] =
 
 #define _BRIDGE_WAITCHIP_TIMEOUT		5000
 
-#define BRIDGE_VERSION					20230413
+#define BRIDGE_VERSION					20230606
 
 #define _pl_title(fmt,...)				printf(" [%08x] - "fmt"\r\n",hal_system_get_tick(),##__VA_ARGS__)
 #define _pl_uint32(t,v)					printf("%-11s - [%-16s] : 0x%08x\r\n","",#t,v)
 #define _pl_sub(fmt,...)				printf("%-11s - " fmt "\r\n","",##__VA_ARGS__)
 #define _pl_spiltline()					printf("---------------------------------------------------------------------------------------------\r\n")
 #define _pl_uint8(t,v)					printf("%-11s - [%-16s] : %s\r\n","",#t,v)
-#define _pl_int(t,v)					printf("%-11s - [%-16s] : 0x%d\r\n","",#t,v)
+#define _pl_int(t,v)					printf("%-11s - [%-16s] : [%d]\r\n","",#t,v)
 
 extern void printf_logo(void);
 extern void printf_bsource(hvatek_bridge hbridge);
 
-extern vatek_result connect_chip(hvatek_bridge hbridge,hvatek_chip* hchip);
-
+extern vatek_result connect_chip(hvatek_bridge hbridge,hvatek_chip* hchip,chip_info* info);
+extern vatek_result print_chip(Pchip_info pinfo);
 int main(void)
 {
 	uint32_t tick_start,tick_stop;
 	hvatek_bridge hbridge = NULL;
 	hvatek_chip hchip = NULL;
+	chip_info info;
 	vatek_result nres = vatek_bridge_open(&hbridge);
 	printf_logo();
 
 
 	if(is_vatek_success(nres))
 	{
-		nres = connect_chip(hbridge,&hchip);
+		nres = connect_chip(hbridge,&hchip, &info);
 		if(is_vatek_success(nres))
 			printf_bsource(hbridge);
 		if(!is_vatek_success(nres))vatek_bridge_close(hbridge);
@@ -56,8 +57,7 @@ int main(void)
 
 			for(;;)
 			{
-
-				nres = vatek_bridge_polling(hbridge);
+				nres = vatek_bridge_polling(hbridge, info);
 				if(!is_vatek_success(nres)){
 					tick_stop = vatek_get_tick_ms();
 					hal_system_sleep(100);
@@ -80,7 +80,7 @@ int main(void)
 	return 0;
 }
 
-vatek_result connect_chip(hvatek_bridge hbridge,hvatek_chip* hchip)
+vatek_result connect_chip(hvatek_bridge hbridge,hvatek_chip* hchip,chip_info* info)
 {
 	vatek_result nres = vatek_chip_open(hbridge,hchip);
 	if(is_vatek_success(nres))
@@ -95,18 +95,19 @@ vatek_result connect_chip(hvatek_bridge hbridge,hvatek_chip* hchip)
 			
 		if(status == chip_status_waitcmd)
 		{
-			chip_info info;
-			nres = chip_info_get(*hchip,&info);
+
+			nres = chip_info_get(*hchip,info);
 			if(is_vatek_success(nres))
 			{
 				_pl_title("chip and service connected");
-				_pl_uint32(chip,info.chip_module);
-				_pl_uint32(service,info.hal_service);
-				_pl_uint32(version,info.version);
-				_pl_uint32(input,info.input_support);
-				_pl_uint32(output,info.output_support);
-				_pl_uint32(peripheral,info.peripheral_en);
 				_pl_int(bridge_version,BRIDGE_VERSION);
+				print_chip(info);
+				//_pl_uint32(chip,info->chip_module);
+				_pl_uint32(service,info->hal_service);
+				_pl_uint32(version,info->version);
+				_pl_uint32(input,info->input_support);
+				_pl_uint32(output,info->output_support);
+				_pl_uint32(peripheral,info->peripheral_en);
 				_pl_spiltline();
 			}else _pl_title("read chip information fail : %d",nres);
 		}else _pl_title("connect chip but service not found");
@@ -147,4 +148,15 @@ void printf_bsource(hvatek_bridge hbridge)
 		}
 	}
 	_pl_spiltline();
+}
+
+
+vatek_result print_chip(Pchip_info pinfo){
+    if (pinfo->chip_module == ic_module_a1) printf("%-11s - [%-16s] : %s\r\n","","chip_module","A1");
+    else if (pinfo->chip_module == ic_module_b1) printf("%-11s - [%-16s] : %s\r\n","","chip_module","B1");
+    else if (pinfo->chip_module == ic_module_b2) printf("%-11s - [%-16s] : %s\r\n","","chip_module","B2");
+    else if (pinfo->chip_module == ic_module_b3_lite) printf("%-11s - [%-16s] : %s\r\n","","chip_module","B3");
+    else if (pinfo->chip_module == ic_module_b3_plus) printf("%-11s - [%-16s] : %s\r\n","","chip_module","B3 Plus");
+    else if (pinfo->chip_module == ic_module_b2_plus) printf("%-11s - [%-16s] : %s\r\n","","chip_module","B2 Plus");
+    else if (pinfo->chip_module == ic_module_e1) printf("%-11s - [%-16s] : %s\r\n","","chip_module","E1");
 }

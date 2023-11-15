@@ -1,7 +1,7 @@
 //----------------------------------------------------------------------------
 //
 // Vision Advance Technology - Software Development Kit
-// Copyright (c) 2014-2022, Vision Advance Technology Inc.
+// Copyright (c) 2014-2023, Vision Advance Technology Inc.
 // All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -116,6 +116,9 @@ extern "C" {
 	 * @return HAL_API
 	 */
 	HAL_API vatek_result broadcast_status_set(hvatek_chip hchip, broadcast_status status);
+
+	HAL_API vatek_result vatek_hms_issystemidle(hvatek_chip hchip);
+
 
 #ifdef __cplusplus
 }

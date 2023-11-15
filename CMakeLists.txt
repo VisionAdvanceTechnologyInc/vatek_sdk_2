@@ -10,9 +10,9 @@ if(MSVC)
     option(SDK2_EN_SAMPLE "build sample app enable" ON)
 
     if(CMAKE_SIZEOF_VOID_P EQUAL 8)
-        set(SDK2_QTDIR "D:\\Qt\\5.15.2\\msvc2019_64" CACHE STRING "default QT_DIR")
+        set(SDK2_QTDIR "D:\\Qt\\5.15.2\\5.15.2\\msvc2019_64" CACHE STRING "default QT_DIR")
     else()
-        set(SDK2_QTDIR "D:\\Qt\\5.15.2\\msvc2019" CACHE STRING "default QT_DIR")
+        set(SDK2_QTDIR "D:\\Qt\\5.15.2\\5.15.2\\msvc2019_64" CACHE STRING "default QT_DIR")
     endif()
 
     set(CMAKE_PREFIX_PATH ${SDK2_QTDIR})

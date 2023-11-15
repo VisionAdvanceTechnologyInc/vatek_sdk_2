@@ -1,7 +1,7 @@
 //----------------------------------------------------------------------------
 //
 // Vision Advance Technology - Software Development Kit
-// Copyright (c) 2014-2022, Vision Advance Technology Inc.
+// Copyright (c) 2014-2023, Vision Advance Technology Inc.
 // All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -26,6 +26,7 @@
 // THE POSSIBILITY OF SUCH DAMAGE.
 //
 
+#include <service/service_broadcast.h>
 #include <service/service_base.h>
 #include <service/ui/ui_service_base.h>
 
@@ -51,4 +52,26 @@ vatek_result broadcast_status_get(hvatek_chip hchip, broadcast_status* status)
 vatek_result broadcast_status_set(hvatek_chip hchip, broadcast_status status)
 {
 	return writehal(HALREG_BCINFO_STATUS, (uint32_t)status);
+}
+
+vatek_result vatek_hms_issystemidle(hvatek_chip hchip)
+{
+    vatek_result nres = vatek_unknown;
+    uint32_t val = 0;
+
+    if (hchip == NULL)
+        return vatek_badparam;
+
+    nres = readhal(HALREG_SYS_STATUS_0, &val);
+
+    if (val != SYS_STATUS_IDLE)
+        return vatek_busy;
+
+    if (is_vatek_success(nres))
+        nres = readhal(HALREG_BROADCAST_CNTL, &val);
+
+    if (val != 0)
+        return vatek_badstatus;
+
+    return nres;
 }

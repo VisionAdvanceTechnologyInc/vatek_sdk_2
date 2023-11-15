@@ -1,7 +1,7 @@
 //----------------------------------------------------------------------------
 //
 // Vision Advance Technology - Software Development Kit
-// Copyright (c) 2014-2022, Vision Advance Technology Inc.
+// Copyright (c) 2014-2023, Vision Advance Technology Inc.
 // All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -104,6 +104,7 @@ typedef enum _qtv_filter_mode
 	qfilter_disable,
 	qfilter_enum,
 	qfilter_customer,
+	capture,
 }qtv_filter_mode;
 
 typedef enum _qtv_service_mode
@@ -112,6 +113,7 @@ typedef enum _qtv_service_mode
 	qservice_transfrom,
 	qservice_usbstream,
 	qservice_usbmuxer,
+	qservice_encoder,
 }qtv_service_mode;
 
 typedef struct _qtv_locale_param

@@ -1,7 +1,7 @@
 //----------------------------------------------------------------------------
 //
 // Vision Advance Technology - Software Development Kit
-// Copyright (c) 2014-2022, Vision Advance Technology Inc.
+// Copyright (c) 2014-2023, Vision Advance Technology Inc.
 // All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -78,6 +78,7 @@ vatek_result cross_devices_create(Pcross_device* pcross)
 			{
 				husb_device husb = NULL;
 				nres = usb_api_ll_list_get_device(m_cdevices.usbdevices, i, &husb);
+				VERR("index : %d\n", i);
 				if (is_vatek_success(nres))
 				{
 					nres = cross_usb_device_open(husb, &newcross);

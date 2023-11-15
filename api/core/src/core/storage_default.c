@@ -1,7 +1,7 @@
 //----------------------------------------------------------------------------
 //
 // Vision Advance Technology - Software Development Kit
-// Copyright (c) 2014-2022, Vision Advance Technology Inc.
+// Copyright (c) 2014-2023, Vision Advance Technology Inc.
 // All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -373,10 +373,10 @@ static const storage_chip_config default_chip_config =
 			{
 				.scl_0 = 0xFFFFFFFF,.scl_1 = 0xFFFFFFFF,.scl_2 = 0xFFFFFFFF,
 				.fft_scale = {0xFFFFFFFF,0xFFFFFFFF,0xFFFFFFFF,},
-				.gain = {0x00005555,0x00005555,0x00005555,},
+				.gain = {0x00004343,0x00008585,0x00005555,},
 			},
 			.j83a = {.gain = {0x00002020,0x00002626,0x00002424,0x00002929,0x00002727},},
-			.atsc = {5,0x00004040,},
+			.atsc = {5,0x00005050,},
 			.j83b = {0x00005050,0x00005050,},
 			.dtmb = {
 				.pn_mag = {0x3F1,0x3F1},
@@ -390,14 +390,14 @@ static const storage_chip_config default_chip_config =
 				.gain = 
 				{
 					{0x00004040, 0x00003d3d},
-					{0x00004040	,0x00003e3e	,0x00004040	,0x00004040	,0x00002020},
+					{0x00004040	,0x00003e3e	,0x00004040	,0x00004040	,0x00003e3e},
 				},
 			},
 			.isdb_t = 
 			{
 				.scl_0		= 0x5a8400,.scl_1 = 0x13c144,.scl_2 = 0x555,
 				.fft_scale	= {0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF,},
-				.gain		= {0x00005555,0x00005555,0x00005555,},
+				.gain		= {0x04045454,0x0707aaaa,0x05057676,},
 			},
 			.dvb_t2 = 
 			{
@@ -408,12 +408,12 @@ static const storage_chip_config default_chip_config =
 		{	/* CONFIG_CHIPIDX_B2_PLUS */
 			.dvb_t =
 			{
-				.scl_0 = 0x2da200,.scl_1 = 0x09e0a2,.scl_2 = 0x2ab,
+				.scl_0 = 0x5a8400,.scl_1 = 0x13c144,.scl_2 = 0x555,
 				.fft_scale = {0xFFFFFFFF,0xFFFFFFFF,0xFFFFFFFF,},
-				.gain = {0x00005555,0x00005555,0x00005555,},
+				.gain = {0x4343,0x8585,0x00005555,},
 			},
 			.j83a = {.gain = {0x00002020,0x00002626,0x00002424,0x00002929,0x00002727},},
-			.atsc = {5,0x00004040,},
+			.atsc = {5,0x5050,},
 			.j83b = {0x00005050,0x00005050,},
 			.dtmb = {
 				.pn_mag = {0x3F1,0x3F1},
@@ -427,7 +427,7 @@ static const storage_chip_config default_chip_config =
 				.gain =
 				{
 					{0x00004040, 0x00003d3d},
-					{0x00004040	,0x00003e3e	,0x00004040	,0x00004040	,0x00002020},
+					{0x00004040	,0x00003e3e	,0x00004040	,0x00004040	,0x3e3e},
 				},
 			},
 			.isdb_t =
@@ -456,15 +456,15 @@ static const storage_chip_config default_chip_config =
 				.pn_mag = {0x3F1,0x3F1},
 				.ofdm_mag =
 				{	/*  qpsk	 qam16	 qam64	 q4-nr	 qam32 */
-					{0x1255	,0x833	,0x400	,0x1255	,0x5CC},
-					{0xfd5	,0x713	,0x3f1	,0xfd5	,0x50A},
+					{0x1255	,0x833	,0x400	,0x0	,0x5CC},
+					{0xfd5	,0x713	,0x3f1	,0x0	,0x50A},
 				},
-				.tps_scale = {1,3,7,1,3},
-				.fft_scale = {0xFFFFFFFF,0xFFFFFFFF	,0xFFFFFFFF	,0xFFFFFFFF	,0xFFFFFFFF},
+				.tps_scale = {1,3,7,0,3},
+				.fft_scale = {0xFFFFFFFF,0xFFFFFFFF	,0xFFFFFFFF	,0x0	,0xFFFFFFFF},
 				.gain = 
 				{
 					{0x00004040, 0x00003d3d},
-					{0x00004040	,0x00003e3e	,0x00004040 ,0x00004040	,0x00002020},
+					{0x00004040	,0x00003e3e	,0x00004040 ,0x0	,0x00003e3e},
 				},
 			},
 			.isdb_t =

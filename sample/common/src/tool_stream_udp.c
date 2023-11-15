@@ -66,6 +66,7 @@ vatek_result stream_source_udp_get(const char* ipaddr, Ptsstream_source psource)
 			psource->start = udp_stream_start;
 			psource->stop = udp_stream_stop;
 			psource->check = udp_stream_check;
+			psource->get_size = check_valid_buffer;
 			psource->get = udp_stream_get;
 			psource->free = udp_stream_free;
 			_disp_l("open UDP/RTP address - [%s]", sparam.ip);

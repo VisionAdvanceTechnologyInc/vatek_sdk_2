@@ -1,7 +1,7 @@
 //----------------------------------------------------------------------------
 //
 // Vision Advance Technology - Software Development Kit
-// Copyright (c) 2014-2022, Vision Advance Technology Inc.
+// Copyright (c) 2014-2023, Vision Advance Technology Inc.
 // All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -186,6 +186,8 @@ vatek_result chip_info_get(hvatek_chip hchip,Pchip_info pinfo)
                     if (val == SERVICE_TAG_RESCUE)pinfo->hal_service = service_rescue;
                     else if (val == SERVICE_TAG_BROADCAST)pinfo->hal_service = service_broadcast;
                     else if (val == SERVICE_TAG_TRANSFORM)pinfo->hal_service = service_transform;
+                    else if (val == SERVICE_TAG_ENCODER)pinfo->hal_service = service_encoder;
+                    else if (val == SERVICE_TAG_AUDIO)pinfo->hal_service = service_audio;
                     else nres = vatek_hwfail;
                 }
             }

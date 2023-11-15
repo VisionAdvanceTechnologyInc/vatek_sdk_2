@@ -1,7 +1,7 @@
 //----------------------------------------------------------------------------
 //
 // Vision Advance Technology - Software Development Kit
-// Copyright (c) 2014-2022, Vision Advance Technology Inc.
+// Copyright (c) 2014-2023, Vision Advance Technology Inc.
 // All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -47,6 +47,7 @@ qtvUIWizardPage::qtvUIWizardPage(qtvUIMain* main, uint32_t id, QWidget* parent) 
 {
 	if (id == BCWIZARD_ID_LOCALE)m_tab = new qtvUITabDtv(main, this);
 	else if (id == BCWIZARD_ID_SOURCE)m_tab = new qtvUITabSource(main, this);
+	else if (id == BCWIZARD_ID_ENCODER)m_tab = new qtvUITabSource(main, this);
 	else if (id == BCWIZARD_ID_SOURCEVALID)m_tab = new qtvUITabEnum(main, this);
 	else if (id == BCWIZARD_ID_CONTEXT)m_tab = new qtvUITabContext(main, this);
 	else if (id == BCWIZARD_ID_MODULATION)m_tab = new qtvUITabProperties(main, qui_tab_properties_modulation, this);

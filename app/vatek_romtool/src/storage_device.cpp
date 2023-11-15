@@ -1,7 +1,7 @@
 //----------------------------------------------------------------------------
 //
 // Vision Advance Technology - Software Development Kit
-// Copyright (c) 2014-2022, Vision Advance Technology Inc.
+// Copyright (c) 2014-2023, Vision Advance Technology Inc.
 // All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -125,7 +125,7 @@ storageDevice* storageDevice::openStorageDevice(int32_t isenV0)
 	{
 		nres = vatek_device_list_enum_by_usbid(_usb_table[i].vid, _usb_table[i].pid, &hdevices);
 		if (nres == vatek_success && isenV0)
-			nres = vatek_device_list_enum_by_usbid(USBDEV_VID_OLD, _usb_table[i].pid, &hdevices);
+			nres = vatek_device_list_enum_by_usbid(USBDEV_VID_U, _usb_table[i].pid, &hdevices);
 		if (!is_vatek_success(nres))break;
 		else if (nres > vatek_success)break;
 	}

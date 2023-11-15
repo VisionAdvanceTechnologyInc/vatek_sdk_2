@@ -1,7 +1,7 @@
 //----------------------------------------------------------------------------
 //
 // Vision Advance Technology - Software Development Kit
-// Copyright (c) 2014-2022, Vision Advance Technology Inc.
+// Copyright (c) 2014-2023, Vision Advance Technology Inc.
 // All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -37,7 +37,8 @@
 _ui_enum_start(qtv_filter_mode)
 	_val(qfilter_disable, disable)
 	_val(qfilter_enum, enum)
-	//_val(qfilter_customer, "customer")
+	//_val(qfilter_customer, customer)
+	_val(capture, capture)
 _ui_enum_end
 
 _ui_struct_start(qtv_source_param)

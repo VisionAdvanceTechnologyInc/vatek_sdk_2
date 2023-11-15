@@ -12,7 +12,7 @@ extern vatek_result h1_read(uint16_t reg,uint8_t* val);
 extern vatek_result h1_check_link_on(bridge_status* bstatus);
 extern void h1_set_video_info(Phdmi_video_id phdmiinfo,Pbridge_source psource,bsource_scale output,int32_t is1001);
 extern vatek_result h1_write_output_timing(Phdmi_video_timing ptiming,Phdmi_video_id pvid);
-extern vatek_result h1_write_output(h1_param output,video_resolution vresolution);
+extern vatek_result h1_write_output(h1_param output,video_resolution vresolution, vatek_ic_module chip_module);
 
 static uint8_t reg_val = 0;
 vatek_result h1_check_support()
@@ -159,7 +159,7 @@ vatek_result h1_get_audio_info(hbridge_source hsource,Pbridge_source psource)
     return nres;
 }
 
-vatek_result h1_set_output(hbridge_source hsource, int32_t isoutput)//, Pbridge_source psource, remove psource to avoid address overwrite
+vatek_result h1_set_output(hbridge_source hsource, int32_t isoutput, vatek_ic_module chip_module)//, Pbridge_source psource, remove psource to avoid address overwrite
 {
     vatek_result nres = vatek_success;
     Ph1_handle pdrv = (Ph1_handle)hsource;
@@ -191,7 +191,7 @@ vatek_result h1_set_output(hbridge_source hsource, int32_t isoutput)//, Pbridge_
 						nres = h1_write_output_timing(&vtime,pvid);
 						if(is_vatek_success(nres))nres = h1_write(H1_OUT_CNTL,H1_OUT_CNTL_DIS_ALL); // H1 Output initial
 						hal_system_sleep(100);
-						if(is_vatek_success(nres))nres = h1_write_output(pdrv->param,pvid->resolution);
+						if(is_vatek_success(nres))nres = h1_write_output(pdrv->param,pvid->resolution, chip_module);
 					}
 				}
     	    }
@@ -226,7 +226,7 @@ void h1_close(hbridge_source hsource)
     free(pep);
 }
 
-vatek_result h1_write_output(h1_param output,video_resolution vresolution)
+vatek_result h1_write_output(h1_param output,video_resolution vresolution, vatek_ic_module chip_module)
 {
     uint8_t flag = 0;
     uint8_t vifmt = 0, vout_fmt = H1_OUT_FMT_422|H1_OUT_FMT_YCC;
@@ -295,7 +295,13 @@ vatek_result h1_write_output(h1_param output,video_resolution vresolution)
 	        hal_system_sleep(200);//wait to write
 	        nres = h1_write(H1_INT_EN,0x00);
 	        hal_system_sleep(200);//wait to write
-	        nres = h1_write(H1_VOUT_CFG, 0x42);
+
+	        if (chip_module == HAL_CHIPID_B2){
+		        nres = h1_write(H1_VOUT_CFG, 0x40);
+	        }
+	        else{
+		        nres = h1_write(H1_VOUT_CFG, 0x42); //B3 - 1080P CLK INV
+	        }
 	        nres = h1_read(H1_VOUT_CFG,&reg_val);
 	        printf("h1_write_output function H1_VOUT_CFG(0x0202) = 0x%08x\r\n",reg_val);
 	        hal_system_sleep(200);//wait to write
@@ -479,4 +485,3 @@ uint32_t h1_version(){
 
 	return h1_allver;
 }
-

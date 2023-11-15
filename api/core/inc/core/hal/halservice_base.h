@@ -1,7 +1,7 @@
 //----------------------------------------------------------------------------
 //
 // Vision Advance Technology - Software Development Kit
-// Copyright (c) 2014-2022, Vision Advance Technology Inc.
+// Copyright (c) 2014-2023, Vision Advance Technology Inc.
 // All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -79,6 +79,8 @@
     #define SERVICE_TAG_RESCUE          0xFF000001
     #define SERVICE_TAG_BROADCAST       0xF8000001
 	#define SERVICE_TAG_TRANSFORM		0xF8000002
+	#define SERVICE_TAG_ENCODER			0xF8000003
+	#define SERVICE_TAG_AUDIO			0xF800000F
 
 #define HALREG_PERIPHERAL_EN            0x27
     #define PERIPHERAL_RF_MASK          0x000000FF
