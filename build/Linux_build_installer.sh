@@ -13,7 +13,7 @@ elif [ ${OS} == "Linux"  ];then
     mkdir bin
     cd bin
     cmake ..
-    make -j8
+    make all -j8 install
     exit 0
 else
     echo "Other OS: ${OS}"
