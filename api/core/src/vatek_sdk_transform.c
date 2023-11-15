@@ -1,7 +1,7 @@
 //----------------------------------------------------------------------------
 //
 // Vision Advance Technology - Software Development Kit
-// Copyright (c) 2014-2022, Vision Advance Technology Inc.
+// Copyright (c) 2014-2023, Vision Advance Technology Inc.
 // All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -266,7 +266,19 @@ vatek_result vatek_transform_get_packets(hvatek_transform htr,uint32_t* pktnums)
 	{
 		uint32_t val = 0;
 		nres = vatek_chip_read_memory(phtr->hchip,HALREG_TRINFO_PACKETNUMS, &val);
+
 		if (is_vatek_success(nres))*pktnums = val;
+	}
+	return nres;
+}
+
+vatek_result vatek_transform_adjust_pcr(hvatek_transform htr, uint32_t adjust_tick)
+{
+	Phandle_transform phtr = (Phandle_transform)htr;
+	vatek_result nres = vatek_badstatus;
+	if (phtr->info.mode != trmode_null)
+	{
+		nres = vatek_chip_write_memory(phtr->hchip, HALREG_TRADJUST_TICK, adjust_tick);
 	}
 	return nres;
 }
@@ -299,4 +311,13 @@ vatek_result transform_check_status(hvatek_chip hchip,chip_status status)
 	if(!is_chip_status_valid(pinfo->status))nres = vatek_hwfail;
 	else if(pinfo->status != status)nres = vatek_badstatus;
 	return nres;	
+}
+
+vatek_result vatek_usbstream_replace_pcr(hvatek_transform htr, uint16_t pcr_pid, int latency)
+{
+	Phandle_transform phtr = (Phandle_transform)htr;
+	vatek_result nres = vatek_chip_write_memory(phtr->hchip, HALREG_RETAGv2_PCR, pcr_pid);
+		if (is_vatek_success(nres))
+			vatek_chip_write_memory(phtr->hchip, HALREG_RETAGv2_PCR_LATENCY, latency);
+	return nres;
 }

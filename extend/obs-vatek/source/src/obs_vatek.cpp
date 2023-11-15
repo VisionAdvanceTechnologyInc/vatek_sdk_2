@@ -1,4 +1,5 @@
 #include <obs_vatek.h>
+#include <obs-module.h>
 
 OBS_DECLARE_MODULE()
 OBS_MODULE_AUTHOR("Wu Chen Hsui (JS_WU)")

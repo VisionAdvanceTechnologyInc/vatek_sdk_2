@@ -1,7 +1,7 @@
 //----------------------------------------------------------------------------
 //
 // Vision Advance Technology - Software Development Kit
-// Copyright (c) 2014-2022, Vision Advance Technology Inc.
+// Copyright (c) 2014-2023, Vision Advance Technology Inc.
 // All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -94,10 +94,12 @@ const static uint32_t chip_status_tags[] =
  * Core Service Mode
  */
 typedef enum _hal_service_mode{
-	service_unknown = 0,
-	service_rescue = SERVICE_TAG_RESCUE,			/*!< service rescure */
-	service_broadcast = SERVICE_TAG_BROADCAST,		/*!< service broadcast (b-serial) */
-	service_transform = SERVICE_TAG_TRANSFORM,		/*!< service transform (a-serial) */
+	service_unknown   = 0,
+	service_rescue	  = SERVICE_TAG_RESCUE,			/*!< service rescure */
+	service_broadcast = SERVICE_TAG_BROADCAST,		/*!< service broadcast (B-serial) */
+	service_transform = SERVICE_TAG_TRANSFORM,		/*!< service transform (A-serial) */
+	service_encoder = SERVICE_TAG_ENCODER,			/*!< service transform (V-serial) */
+	service_audio = SERVICE_TAG_AUDIO				/*!< service Audio (APP_2) */
 }hal_service_mode;
 
 /**

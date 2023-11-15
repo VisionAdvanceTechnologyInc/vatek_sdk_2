@@ -1,7 +1,7 @@
 //----------------------------------------------------------------------------
 //
 // Vision Advance Technology - Software Development Kit
-// Copyright (c) 2014-2022, Vision Advance Technology Inc.
+// Copyright (c) 2014-2023, Vision Advance Technology Inc.
 // All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -103,6 +103,39 @@ _uchannel_start(uhf_6)
 	_uchannel(ch_60, 749000)
 	_uchannel(ch_61, 755000)
 	_uchannel(ch_62, 761000)
+_uchannel_end
+
+_uchannel_start(qam_uhf_6)
+_uchannel(ch_65, 471000)
+_uchannel(ch_66, 477000)
+_uchannel(ch_67, 483000)
+_uchannel(ch_68, 489000)
+_uchannel(ch_69, 495000)
+_uchannel(ch_70, 501000)
+_uchannel(ch_71, 507000)
+_uchannel(ch_72, 513000)
+_uchannel(ch_73, 519000)
+_uchannel(ch_74, 525000)
+_uchannel(ch_75, 531000)
+_uchannel(ch_76, 537000)
+_uchannel(ch_77, 543000)
+_uchannel(ch_78, 549000)
+_uchannel(ch_79, 555000)
+_uchannel(ch_80, 551000)
+_uchannel(ch_81, 567000)
+_uchannel(ch_82, 573000)
+_uchannel(ch_83, 579000)
+_uchannel(ch_84, 585000)
+_uchannel(ch_85, 591000)
+_uchannel(ch_86, 597000)
+_uchannel(ch_87, 603000)
+_uchannel(ch_88, 609000)
+_uchannel(ch_89, 615000)
+_uchannel(ch_90, 621000)
+_uchannel(ch_91, 627000)
+_uchannel(ch_92, 633000)
+_uchannel(ch_93, 639000)
+_uchannel(ch_94, 645000)
 _uchannel_end
 
 _uchannel_start(jp_uhf_6)
@@ -210,6 +243,7 @@ _uchannel_start(uhf_8)
 _uchannel_end
 
 _uchannel_table(uhf_6)
+_uchannel_table(qam_uhf_6)
 _uchannel_table(jp_uhf_6)
 _uchannel_table(uhf_8)
 

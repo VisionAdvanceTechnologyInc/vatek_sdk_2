@@ -1,7 +1,7 @@
 //----------------------------------------------------------------------------
 //
 // Vision Advance Technology - Software Development Kit
-// Copyright (c) 2014-2022, Vision Advance Technology Inc.
+// Copyright (c) 2014-2023, Vision Advance Technology Inc.
 // All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -55,6 +55,8 @@ typedef enum _binary_chip_arch{
 	chip_arch_ax = 0x000FA0A,
 	chip_arch_bx = 0x000FA0B,
 	chip_arch_a3 = 0x000FA0C,
+	chip_arch_vx = 0x000FA0D,
+	chip_arch_audio = 0x000FA0F,
 }binary_chip_arch;
 
 /**

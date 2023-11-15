@@ -1,7 +1,7 @@
 //----------------------------------------------------------------------------
 //
 // Vision Advance Technology - Software Development Kit
-// Copyright (c) 2014-2022, Vision Advance Technology Inc.
+// Copyright (c) 2014-2023, Vision Advance Technology Inc.
 // All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -77,10 +77,12 @@ _usb_broadcast(0x2021)
 _usb_broadcast(0x1011)
 _usb_broadcast(0x1031)
 _usb_broadcast(0x2031)
+_usb_broadcast(0x0008)
 _usb_rescure(0x1010)
 _usb_rescure(0x1030)
 _usb_rescure(0x2010)
 _usb_rescure(0x2030)
+_usb_rescure(0x0008)
 _usb_table_end
 
 #define USBDEVICE_ID_NUMS		(sizeof(usb_device_ids)/sizeof(usbdevice_id))

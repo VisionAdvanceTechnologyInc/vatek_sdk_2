@@ -2,6 +2,7 @@
 #define _BRIDGE_INTERNAL_
 
 #include <vatek_bridge_2.h>
+#include <core/base/chip_define.h>
 #include <hal/hal_bridge_board.h>
 #include <hal/hal_bridge_usb.h>
 #include <stm32_core.h>
@@ -31,6 +32,7 @@ typedef struct _bridge_handle
     Pbsource_list source_last;
     Pbdevice_source source_active;
     bstorage_handle storage;
+	vatek_ic_module chip_module;	/*!< chip id */
 }bridge_handle,*Pbridge_handle;
 
 #ifdef __cplusplus

@@ -1,7 +1,7 @@
 //----------------------------------------------------------------------------
 //
 // Vision Advance Technology - Software Development Kit
-// Copyright (c) 2014-2022, Vision Advance Technology Inc.
+// Copyright (c) 2014-2023, Vision Advance Technology Inc.
 // All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -145,10 +145,12 @@ qtvUIWizardBroadcast::qtvUIWizardBroadcast(qtvUIMainWizardBroadcast* main, qtvSe
 	pushPage(BCWIZARD_ID_SOURCEVALID);
 	pushPage(BCWIZARD_ID_CONTEXT);
 	pushPage(BCWIZARD_ID_MODULATION);
+	pushPage(BCWIZARD_ID_ENCODER);
+
 	setStartId(BCWIZARD_ID_LOCALE);
-#if 0
+#if 1
 	if (m_bcmain->_service()->_mode() == qservice_transfrom)
-		setStartId(BCWIZARD_ID_SOURCE);
+		setStartId(BCWIZARD_ID_LOCALE);
 	else {
 		setStartId(BCWIZARD_ID_LOCALE);
 	}

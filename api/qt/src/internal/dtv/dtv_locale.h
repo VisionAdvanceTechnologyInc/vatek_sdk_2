@@ -1,7 +1,7 @@
 //----------------------------------------------------------------------------
 //
 // Vision Advance Technology - Software Development Kit
-// Copyright (c) 2014-2022, Vision Advance Technology Inc.
+// Copyright (c) 2014-2023, Vision Advance Technology Inc.
 // All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -51,18 +51,34 @@ typedef struct _qdtv_country
 
 #define _ucountry_table					((const Pqdtv_country)&qtv_country_tables[0])
 
+//_ucuntry_start
+//	_ucountry(USA [ATSC], psip, atsc_usa, atsc, 6, encvideo_mpeg2, encaudio_ac3, uhf_6)
+//	_ucountry(Korea [ATSC], psip, atsc_korean, atsc, 6, encvideo_mpeg2, encaudio_ac3, uhf_6)
+//	_ucountry(QAM [J83B], psip, atsc_usa, j83b, 6, encvideo_mpeg2, encaudio_ac3, qam_uhf_6)
+//	_ucountry(Brazil [ISDB-T], abnt, abnt_brazil, isdb_t, 6, encvideo_h264, encaudio_aac_lc_latm, jp_uhf_6)
+//	_ucountry(China [DTMB], dtmb, dtmb_china, dtmb, 8, encvideo_h264, encaudio_mp2, uhf_8)
+//	_ucountry(Europe [DVB-T], dvb, mux_country_undefined, dvb_t, 8, encvideo_mpeg2, encaudio_mp2, uhf_8)
+//	_ucountry(Europe [DVB-T2], dvb, mux_country_undefined, dvb_t2, 8, encvideo_hevc, encaudio_mp2, uhf_8)
+//	_ucountry(Australia [dvb_t], dvb, freetv_australian, dvb_t, 8, encvideo_mpeg2, encaudio_mp2, uhf_8)
+//	_ucountry(Australia [dvb_t2], dvb, freetv_australian, dvb_t2, 8, encvideo_mpeg2, encaudio_mp2, uhf_8)
+//	_ucountry(Japan [ISDB-T], arib, arib_japan, isdb_t, 6, encvideo_mpeg2, encaudio_aac_lc_adts, jp_uhf_6)
+//	_ucountry(Nordic [DVB-T], dvb, nordic_finland, dvb_t, 8, encvideo_mpeg2, encaudio_mp2, uhf_8)
+//	_ucountry(Nordic [DVB-T2], dvb, nordic_finland, dvb_t2, 8, encvideo_hevc, encaudio_mp2, uhf_8)
+//	_ucountry(Taiwan [DVB-T], dvb, dvb_taiwan, dvb_t, 6, encvideo_h264, encaudio_mp2, uhf_6)
+//_ucountry_end
+
 _ucuntry_start
-	_ucountry(atsc, psip, atsc_usa, atsc, 6, encvideo_mpeg2, encaudio_ac3, uhf_6)
-	_ucountry(brazil_abnt, abnt, abnt_brazil, isdb_t, 6, encvideo_h264, encaudio_aac_lc_latm, jp_uhf_6)
-	_ucountry(china - dtmb, dvb, dtmb_china, dtmb, 8, encvideo_h264, encaudio_mp2, uhf_8)
-	_ucountry(europe_dvb_t, dvb, mux_country_undefined, dvb_t, 8, encvideo_mpeg2, encaudio_mp2, uhf_8)
-	_ucountry(europe_dvb_t2, dvb, mux_country_undefined, dvb_t2, 8, encvideo_hevc, encaudio_mp2, uhf_8)
-	_ucountry(freetv_dvb_t, dvb, freetv_australian, dvb_t, 8, encvideo_mpeg2, encaudio_mp2, uhf_8)
-	_ucountry(freetv_dvb_t2, dvb, freetv_australian, dvb_t2, 8, encvideo_mpeg2, encaudio_mp2, uhf_8)
-	_ucountry(japan_arib, arib, arib_japan, isdb_t, 6, encvideo_mpeg2, encaudio_aac_lc_adts, jp_uhf_6)
-	_ucountry(nordig_dvb_t, dvb, nordig_finland, dvb_t, 8, encvideo_mpeg2, encaudio_mp2, uhf_8)
-	_ucountry(nordig_dvb_t2, dvb, nordig_finland, dvb_t2, 8, encvideo_hevc, encaudio_mp2, uhf_8)
-	_ucountry(taiwan, dvb, dvb_taiwan, dvb_t, 6, encvideo_h264, encaudio_mp2, uhf_6)
+	_ucountry(USA | [ATSC], psip, atsc_usa, atsc, 6, encvideo_mpeg2, encaudio_ac3, uhf_6)
+	_ucountry(Korea | [ATSC], psip, atsc_korean, atsc, 6, encvideo_mpeg2, encaudio_ac3, uhf_6)
+	_ucountry(QAM | [J83B], psip, atsc_usa, j83b, 6, encvideo_mpeg2, encaudio_ac3, qam_uhf_6)
+	_ucountry(China | [DTMB], dtmb, dtmb_china, dtmb, 8, encvideo_h264, encaudio_mp2, uhf_8)
+	_ucountry(DVB-C | [J83A], dvb, mux_country_undefined, j83a, 6875, encvideo_mpeg2, encaudio_mp2, uhf_8)
+	_ucountry(Europe | [DVB-T], dvb, mux_country_undefined, dvb_t, 8, encvideo_mpeg2, encaudio_mp2, uhf_8)
+	_ucountry(Europe | [DVB-T2], dvb, mux_country_undefined, dvb_t2, 8, encvideo_hevc, encaudio_mp2, uhf_8)
+	_ucountry(Brazil | [ISDB-T], abnt, abnt_brazil, isdb_t, 6, encvideo_h264, encaudio_aac_lc_latm, jp_uhf_6)
+	_ucountry(Japan | [ISDB-T], arib, arib_japan, isdb_t, 6, encvideo_mpeg2, encaudio_aac_lc_adts, jp_uhf_6)
+	_ucountry(ISDB-C | [J83C], arib, arib_japan, j83c, 5309, encvideo_mpeg2, encaudio_aac_lc_adts, jp_uhf_6)
+	_ucountry(Taiwan | [DVB-T], dvb, dvb_taiwan, dvb_t, 6, encvideo_h264, encaudio_mp2, uhf_6)
 _ucountry_end
 
 #endif

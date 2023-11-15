@@ -1,7 +1,7 @@
 //----------------------------------------------------------------------------
 //
 // Vision Advance Technology - Software Development Kit
-// Copyright (c) 2014-2022, Vision Advance Technology Inc.
+// Copyright (c) 2014-2023, Vision Advance Technology Inc.
 // All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -224,7 +224,7 @@ vatek_result vatek_storage_save(hvatek_storage hstorage, const char* filename)
 
 		if (is_vatek_success(nres))
 		{
-			if (pstorage->app.service_mode == service_broadcast)
+			if (pstorage->app.service_mode == service_broadcast || pstorage->app.service_mode == service_encoder)
 				nres = storage_broadcast_set(&pstorage->_service.broadcast, psection);
 			else if (pstorage->app.service_mode == service_transform)
 				nres = storage_transform_set(&pstorage->_service.transform, psection);

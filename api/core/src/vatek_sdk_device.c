@@ -1,7 +1,7 @@
 //----------------------------------------------------------------------------
 //
 // Vision Advance Technology - Software Development Kit
-// Copyright (c) 2014-2022, Vision Advance Technology Inc.
+// Copyright (c) 2014-2023, Vision Advance Technology Inc.
 // All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -350,7 +350,7 @@ vatek_result vatek_device_stream_start(hvatek_chip hchip, Pmodulator_param pmod,
 			cross_stream_mode mode = stream_mode_output;
 			/* _isdb-t must disable usb_dma because chip memory bandwidth limited. 
 				DVB-T2 only remux set output_nodma*/
-			if (pmod->type == modulator_isdb_t || pmod->type == modulator_dtmb || (stream_mode == stream_remux && pmod->type == modulator_dvb_t2))
+			if (pmod->type == modulator_isdb_t || pmod->type == modulator_dtmb || (pmod->type == modulator_dvb_t2 && pmod->mod.dvb_t2.fft == t2_fft_16k))
 				mode = stream_mode_output_nodma;
 			nres = pstream->start_stream(pvatek->cross->hcross, mode);
 			if (is_vatek_success(nres))

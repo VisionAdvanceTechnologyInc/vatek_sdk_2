@@ -18,8 +18,8 @@ extern "C" {
 	void printf_bridge_info(Pbdevice_info pbinfo);
 	void printf_bridge_avsource(const char* name, Pbridge_source psource);
 	void printf_app_end(void);
-	void printf_logo(void);
-	void printf_modulation_param(usbstream_param usbcmd);
+	void printf_modulation_param(modulator_param modulator, r2_param r2param);
+	void printf_encoder_param(encoder_param enc);
 #ifdef __cplusplus
 }
 #endif

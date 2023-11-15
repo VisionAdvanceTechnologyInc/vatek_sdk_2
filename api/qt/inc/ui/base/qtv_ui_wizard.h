@@ -1,7 +1,7 @@
 //----------------------------------------------------------------------------
 //
 // Vision Advance Technology - Software Development Kit
-// Copyright (c) 2014-2022, Vision Advance Technology Inc.
+// Copyright (c) 2014-2023, Vision Advance Technology Inc.
 // All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -48,11 +48,13 @@ typedef enum _toolkit_timer_new
 #define BCWIZARD_ID_CONTEXT			3
 #define BCWIZARD_ID_MODULATION		4
 
-#define BCWIZARD_ID_MUXPARAM		5
-#define BCWIZARD_ID_VIDEOCODEC		6
-#define BCWIZARD_ID_AUDIOCODEC		7
+#define BCWIZARD_ID_ENCODER			5	// V1
 
-#define BCWIZARD_ID_NODEVICE		8
+#define BCWIZARD_ID_MUXPARAM		6
+#define BCWIZARD_ID_VIDEOCODEC		7
+#define BCWIZARD_ID_AUDIOCODEC		8
+
+#define BCWIZARD_ID_NODEVICE		9
 
 class QTV_DECL qtvUIWizardPage : public QWizardPage
 {

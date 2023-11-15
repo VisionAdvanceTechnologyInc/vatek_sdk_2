@@ -47,19 +47,19 @@ vatek_result cmd_bridge_source(hvatek_bridge hbridge, Phid_bridge_cmd pcmd, Phid
         {
             if(cmd.source_cntl == BSOURCE_CNTL_START)
             {
-            	if(cmd.source_id == bsource_h1){
-            		hal_system_sleep(100);
-					nres = hal_gpio_config(HAL_IO_AUDIO_SWITCH,1);
-
-            	}
-                nres = cmdsource_start(hbridge,cmd.source_id);
-                //nres = h1_enable();
-                //while(1){}
-			}else if(cmd.source_id == bsource_ep9555e || cmd.source_id == bsource_ep9351){ // set ep9555e
-				if(is_vatek_success(nres))
+				if(cmd.source_id == bsource_h1){
+					hal_system_sleep(100);
+					nres = hal_gpio_config(HAL_IO_AUDIO_SWITCH,hal_gpio_output);
+				}
+				else if(cmd.source_id == bsource_ep9555e || cmd.source_id == bsource_ep9351) // set ep9555e
+				{
+					hal_system_sleep(100);
 					nres = hal_gpio_config(HAL_IO_AUDIO_SWITCH,hal_gpio_output); //audio switch enable
-			}
-            else if(cmd.source_cntl == BSOURCE_CNTL_STOP){
+				}
+				nres = cmdsource_start(hbridge,cmd.source_id);
+        	}
+            else if(cmd.source_cntl == BSOURCE_CNTL_STOP)
+            {
             	tick_stop = vatek_get_tick_ms();
             	printf("stop time = 0x%08x\r\n",tick_stop);
             	printf("bridge during time = 0x%08x\r\n",(tick_stop-tick_start));
@@ -204,11 +204,11 @@ vatek_result cmdsource_start(hvatek_bridge hbridge,bsource_id source)
             Pbdevice_source pdevice = vatek_source_get_next(&bptr);
             if(pdevice->driver->id == source)
             {
-                nres = pdevice->driver->set_open(pdevice->hsource,1);
+                nres = pdevice->driver->set_open(pdevice->hsource, 1, pbridge->chip_module);
                 if(is_vatek_success(nres))
                     pbridge->source_active = pdevice;
             }
-            else nres = pdevice->driver->set_open(pdevice->hsource,0);
+            else nres = pdevice->driver->set_open(pdevice->hsource,0, pbridge->chip_module);
             if(!is_vatek_success(nres))break;
         }
     }
@@ -222,7 +222,7 @@ vatek_result cmdsource_stop(hvatek_bridge hbridge)
     if(pbridge->source_active)
     {
         Pbdevice_source pdevice = pbridge->source_active;
-        nres = pdevice->driver->set_open(pdevice->hsource,0);
+        nres = pdevice->driver->set_open(pdevice->hsource,0, 0);
         pbridge->source_active = NULL;
     }
     return nres;  

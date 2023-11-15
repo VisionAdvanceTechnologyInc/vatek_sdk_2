@@ -1,7 +1,7 @@
 //----------------------------------------------------------------------------
 //
 // Vision Advance Technology - Software Development Kit
-// Copyright (c) 2014-2022, Vision Advance Technology Inc.
+// Copyright (c) 2014-2023, Vision Advance Technology Inc.
 // All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -40,6 +40,7 @@
 #define PCR_MODE_DISABLE				0x00000000
 #define PCR_MODE_ADJUST					0x00000001
 #define PCR_MODE_RETAG					0x00000002
+#define PCR_MODE_RETAGV2				0x00000003
 
 /* stream usb param									*/
 /*--------------------------------------------------*/
@@ -49,6 +50,9 @@
 #define HALREG_USB_PCR_MODE				0x642
 
 #define HALREG_USB_ADJUST_TICK			0x643
+
+#define HALREG_RETAGv2_PCR				0x644
+#define HALREG_RETAGv2_PCR_LATENCY		0x645
 
 /* stream ts param									*/
 /*--------------------------------------------------*/

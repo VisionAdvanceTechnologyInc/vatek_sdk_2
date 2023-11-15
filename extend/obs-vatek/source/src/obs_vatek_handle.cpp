@@ -165,6 +165,7 @@ void obsVatekHandle::obsEventCb(enum obs_frontend_event oevent, void* private_da
 
 void obsVatekHandle::obsMenuClickCb()
 {
+	blog(LOG_INFO, "click");
 	if(obsVatekHandle::m_instance)
 		obsVatekHandle::m_instance->obsMenuClick();
 }

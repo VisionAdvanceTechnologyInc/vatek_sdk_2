@@ -3,6 +3,7 @@
 #include <cmds/cmd_bridge.h>
 #include "./internal/bridge_internal.h"
 
+
 static Pbridge_handle hbboard = NULL;
 
 extern vatek_result bridge_hw_init(void);
@@ -68,13 +69,15 @@ vatek_result vatek_bridge_start(hvatek_bridge hbridge)
     return nres;
 }
 
-vatek_result vatek_bridge_polling(hvatek_bridge hbridge)
+vatek_result vatek_bridge_polling(hvatek_bridge hbridge,chip_info info)
 {
     vatek_result nres = vatek_badstatus;
     Pbridge_handle phboard = (Pbridge_handle)hbridge;
+    phboard->chip_module = info.chip_module;
     uint32_t run_tick = 0;
     if(phboard->hbridgeusb)
     {
+
 		Phid_bridge_cmd pcmd = NULL;
 		bridge_device_status status = hal_bridge_usb_get_status(phboard->hbridgeusb,&pcmd);
 		nres = vatek_success;

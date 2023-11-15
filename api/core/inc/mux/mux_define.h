@@ -1,7 +1,7 @@
 //----------------------------------------------------------------------------
 //
 // Vision Advance Technology - Software Development Kit
-// Copyright (c) 2014-2022, Vision Advance Technology Inc.
+// Copyright (c) 2014-2023, Vision Advance Technology Inc.
 // All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -167,7 +167,7 @@ typedef enum _mux_country_code
 	dvb_ghana,
 	dvb_singapore,
 	dvb_georgin,
-	nordig_finland = mux_spec_dvb | 0x100,
+	nordic_finland = mux_spec_dvb | 0x100,
 	freetv_australian = mux_spec_dvb | 0x200,
 	freetv_new_zealand,
 	dtmb_china = mux_spec_dtmb,

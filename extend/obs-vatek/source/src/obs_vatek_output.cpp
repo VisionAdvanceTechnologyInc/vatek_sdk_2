@@ -162,15 +162,15 @@ void obsVatekOutput::ovatekSourcePrepare(husbmux_source hsource, uint32_t ms)
 
 	if (source->m_status == qstatus_running)
 	{
-		if (ms > video->_tick_ms())
-		{
-			while (ms > video->_tick_ms())
-			{
-				cross_os_sleep(1);
-				blog(LOG_INFO, "too late : [%d:%d]", ms, video->_tick_ms());
-			}
-		}
-		else blog(LOG_INFO, "too fast : %d", video->_tick_ms() - ms);
+		//if (ms > video->_tick_ms())
+		//{
+		//	while (ms > video->_tick_ms())
+		//	{
+		//		//cross_os_sleep(1);
+		//		blog(LOG_INFO, "too late : [%d:%d]", ms, video->_tick_ms());
+		//	}
+		//}
+		//else blog(LOG_INFO, "too fast : %d", video->_tick_ms() - ms);
 	}
 }
 

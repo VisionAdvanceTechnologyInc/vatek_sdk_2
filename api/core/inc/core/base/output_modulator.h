@@ -1,7 +1,7 @@
 //----------------------------------------------------------------------------
 //
 // Vision Advance Technology - Software Development Kit
-// Copyright (c) 2014-2022, Vision Advance Technology Inc.
+// Copyright (c) 2014-2023, Vision Advance Technology Inc.
 // All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -441,7 +441,7 @@ typedef enum _t2_fft_mode{
     t2_fft_4k = T2_FFT_4K,              /*!< 4k (4096) */
     t2_fft_8k = T2_FFT_8K,              /*!< 8k (8192) */
     t2_fft_16k = T2_FFT_16K,            /*!< 16k (16384) */
-    t2_fft_32k = T2_FFT_32K,
+    //t2_fft_32k = T2_FFT_32K,          /* not support  */
 }t2_fft_mode;
 
 #define is_t2_version(a)                ((int32_t)a == t2_ver_111 || (int32_t)a == t2_ver_121 || (int32_t)a == t2_ver_131 || (int32_t)a == t2_ver_131_lite)

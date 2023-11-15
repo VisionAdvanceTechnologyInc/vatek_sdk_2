@@ -3,7 +3,7 @@
 
 static const obs_qsvh264_param default_qsv264 =
 {
-	{h264_profile_high,h264_level_4_0,ovatek_rc_cbr,2,1,0,15000,19000,},
+	{h264_profile_high,h264_level_4_0,ovatek_rc_cbr,0,1,0,15000,19000,},
 };
 
 /* ovatekCodecFactoryQSV */
@@ -51,7 +51,10 @@ vatek_result ovatekCodecVideoQSV::createVideoCodec(obs_output_t* houtput, obs_en
 		obs_data_set_int(settings, "bitrate", ph264->bitrate);
 		obs_data_set_int(settings, "max_bitrate", ph264->maxbitrate);
 		obs_data_set_int(settings, "keyint_sec", ph264->keysec);
-		obs_data_set_int(settings, "bframes", ph264->bframe);
+		//obs_data_set_int(settings, "bframes", ph264->bframe);
+		obs_data_set_int(settings, "profile", h264_profile_high);
+		obs_data_set_int(settings, "level", h264_level_4_0);
+		obs_data_set_int(settings, "bframe", 0);
 
 		obs_encoder_t* newenc = obs_video_encoder_create(CODEC_NAME_FFMPEGNVENC, "ovatek-nvenc", settings, NULL);
 		nres = vatek_unsupport;
@@ -63,7 +66,7 @@ vatek_result ovatekCodecVideoQSV::createVideoCodec(obs_output_t* houtput, obs_en
 		}
 		obs_data_release(settings);
 	}
-	return nres;
+	//return nres;
 
-	//return ovatekCodec::createVideoCodec(CODEC_NAME_INTELQSV, "ovatek-intel-qsv", houtput, encoder, m_oparam);
+	return ovatekCodec::createVideoCodec(CODEC_NAME_INTELQSV, "ovatek-intel-qsv", houtput, encoder, m_oparam);
 }

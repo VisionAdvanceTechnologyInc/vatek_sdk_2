@@ -68,6 +68,6 @@ vatek_result ovatekCodecVideoNVENC::createVideoCodec(obs_output_t* houtput, obs_
 		}
 		obs_data_release(settings);
 	}
-	return nres;
-	//return ovatekCodec::createVideoCodec(CODEC_NAME_FFMPEGNVENC, "ovatek-nvenc", houtput, encoder, m_oparam);
+	//return nres;
+	return ovatekCodec::createVideoCodec(CODEC_NAME_FFMPEGNVENC, "ovatek-nvenc", houtput, encoder, m_oparam);
 }

@@ -1,7 +1,7 @@
 //----------------------------------------------------------------------------
 //
 // Vision Advance Technology - Software Development Kit
-// Copyright (c) 2014-2022, Vision Advance Technology Inc.
+// Copyright (c) 2014-2023, Vision Advance Technology Inc.
 // All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -60,13 +60,19 @@ typedef enum _usbstream_remux
 {
 	ustream_remux_pcr,
 	ustream_remux_passthrough,
+	ustream_smooth,
 }usbstream_remux;
 
 typedef vatek_result(*fpsync_get_buffer)(void* param, uint8_t** slicebuf);
+typedef vatek_result(*fpsync_get_encoder_buffer)(void* param, uint32_t** buffer_size);
+typedef vatek_result(*fpasync_get_buffer)(void* param, uint8_t** slicebuf);
+
 
 typedef struct _usbstream_sync{
 	void* param;
 	fpsync_get_buffer getbuffer;
+	fpsync_get_encoder_buffer get_encoder_buffer;
+	stream_adjust tick_adjust;
 }usbstream_sync;
 
 typedef usbstream_sync* Pusbstream_sync;
@@ -91,6 +97,8 @@ typedef struct _usbstream_async
 	uasync_mode mode;
 	uint32_t bitrate;			/* config source bitrate	[0: mean auto]*/
 	uint32_t prepare_ms;		/* config prepare time ms	[0: mean auto]*/
+	fpasync_get_buffer getbuffer;
+	void* param;
 }usbstream_async;
 
 typedef usbstream_async* Pusbstream_async;
@@ -99,7 +107,8 @@ typedef struct _usbstream_param{
 	usbstream_mode mode;
 	usbstream_remux remux;
 	pcr_adjust_mode pcradjust;
-	//uint32_t freq_khz;
+	uint16_t pcr_pid;			/*!< create new pcr pid */
+	int latency;				/*!< pcr latency (ms) */
 	r2_param r2param;
 	modulator_param modulator;
 	union
@@ -127,6 +136,10 @@ extern "C" {
 	
 	HAL_API vatek_result vatek_usbstream_stop(hvatek_usbstream husstream);
 	HAL_API void vatek_usbstream_close(hvatek_usbstream husstream);
+
+	HAL_API vatek_result vatek_usbstream_filter(hvatek_usbstream husstream);
+	HAL_API vatek_result usbstream_adjust_stream(hvatek_usbstream husstream, uint32_t buffer);
+
 
 #ifdef __cplusplus
 }

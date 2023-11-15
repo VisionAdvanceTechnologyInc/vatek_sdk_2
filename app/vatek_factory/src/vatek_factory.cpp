@@ -1,7 +1,7 @@
 //----------------------------------------------------------------------------
 //
 // Vision Advance Technology - Software Development Kit
-// Copyright (c) 2014-2022, Vision Advance Technology Inc.
+// Copyright (c) 2014-2023, Vision Advance Technology Inc.
 // All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -51,13 +51,13 @@ vatek_factory::vatek_factory(QWidget *parent)
     ui->setupUi(this);
     ui->lisections->attachStacked(ui->stpages);
 
-    QScreen* screen = QGuiApplication::primaryScreen();     //螢幕大小
+    QScreen* screen = QGuiApplication::primaryScreen();    
     QRect mm = screen->availableGeometry();
     int screen_width = mm.width();
     int screen_height = mm.height();
     qDebug() << screen_width << screen_height;
 
-    HDC hd = GetDC(NULL);                                           // 獲取DPI
+    HDC hd = GetDC(NULL);                                         
     int horDPI = GetDeviceCaps(hd, LOGPIXELSX);
     int verticalDPI = GetDeviceCaps(hd, LOGPIXELSY);
     double objectRate = horDPI / 96.0;
@@ -202,6 +202,8 @@ void vatek_factory::recvBuildImage()
             const char* szapp = "app2_broadcast";
             if (papp->service_mode == service_transform)
                 szapp = "app2_transform";
+            else if (papp->service_mode == service_encoder)
+                szapp = "app2_encoder";
             szfilename = QString::asprintf("%s_%02d%02d%02d_%02d%02d_[%04x]", 
                                            szapp, 
                                            t.date().year(),

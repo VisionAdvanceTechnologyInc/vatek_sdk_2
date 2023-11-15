@@ -1,7 +1,7 @@
 //----------------------------------------------------------------------------
 //
 // Vision Advance Technology - Software Development Kit
-// Copyright (c) 2014-2022, Vision Advance Technology Inc.
+// Copyright (c) 2014-2023, Vision Advance Technology Inc.
 // All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -285,5 +285,62 @@ vatek_result broadcast_usb_start_aux(Phandle_broadcast pbc, Pbroadcast_auxstream
 			}
 		}
 	}
+	return nres;
+}
+
+
+vatek_result vatek_encoder_start(hvatek_broadcast hbc, Pbroadcast_param pbcparam)
+{
+	Phandle_broadcast pbc = (Phandle_broadcast)hbc;
+	vatek_result nres = chip_status_check(pbc->hchip, chip_status_waitcmd);
+	if (is_vatek_success(nres))
+	{
+		if (is_vatek_success(nres))
+		{
+			if (pbcparam->enc.encoder_flags && ENC_EN_DISABLE_DEINTERLACED)
+				pbcparam->enc.viparam.vi_flags = pbcparam->enc.viparam.vi_flags | VI_FIELD_INVERSE;
+			nres = vencoder_param_set(pbc->hchip, pbcparam);
+			if (is_vatek_success(nres))
+				nres = chip_send_command(pbc->hchip, BC_START, HALREG_BROADCAST_CNTL, HALREG_SYS_ERRCODE);
+		}
+
+		if (is_vatek_success(nres))
+		{
+			nres = broadcast_info_get(pbc->hchip, &pbc->info);
+
+			if (is_vatek_success(nres))pbc->tick = cross_os_get_tick_ms();
+			else vatek_broadcast_stop(hbc);
+		}
+	}
+	return nres;
+}
+
+vatek_result vatek_encoder_open(hvatek_chip hchip, hvatek_broadcast* hbc)
+{
+	Pchip_info pinfo = vatek_device_get_info(hchip);
+	vatek_result nres = vatek_success;
+	if (pinfo->hal_service != service_encoder)nres = vatek_unsupport;
+	else
+	{
+		Phandle_broadcast newbc = (Phandle_broadcast)malloc(sizeof(handle_broadcast));
+		nres = vatek_memfail;
+		if (newbc)
+		{
+			memset(newbc, 0, sizeof(handle_broadcast));
+			if (is_vatek_success(nres))newbc->is_rfmixer = 0;
+			if (is_vatek_success(nres))newbc->is_aux = 0;
+			newbc->hchip = hchip;
+			*hbc = newbc;
+		}
+	}
+	return nres;
+}
+
+vatek_result vatek_vencoder_stop(hvatek_broadcast hbc)
+{
+	Phandle_broadcast pbc = (Phandle_broadcast)hbc;
+	vatek_result nres = chip_status_check(pbc->hchip, chip_status_running);
+	if (is_vatek_success(nres))
+		nres = chip_send_command(pbc->hchip, BC_STOP, HALREG_BROADCAST_CNTL, HALREG_SYS_ERRCODE);
 	return nres;
 }

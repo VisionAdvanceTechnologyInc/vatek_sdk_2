@@ -1,7 +1,7 @@
 //----------------------------------------------------------------------------
 //
 // Vision Advance Technology - Software Development Kit
-// Copyright (c) 2014-2022, Vision Advance Technology Inc.
+// Copyright (c) 2014-2023, Vision Advance Technology Inc.
 // All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -60,6 +60,7 @@ _ui_enum_start(pcr_adjust_mode)
 	_val(pcr_disable,disable)
 	_val(pcr_adjust,adjust)
 	_val(pcr_retag,retag)
+	_val(pcr_retagv2, retagv2)
 _ui_enum_end
 
 _ui_flags_start(tsin_param, ts_flags)

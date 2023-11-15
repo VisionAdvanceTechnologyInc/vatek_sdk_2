@@ -1,7 +1,7 @@
 //----------------------------------------------------------------------------
 //
 // Vision Advance Technology - Software Development Kit
-// Copyright (c) 2014-2022, Vision Advance Technology Inc.
+// Copyright (c) 2014-2023, Vision Advance Technology Inc.
 // All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -241,6 +241,10 @@ vatek_result qi_service_transform::stop()
 				m_enumcontext = new qi_muxchannel(hchannel);
 			}
 		}
+		else if (m_param.mode == trmode_capture) {
+			//Ppsitable_parm table = NULL;
+			//nres = vatek_capture_gettable(m_htr, &table);
+		}
 		resetParam();
 		changedStatus(qstatus_idle);
 		nres = vatek_success;
@@ -268,7 +272,7 @@ vatek_result qi_service_transform::setParamSource(qtvSourceBase* source)
 		else nres = vatek_unsupport;
 		if (is_vatek_success(nres))penum->source = psource->source;
 	}
-	else if (m_param.mode == trmode_enum)
+	else if (m_param.mode == trmode_capture)
 	{
 		Ptransform_capture pcapture = &m_param.param.trcapture;
 		nres = vatek_success;
@@ -433,6 +437,10 @@ vatek_result transform_handle::startTransform()
 		qDebug() << bitrate;
 		nres = vatek_transform_start_broadcast(m_htr, &m_param->param.trbc, m_param->r2param);
 		pmod = &m_param->param.trbc.modulator;
+	}
+	else if (m_param->mode == trmode_capture)
+	{
+		//pmod = &m_mod;
 	}
 
 	if (is_vatek_success(nres))

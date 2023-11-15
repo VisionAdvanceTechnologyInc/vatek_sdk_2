@@ -1,7 +1,7 @@
 //----------------------------------------------------------------------------
 //
 // Vision Advance Technology - Software Development Kit
-// Copyright (c) 2014-2022, Vision Advance Technology Inc.
+// Copyright (c) 2014-2023, Vision Advance Technology Inc.
 // All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -122,7 +122,7 @@ _ui_enum_start(mux_country_code)
 	_val(dvb_ghana, dvb_ghana)
 	_val(dvb_singapore, dvb_singapore)
 	_val(dvb_georgin, dvb_georgin)
-	_val(nordig_finland, nordig_finland)
+	_val(nordic_finland, nordic_finland)
 	_val(freetv_australian, freetv_australian)
 	_val(freetv_new_zealand, freetv_new_zealand)
 	_val(dtmb_china, dtmb_china)
