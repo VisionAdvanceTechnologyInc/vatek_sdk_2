@@ -33,7 +33,7 @@ As the Encmoder with both HDMI and USB 2.0 inputs, it provides outstanding solut
 
 ### Building & Usage
 - The SDK was originally compiled in the way of CMAKE to obtain the example execution file. Vatek provides instructions for CMAKE compilation, so that users can get started quickly. Users can also compile on their own with a familiar compilation platform and read the file to get more relevant operation.
-- See more detail in [SDK document](http://www.vatek.com.tw/static/files/VATEK%20%20Development%20Guideline_20220526.pdf)
+- See more detail in [SDK document](http://www.vatek.com.tw/static/files/VATEK%20%20Development%20Guideline_20220610.pdf)
 
 	#### Windows
 
