@@ -78,7 +78,7 @@ static usbstream_param usbcmd =
 
 extern vatek_result source_async_get_buffer(Ptsstream_source* param, hvatek_usbstream* husstream);
 extern vatek_result source_sync_get_buffer(void* param, uint8_t** pslicebuf);
-extern vatek_result source_sync_get_encoder_buffer(void* param, uint32_t** buffer_size);
+//extern vatek_result source_sync_get_encoder_buffer(void* param, uint32_t** buffer_size);
 extern vatek_result parser_cmd_source(int32_t argc, char** argv,Ptsstream_source psource,Pusbstream_param pustream);
 
 int main(int argc, char *argv[])
@@ -263,7 +263,7 @@ uint8_t PMT[] =
 			usbcmd.mode = ustream_mode_sync;
 			usbcmd.sync.param = &streamsource;
 			usbcmd.sync.getbuffer = source_sync_get_buffer;
-			usbcmd.sync.get_encoder_buffer = source_sync_get_encoder_buffer;
+			//usbcmd.sync.get_encoder_buffer = source_sync_get_encoder_buffer;
 
 			nres = vatek_usbstream_start(hustream, &usbcmd);
 
@@ -300,7 +300,7 @@ uint8_t PMT[] =
 				if (cross_os_get_tick_ms() - ntickms > 1000)
 				{
 					ntickms = cross_os_get_tick_ms();
-					source_sync_get_encoder_buffer(usbcmd.sync.param, &buffer_size, NULL);
+					//source_sync_get_encoder_buffer(usbcmd.sync.param, &buffer_size, NULL);
 					
 					/* Adjust A3. */ 
 					//if (usbcmd.sync.tick_adjust.times)
@@ -368,13 +368,13 @@ vatek_result source_sync_get_buffer(void* param, uint8_t** pslicebuf)
 	return nres;
 }
 
-vatek_result source_sync_get_encoder_buffer(void* param, uint32_t** buffer_size)
-{
-	Ptsstream_source ptssource = (Ptsstream_source)param;
-	vatek_result nres = vatek_success;
-	*buffer_size = ptssource->get_size(ptssource->hsource);
-	return nres;
-}
+//vatek_result source_sync_get_encoder_buffer(void* param, uint32_t** buffer_size)
+//{
+//	Ptsstream_source ptssource = (Ptsstream_source)param;
+//	vatek_result nres = vatek_success;
+//	*buffer_size = ptssource->get_size(ptssource->hsource);
+//	return nres;
+//}
 
 vatek_result source_async_get_buffer(Ptsstream_source* param, hvatek_usbstream* husstream)
 {
