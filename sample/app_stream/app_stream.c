@@ -62,8 +62,8 @@ static usbstream_param usbcmd =
 	{
 		6,
 		modulator_dvb_t,
-		ifmode_iqoffset,0,0,
-		.mod = {.dvb_t = {dvb_t_qam16, fft_8k, guard_interval_1_16, coderate_5_6},},
+		ifmode_disable,0,0,
+		.mod = {.dvb_t = {dvb_t_qam64, fft_8k, guard_interval_1_16, coderate_5_6},},
 	},
 	.sync = {NULL,NULL,NULL,
 		.tick_adjust = {.up_lock_valus[0] = 100000, .up_lock_valus[1] = 150000, .up_lock_valus[2] = 200000, .up_lock_valus[3] = 250000,
