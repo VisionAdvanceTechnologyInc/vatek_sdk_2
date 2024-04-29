@@ -440,7 +440,7 @@ vatek_result storage_r2tune_get(Pr2_tune_handle pr2,uint8_t* psection)
 void storage_chip_config_reset(Pstorage_chip_config pcfg)
 {
 	const char* filename = "modulation.mudul";
-	const char* str = &default_chip_config;
+	const storage_chip_config* str = &default_chip_config;
 	char buffer[sizeof(storage_chip_config)];
 
 	FILE* output_file = fopen(filename, "rb+");
