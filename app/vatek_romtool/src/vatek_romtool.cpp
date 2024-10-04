@@ -1,7 +1,7 @@
 //----------------------------------------------------------------------------
 //
 // Vision Advance Technology - Software Development Kit
-// Copyright (c) 2014-2023, Vision Advance Technology Inc.
+// Copyright (c) 2014-2024, Vision Advance Technology Inc.
 // All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -50,13 +50,13 @@ vatek_romtool::vatek_romtool(QWidget *parent) :
     ui->setupUi(this);
     ui->listorage->attachStacked(ui->stcontext);
 
-    QScreen* screen = QGuiApplication::primaryScreen();     //¿Ã¹õ¤j¤p
+    QScreen* screen = QGuiApplication::primaryScreen();     //ï¿½Ã¹ï¿½ï¿½jï¿½p
     QRect mm = screen->availableGeometry();
     int screen_width = mm.width();
     int screen_height = mm.height();
     qDebug() << screen_width << screen_height;
 
-    HDC hd = GetDC(NULL);                                           // Àò¨úDPI
+    HDC hd = GetDC(NULL);                                           // ï¿½ï¿½ï¿½DPI
     int horDPI = GetDeviceCaps(hd, LOGPIXELSX);
     int verticalDPI = GetDeviceCaps(hd, LOGPIXELSY);
     double objectRate = horDPI / 96.0;
@@ -183,7 +183,7 @@ void vatek_romtool::recvservice(QString& fimg) {
                                 const char* c_str2 = ba.data();
                                 Promfile_handle prom = NULL;
                                 vatek_result nres = vatek_storage_romfile_create(ba.data(), &prom);
-                                //2.³]¸m®ø®§¹ï¸Ü®ØÄÝ©Ê
+                                //2.ï¿½]ï¿½mï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ü®ï¿½ï¿½Ý©ï¿½
                                 msg.setWindowTitle("Information");
                                 msg.setText("Sure write image file to device?");
                                 msg.setIcon(QMessageBox::Information);
@@ -237,7 +237,7 @@ void vatek_romtool::recvservice(QString& fimg) {
                                 const char* c_str2 = ba.data();
                                 Promfile_handle prom = NULL;
                                 vatek_result nres = vatek_storage_romfile_create(ba.data(), &prom);
-                                //2.³]¸m®ø®§¹ï¸Ü®ØÄÝ©Ê
+                                //2.ï¿½]ï¿½mï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ü®ï¿½ï¿½Ý©ï¿½
                                 msg.setWindowTitle("Information");
                                 msg.setText("Sure write image file to device?");
                                 msg.setIcon(QMessageBox::Information);

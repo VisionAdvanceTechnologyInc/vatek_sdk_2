@@ -48,7 +48,7 @@ int main(int argc, char *argv[])
 		- initialized supported device and open service
 	*/
 
-	nres = vatek_device_list_enum(DEVICE_BUS_BRIDGE, service_unknown, &hdevlist);
+	nres = vatek_device_list_enum(DEVICE_BUS_BRIDGE, service_unknown, &hdevlist, 0);
 	if (is_vatek_success(nres))
 	{
 		if (nres == 0)

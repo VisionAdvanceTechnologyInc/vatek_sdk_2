@@ -1,7 +1,7 @@
 //----------------------------------------------------------------------------
 //
 // Vision Advance Technology - Software Development Kit
-// Copyright (c) 2014-2023, Vision Advance Technology Inc.
+// Copyright (c) 2014-2024, Vision Advance Technology Inc.
 // All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -73,7 +73,7 @@ static cross_usbbulk udev_bulk =
 
 vatek_result cross_usb_device_open(husb_device husb, Pcross_device* pcross)
 {
-	vatek_result nres = usb_api_ll_open(husb);
+	vatek_result nres = usb_api_ll_open_usb(husb);
 	if (is_vatek_success(nres))
 	{
 		uint32_t val = 0;

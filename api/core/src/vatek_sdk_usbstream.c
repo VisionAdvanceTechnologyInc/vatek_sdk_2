@@ -1,7 +1,7 @@
 //----------------------------------------------------------------------------
 //
 // Vision Advance Technology - Software Development Kit
-// Copyright (c) 2014-2023, Vision Advance Technology Inc.
+// Copyright (c) 2014-2024, Vision Advance Technology Inc.
 // All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -383,8 +383,6 @@ void usbstream_async_handler(Pcross_thread_param param)
 			int32_t numslice = 0;
 			while (pustream->stream_packets >= USBSTREAM_SLICE_PACKET_NUMS)
 			{
-				VERR("slice pustream->stream_packets : %d\n", pustream->stream_packets);
-
 				uint8_t* pbuf = usbstream_async_get_buffer(pasync);
 				if (pbuf)
 				{

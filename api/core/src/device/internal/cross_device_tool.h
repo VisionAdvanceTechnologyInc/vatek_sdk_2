@@ -108,7 +108,7 @@ typedef struct _vatek_device
 extern "C" {
 #endif
 
-	vatek_result cross_devices_create(Pcross_device* pcross);
+	vatek_result cross_devices_create(Pcross_device* pcross, int index);
 	vatek_result cross_devices_create_by_usbid(uint16_t vid, uint16_t pid, Pcross_device* pcross);
 	vatek_result cross_bridge_open(hbridge_device hbridge, Pcross_device* pcross);
 	vatek_result cross_usb_device_open(husb_device husb, Pcross_device* pcross);

@@ -181,7 +181,7 @@ int main(int argc, char* argv[])
 
 	if (is_vatek_success(nres))
 	{
-		nres = vatek_device_list_enum(DEVICE_BUS_ALL, service_broadcast, &hdevlist);
+		nres = vatek_device_list_enum(DEVICE_BUS_ALL, service_broadcast, &hdevlist, 0);
 		if (is_vatek_success(nres))
 		{
 			if (nres == 0)

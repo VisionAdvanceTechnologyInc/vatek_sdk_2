@@ -1,7 +1,7 @@
 //----------------------------------------------------------------------------
 //
 // Vision Advance Technology - Software Development Kit
-// Copyright (c) 2014-2023, Vision Advance Technology Inc.
+// Copyright (c) 2014-2024, Vision Advance Technology Inc.
 // All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -130,13 +130,13 @@ qtvUIWizardBase::qtvUIWizardBase(qtvUIMain* main, QWidget* parent) :
 	m_main(main),
 	QWizard(parent)
 {
-	QScreen* screen = QGuiApplication::primaryScreen();     //¿Ã¹õ¤j¤p
+	QScreen* screen = QGuiApplication::primaryScreen();     //ï¿½Ã¹ï¿½ï¿½jï¿½p
 	QRect mm = screen->availableGeometry();
 	int screen_width = mm.width();
 	int screen_height = mm.height();
 	qDebug() << screen_width << screen_height;
 
-	HDC hd = GetDC(NULL);                                           // Àò¨úDPI
+	HDC hd = GetDC(NULL);                                           // ï¿½ï¿½ï¿½DPI
 	int horDPI = GetDeviceCaps(hd, LOGPIXELSX);
 	int verticalDPI = GetDeviceCaps(hd, LOGPIXELSY);
 	double objectRate = horDPI / 96.0;

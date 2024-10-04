@@ -61,7 +61,7 @@ int main(int argc, char *argv[])
 			step 2 : 
 			find current device to update rom.
 		*/
-			nres = vatek_device_list_enum(DEVICE_BUS_ALL,service_unknown,&hdevlist);
+			nres = vatek_device_list_enum(DEVICE_BUS_ALL,service_unknown,&hdevlist, 0);
 			if(nres > vatek_success)
 				nres = vatek_device_open(hdevlist,0,&hchip);
 			else if (nres == vatek_success)

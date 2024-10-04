@@ -1,7 +1,7 @@
 //----------------------------------------------------------------------------
 //
 // Vision Advance Technology - Software Development Kit
-// Copyright (c) 2014-2023, Vision Advance Technology Inc.
+// Copyright (c) 2014-2024, Vision Advance Technology Inc.
 // All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -44,42 +44,46 @@ typedef struct _vatek_device_list
 	Pcross_device* listdevices;
 }vatek_device_list,*Pvatek_device_list;
 
-vatek_result vatek_device_list_enum(uint32_t bus, hal_service_mode service, hvatek_devices* hdevices)
+vatek_result vatek_device_list_enum(uint32_t bus, hal_service_mode service, hvatek_devices* hdevices, int index)
 {
 	Pcross_device newdevs = NULL;
-	vatek_result nres = cross_devices_create(&newdevs);
-	if (nres > vatek_success)
-	{
-		int32_t len = sizeof(vatek_device_list) + (sizeof(Pcross_device) * (nres + 1));
-		Pvatek_device_list newlist = (Pvatek_device_list)malloc(len);
-		nres = vatek_memfail;
-		if (newlist)
+	int num = 0;
+	vatek_result nres = cross_devices_create(&newdevs, index);
+	num = nres;
+	if (index != vatek_alldevice) {
+		if (nres > vatek_success)
 		{
-			int32_t pos = 0;
-			nres = vatek_success;
-			memset((uint8_t*)newlist, 0, len);
-			newlist->listdevices = (Pcross_device*)&((uint8_t*)newlist)[sizeof(vatek_device_list)];
-			newlist->cross = newdevs;
-			while (newdevs)
+			int32_t len = sizeof(vatek_device_list) + (sizeof(Pcross_device) * (nres + 1));
+			Pvatek_device_list newlist = (Pvatek_device_list)malloc(len);
+			nres = vatek_memfail;
+			if (newlist)
 			{
-				if ((newdevs->bus & bus))
+				int32_t pos = 0;
+				nres = vatek_success;
+				memset((uint8_t*)newlist, 0, len);
+				newlist->listdevices = (Pcross_device*)&((uint8_t*)newlist)[sizeof(vatek_device_list)];
+				newlist->cross = newdevs;
+				while (newdevs)
 				{
-					if (service == service_unknown || 
-						service == newdevs->service)
+					if ((newdevs->bus & bus))
 					{
-						newlist->listdevices[pos] = newdevs;
-						pos++;
+						if (service == service_unknown ||
+							service == newdevs->service)
+						{
+							newlist->listdevices[pos] = newdevs;
+							pos++;
+						}
 					}
+					newdevs = newdevs->next;
 				}
-				newdevs = newdevs->next;
-			}
 
-			if (!pos)free(newlist);
-			else
-			{
-				newlist->nums = pos;
-				*hdevices = newlist;
-				nres = (vatek_result)pos;
+				if (!pos)free(newlist);
+				else
+				{
+					newlist->nums = pos;
+					*hdevices = newlist;
+					nres = (vatek_result)num;
+				}
 			}
 		}
 	}
@@ -153,6 +157,7 @@ vatek_result vatek_device_open(hvatek_devices hdevices, int32_t idx, hvatek_chip
 	{
 		Pvatek_device pvatek = NULL;
 		Pcross_device pcross = pdevices->listdevices[idx];
+
 		nres = vatek_device_malloc(pcross, &pvatek);
 		if (is_vatek_success(nres))
 		{

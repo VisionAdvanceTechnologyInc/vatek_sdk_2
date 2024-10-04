@@ -1,7 +1,7 @@
 //----------------------------------------------------------------------------
 //
 // Vision Advance Technology - Software Development Kit
-// Copyright (c) 2014-2023, Vision Advance Technology Inc.
+// Copyright (c) 2014-2024, Vision Advance Technology Inc.
 // All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -71,6 +71,7 @@ typedef void* hvatek_chip;
  */
 typedef enum _vatek_result{
 	vatek_keilc_struct = 0x7FFFFFFF,
+    vatek_alldevice = -100,
     vatek_bufferempty = -14,
 	vatek_sizeerr = -13,				/*!< size error (value not support)*/
 	vatek_crcfail = -12,				/*!< check crc fail	*/

@@ -1,7 +1,7 @@
 //----------------------------------------------------------------------------
 //
 // Vision Advance Technology - Software Development Kit
-// Copyright (c) 2014-2023, Vision Advance Technology Inc.
+// Copyright (c) 2014-2024, Vision Advance Technology Inc.
 // All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -38,7 +38,7 @@
 extern "C" {
 #endif
 
-	HAL_API vatek_result vatek_device_list_enum(uint32_t bus,hal_service_mode service,hvatek_devices* hdevices);
+	HAL_API vatek_result vatek_device_list_enum(uint32_t bus,hal_service_mode service,hvatek_devices* hdevices, int index);
 	HAL_API vatek_result vatek_device_list_enum_by_usbid(uint16_t vid, uint16_t pid, hvatek_devices* hdevices);
 	HAL_API uint32_t vatek_device_list_get_bus(hvatek_devices hdevices, int32_t idx);
 	HAL_API const char* vatek_device_list_get_name(hvatek_devices hdevices, int32_t idx);
@@ -55,6 +55,7 @@ extern "C" {
 	HAL_API Pchip_info vatek_device_get_info(hvatek_chip hchip);
 	HAL_API const char* vatek_device_get_name(hvatek_chip hchip);
 	HAL_API vatek_result vatek_device_close(hvatek_chip hchip);
+	HAL_API vatek_result vatek_device_usb_close(hvatek_chip hchip);
 
 	HAL_API vatek_result vatek_device_close_reboot(hvatek_chip hchip);
 
