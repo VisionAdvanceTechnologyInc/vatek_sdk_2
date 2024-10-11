@@ -33,7 +33,7 @@ extern Pusbdevice_id usb_ll_list_get_id(uint16_t vid, uint16_t pid);
 extern void usb_ll_convert_bufffer(uint8_t* psrc, uint8_t* pdest, int32_t len);
 typedef int32_t(*fpenum_check)(struct libusb_device_descriptor* pdesc,usbdevice_type* type, uint32_t checkparam);
 extern vatek_result usb_api_ll_enum_common(fpenum_check fpcheck, husb_device_list* hlist, uint32_t checkparam);
-extern vatek_result usb_api_ll_enum_usb(fpenum_check fpcheck, husb_device_list* hlist, uint32_t checkparam, int index);
+extern vatek_result usb_api_ll_enum_usb_multiple(fpenum_check fpcheck, husb_device_list* hlist, uint32_t checkparam, int index);
 
 extern int32_t usb_enum_check_normal(struct libusb_device_descriptor* pdesc, usbdevice_type* type, uint32_t checkparam);
 extern int32_t usb_enum_check_id(struct libusb_device_descriptor* pdesc, usbdevice_type* type, uint32_t checkparam);
@@ -43,9 +43,9 @@ vatek_result usb_api_ll_enum(usbdevice_type type, husb_device_list* hlist)
 	return usb_api_ll_enum_common(usb_enum_check_normal, hlist, (uint32_t)type);
 }
 
-vatek_result usb_api_ll_usb(usbdevice_type type, husb_device_list* hlist, int index)
+vatek_result usb_api_ll_usb_multiple(usbdevice_type type, husb_device_list* hlist, int index)
 {
-	return usb_api_ll_enum_usb(usb_enum_check_normal, hlist, (uint32_t)type, index);
+	return usb_api_ll_enum_usb_multiple(usb_enum_check_normal, hlist, (uint32_t)type, index);
 }
 
 vatek_result usb_api_ll_enum_by_id(uint16_t vid, uint16_t pid, husb_device_list* hlist)
@@ -53,7 +53,7 @@ vatek_result usb_api_ll_enum_by_id(uint16_t vid, uint16_t pid, husb_device_list*
 	return usb_api_ll_enum_common(usb_enum_check_id, hlist, ((vid << 16) | pid));
 }
 
-vatek_result usb_api_ll_enum_usb(fpenum_check fpcheck, husb_device_list* hlist, uint32_t checkparam, int index)
+vatek_result usb_api_ll_enum_usb_multiple(fpenum_check fpcheck, husb_device_list* hlist, uint32_t checkparam, int index)
 {
 	libusb_device** usbdevs;
 	libusb_context* ctx = NULL;

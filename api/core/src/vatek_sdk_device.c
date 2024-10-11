@@ -44,11 +44,53 @@ typedef struct _vatek_device_list
 	Pcross_device* listdevices;
 }vatek_device_list,*Pvatek_device_list;
 
-vatek_result vatek_device_list_enum(uint32_t bus, hal_service_mode service, hvatek_devices* hdevices, int index)
+vatek_result vatek_device_list_enum(uint32_t bus, hal_service_mode service, hvatek_devices* hdevices)
+{
+	Pcross_device newdevs = NULL;
+	vatek_result nres = cross_devices_create(&newdevs);
+	if (nres > vatek_success)
+	{
+		int32_t len = sizeof(vatek_device_list) + (sizeof(Pcross_device) * (nres + 1));
+		Pvatek_device_list newlist = (Pvatek_device_list)malloc(len);
+		nres = vatek_memfail;
+		if (newlist)
+		{
+			int32_t pos = 0;
+			nres = vatek_success;
+			memset((uint8_t*)newlist, 0, len);
+			newlist->listdevices = (Pcross_device*)&((uint8_t*)newlist)[sizeof(vatek_device_list)];
+			newlist->cross = newdevs;
+			while (newdevs)
+			{
+				if ((newdevs->bus & bus))
+				{
+					if (service == service_unknown ||
+						service == newdevs->service)
+					{
+						newlist->listdevices[pos] = newdevs;
+						pos++;
+					}
+				}
+				newdevs = newdevs->next;
+			}
+
+			if (!pos)free(newlist);
+			else
+			{
+				newlist->nums = pos;
+				*hdevices = newlist;
+				nres = (vatek_result)pos;
+			}
+		}
+	}
+	return nres;
+}
+
+vatek_result vatek_device_list_enum_multiple(uint32_t bus, hal_service_mode service, hvatek_devices* hdevices, int index)
 {
 	Pcross_device newdevs = NULL;
 	int num = 0;
-	vatek_result nres = cross_devices_create(&newdevs, index);
+	vatek_result nres = cross_devices_create_multiple(&newdevs, index);
 	num = nres;
 	if (index != vatek_alldevice) {
 		if (nres > vatek_success)

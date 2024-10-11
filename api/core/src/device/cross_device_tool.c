@@ -39,7 +39,71 @@ typedef struct _cross_handle
 
 static cross_handle m_cdevices = { 0,NULL,NULL,NULL,NULL, };
 
-vatek_result cross_devices_create(Pcross_device* pcross, int index)
+vatek_result cross_devices_create(Pcross_device* pcross)
+{
+	vatek_result nres = vatek_success;
+	if (!m_cdevices.root)
+	{
+		int32_t i = 0;
+		int32_t nums = 0;
+		Pcross_device newcross = NULL;
+
+		nres = bridge_device_list_enum_default(&m_cdevices.bridges);
+		if (nres > vatek_success)
+		{
+			nums = nres;
+			for (i = 0; i < nums; i++)
+			{
+				hbridge_device hbridge = NULL;
+				nres = bridge_device_list_get(m_cdevices.bridges, i, &hbridge);
+				if (is_vatek_success(nres))
+				{
+					nres = cross_bridge_open(hbridge, &newcross);
+					if (is_vatek_success(nres))
+					{
+						if (!m_cdevices.root)m_cdevices.root = newcross;
+						else m_cdevices.last->next = newcross;
+						m_cdevices.last = newcross;
+					}
+				}
+				if (!is_vatek_success(nres))VWAR("cross_devices_create - bridge fail [%d:%d]", i, nres);
+			}
+		}
+
+		nres = usb_api_ll_enum(usb_type_all, &m_cdevices.usbdevices);
+		if (nres > vatek_success)
+		{
+			nums = nres;
+			for (i = 0; i < nums; i++)
+			{
+				husb_device husb = NULL;
+				nres = usb_api_ll_list_get_device(m_cdevices.usbdevices, i, &husb);
+				VERR("index : %d\n", i);
+				if (is_vatek_success(nres))
+				{
+					nres = cross_usb_device_open(husb, &newcross);
+					if (is_vatek_success(nres))
+					{
+						if (!m_cdevices.root)m_cdevices.root = newcross;
+						else m_cdevices.last->next = newcross;
+						m_cdevices.last = newcross;
+					}
+				}
+			}
+		}
+	}
+
+	if (m_cdevices.root)
+	{
+		m_cdevices.reference++;
+		*pcross = m_cdevices.root;
+		nres = (vatek_result)cross_devices_get_size(m_cdevices.root);
+	}
+	else nres = vatek_success;
+	return nres;
+}
+
+vatek_result cross_devices_create_multiple(Pcross_device* pcross, int index)
 {
 	vatek_result nres = vatek_success;
 	int32_t nums = 0;
@@ -48,28 +112,26 @@ vatek_result cross_devices_create(Pcross_device* pcross, int index)
 	{
 		Pcross_device newcross = NULL;
 
-		nres = usb_api_ll_usb(usb_type_all, &m_cdevices.usbdevices, index);
-		//if (index != vatek_alldevice) {
-			if (nres > vatek_success)
+		nres = usb_api_ll_usb_multiple(usb_type_all, &m_cdevices.usbdevices, index);
+		if (nres > vatek_success)
+		{
+			nums = nres;
+
+			husb_device husb = NULL;
+			// specify USB device of index
+			nres = usb_api_ll_list_get_device(m_cdevices.usbdevices, index, &husb);
+			if (is_vatek_success(nres))
 			{
-				nums = nres;
-				//for (int i = 0; i < nums; i++)
-				//{
-					husb_device husb = NULL;
-					// specify USB device of index
-					nres = usb_api_ll_list_get_device(m_cdevices.usbdevices, index, &husb);
-					if (is_vatek_success(nres))
-					{
-						nres = cross_usb_device_open(husb, &newcross);
-						if (is_vatek_success(nres))
-						{
-							if (!m_cdevices.root)m_cdevices.root = newcross;
-							else m_cdevices.last->next = newcross;
-							m_cdevices.last = newcross;
-						}
-					}
-				//}
+				nres = cross_usb_device_open(husb, &newcross);
+				if (is_vatek_success(nres))
+				{
+					if (!m_cdevices.root)m_cdevices.root = newcross;
+					else m_cdevices.last->next = newcross;
+					m_cdevices.last = newcross;
+				}
 			}
+			//}
+		}
 		//}
 		//else
 		//	return vatek_alldevice;

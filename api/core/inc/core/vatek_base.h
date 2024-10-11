@@ -60,7 +60,7 @@
 #define CHIP_STREAM_SLICE_LEN			24064
 #define CHIP_STREAM_SLICE_PACKET_NUMS   (CHIP_STREAM_SLICE_LEN / CHIP_TS_PACKET_LEN)
 
-#define VATEK_VERSION 31000
+#define VATEK_VERSION 31200
 
 typedef void* hvatek_devices;
 typedef void* hvatek_chip;

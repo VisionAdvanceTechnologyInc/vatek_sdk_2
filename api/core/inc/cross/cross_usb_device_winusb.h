@@ -114,8 +114,11 @@ extern "C" {
 
 	/* usb_device list tools */
 	HAL_API vatek_result usb_api_ll_enum(usbdevice_type type, husb_device_list* hlist);
+	HAL_API vatek_result usb_api_ll_usb_multiple(usbdevice_type type, husb_device_list* hlist, int index);
 	HAL_API vatek_result usb_api_ll_enum_by_id(uint16_t vid, uint16_t pid, husb_device_list* hlist);
 	HAL_API vatek_result usb_api_ll_list_get_device(husb_device_list hlist, int32_t idx, husb_device* husb);
+	HAL_API vatek_result usb_api_ll_list_get_device_multiple(husb_device_list hlist, int32_t idx, husb_device* husb);
+
 	HAL_API const char* usb_api_ll_list_get_name(husb_device_list hlist, int32_t idx);
 	HAL_API vatek_result usb_api_ll_free_list(husb_device_list hlist);
 	HAL_API vatek_result usb_api_ll_open(husb_device husb);

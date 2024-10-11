@@ -1,7 +1,7 @@
 ﻿//----------------------------------------------------------------------------
 //
 // Vision Advance Technology - Software Development Kit
-// Copyright (c) 2014-2023, Vision Advance Technology Inc.
+// Copyright (c) 2014-2024, Vision Advance Technology Inc.
 // All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -105,7 +105,7 @@ int main(int argc, char *argv[])
 		if (is_vatek_success(nres))
 		{
 
-			nres = vatek_device_list_enum(DEVICE_BUS_USB, service_transform, &hdevlist, num_index);
+			nres = vatek_device_list_enum_multiple(DEVICE_BUS_USB, service_transform, &hdevlist, num_index);
 
 			if (is_vatek_success(nres)) {
 				if (nres == 0)
@@ -339,7 +339,7 @@ int main(int argc, char *argv[])
 		}
 	}
 	else {
-		nres = vatek_device_list_enum(DEVICE_BUS_USB, service_transform, &hdevlist, vatek_alldevice);
+		nres = vatek_device_list_enum_multiple(DEVICE_BUS_USB, service_transform, &hdevlist, vatek_alldevice);
 		_disp_l("enum all device ");
 	}
 

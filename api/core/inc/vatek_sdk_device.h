@@ -38,7 +38,8 @@
 extern "C" {
 #endif
 
-	HAL_API vatek_result vatek_device_list_enum(uint32_t bus,hal_service_mode service,hvatek_devices* hdevices, int index);
+	HAL_API vatek_result vatek_device_list_enum(uint32_t bus,hal_service_mode service,hvatek_devices* hdevices);
+	HAL_API vatek_result vatek_device_list_enum_multiple(uint32_t bus, hal_service_mode service, hvatek_devices* hdevices, int index);
 	HAL_API vatek_result vatek_device_list_enum_by_usbid(uint16_t vid, uint16_t pid, hvatek_devices* hdevices);
 	HAL_API uint32_t vatek_device_list_get_bus(hvatek_devices hdevices, int32_t idx);
 	HAL_API const char* vatek_device_list_get_name(hvatek_devices hdevices, int32_t idx);
