@@ -114,6 +114,7 @@ extern "C" {
 	vatek_result cross_devices_create_by_usbid(uint16_t vid, uint16_t pid, Pcross_device* pcross);
 	vatek_result cross_bridge_open(hbridge_device hbridge, Pcross_device* pcross);
 	vatek_result cross_usb_device_open(husb_device husb, Pcross_device* pcross);
+	vatek_result cross_usb_device_open_usb(husb_device husb, Pcross_device* pcross);
 
 	hbridge_device cross_get_bridge_handle(Pcross_device pcross);
 	husb_device cross_get_usb_device(Pcross_device pcross);

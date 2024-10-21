@@ -73,6 +73,36 @@ static cross_usbbulk udev_bulk =
 
 vatek_result cross_usb_device_open(husb_device husb, Pcross_device* pcross)
 {
+	vatek_result nres = usb_api_ll_open(husb);
+	if (is_vatek_success(nres))
+	{
+		uint32_t val = 0;
+		nres = udev_core.read_memory((hcross_device)husb, HALREG_SERVICE_MODE, &val);
+		if (is_vatek_success(nres))
+		{
+			hal_service_mode halservice = (hal_service_mode)val;
+			Pcross_device newdev = NULL;
+			nres = cdevice_malloc(&newdev, halservice);
+			if (is_vatek_success(nres))
+			{
+				newdev->driver = cdriver_usb;
+				newdev->bus = DEVICE_BUS_USB;
+				newdev->service = halservice;
+				newdev->hcross = husb;
+				newdev->core = &udev_core;
+				if (halservice == service_transform)
+					newdev->stream = &udev_stream;
+				newdev->bulk = &udev_bulk;
+				*pcross = newdev;
+			}
+		}
+		if (!is_vatek_success(nres))usb_api_ll_close(husb);
+	}
+	return nres;
+}
+
+vatek_result cross_usb_device_open_usb(husb_device husb, Pcross_device* pcross)
+{
 	vatek_result nres = usb_api_ll_open_usb(husb);
 	if (is_vatek_success(nres))
 	{

@@ -122,7 +122,7 @@ vatek_result cross_devices_create_multiple(Pcross_device* pcross, int index)
 			nres = usb_api_ll_list_get_device(m_cdevices.usbdevices, index, &husb);
 			if (is_vatek_success(nres))
 			{
-				nres = cross_usb_device_open(husb, &newcross);
+				nres = cross_usb_device_open_usb(husb, &newcross);
 				if (is_vatek_success(nres))
 				{
 					if (!m_cdevices.root)m_cdevices.root = newcross;
